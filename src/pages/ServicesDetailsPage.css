@@ -1,0 +1,477 @@
+/* ========================================
+   Password screen
+======================================== */
+.login-card {
+  width: 100%;
+  max-width: 460px;
+  padding: clamp(28px, 6vw, 48px);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fffefa;
+  box-shadow: 0 20px 60px rgb(41 39 34 / 5%);
+}
+
+.login-card-icon {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: #eee7de;
+  color: var(--site-primary);
+}
+
+.login-card form {
+  display: grid;
+  gap: 10px;
+}
+
+.login-card input {
+  width: 100%;
+  min-height: 50px;
+  padding: 12px 14px;
+  border: 1px solid #d9d3ca;
+  border-radius: 4px;
+  outline: none;
+  background: white;
+  color: var(--site-primary);
+  font: inherit;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.login-card input:focus {
+  border-color: var(--site-accent);
+  box-shadow: 0 0 0 3px rgb(189 140 104 / 15%);
+}
+
+.login-error {
+  margin: 0;
+  color: #a53232;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.button--login {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.login-card-footnote {
+  margin: 24px 0 0;
+  color: var(--site-muted);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.login-card-footnote a {
+  color: var(--site-accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 180ms ease;
+}
+
+.login-card-footnote a:hover {
+  opacity: 0.75;
+}
+/* ========================================
+   Unlocked services page
+======================================== */
+
+
+.services-intro {
+  max-width: 680px;
+  margin: 0 auto;
+  padding-block: 40px 76px;
+  text-align: center;
+}
+
+.services-intro h1 {
+  margin: 14px 0 20px;
+  font-size: clamp(2.8rem, 5vw, 4.6rem);
+  line-height: 1.08;
+  font-weight: 400;
+}
+
+.services-intro > p,
+.services-section-heading > p,
+.booking-terms__heading > p {
+  max-width: 570px;
+  margin-inline: auto;
+  color: var(--site-muted);
+  font-size: 0.95rem;
+  line-height: 1.9;
+}
+
+/* Featured bridal package */
+
+.bridal-service {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.5fr);
+  gap: clamp(30px, 6vw, 90px);
+  padding: clamp(28px, 5vw, 64px);
+  border: 1px solid var(--border);
+  background: var(--site-paper);
+}
+
+.bridal-service__header {
+  align-self: start;
+}
+
+.bridal-service__header .services-details-number {
+  margin-bottom: 24px;
+}
+
+.bridal-service__content h2 {
+  margin: 0 0 18px;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.bridal-service__intro {
+  margin-bottom: 38px;
+  color: var(--site-muted);
+  font-size: 1rem;
+  line-height: 1.9;
+}
+
+.bridal-service__included,
+.bridal-service__trial {
+  padding-block: 25px;
+  border-top: 1px solid var(--border);
+}
+
+.bridal-service__included h3,
+.bridal-service__trial h3 {
+  margin-bottom: 16px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.bridal-service__included ul,
+.other-services ul {
+  display: grid;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bridal-service__included li,
+.other-services li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: var(--site-muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.bridal-service__included li svg,
+.other-services li svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--site-accent);
+}
+
+.bridal-service__trial p {
+  margin-bottom: 0;
+  color: var(--site-muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+.bridal-service__price {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+
+.bridal-service__price span {
+  color: var(--site-muted);
+  font-size: 0.78rem;
+}
+
+.bridal-service__price p {
+  margin: 5px 0 0;
+  font-size: 1.1rem;
+}
+
+.bridal-service__price .button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+/* Other services */
+#services-details-page .page-heading h2 {
+  font-size: clamp(1rem, 2.5vw, 3rem);
+}
+
+.other-services {
+  padding-top: 40px;
+  padding-bottom: 100px;
+}
+
+.services-section-heading {
+  max-width: 620px;
+  margin: 0 auto 42px;
+  text-align: center;
+}
+
+.services-section-heading h2,
+.booking-terms__heading h2 {
+  margin: 12px 0 16px;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.services-details-layout {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.services-details-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid var(--border);
+  background: var(--site-paper);
+  transition: border-color 180ms ease;
+}
+
+.services-details__header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.services-details-card:hover {
+  border-color: #cbbcaf;
+}
+
+.services-details-card .services-details-number {
+  margin-bottom: 28px;
+}
+
+.services-details-card h3 {
+  margin: 0 0 14px;
+  font-size: 1.4rem;
+  font-weight: 400;
+}
+
+.services-details-description {
+  margin-bottom: 26px;
+  color: var(--site-muted);
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+.other-services ul {
+   margin-bottom: 26px;
+}
+
+.services-details-card-footer {
+  margin-top: auto;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.services-details-price {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Booking conditions */
+
+.booking-terms {
+  padding-block: 80px;
+  border-top: 1px solid var(--border);
+}
+
+.booking-terms__heading {
+  max-width: 660px;
+  margin: 0 auto 54px;
+  text-align: center;
+}
+
+.booking-terms__list {
+  max-width: 850px;
+  margin-inline: auto;
+}
+
+.booking-term {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 22px;
+  padding-block: 28px;
+  border-bottom: 1px solid var(--border);
+}
+
+.booking-term:first-child {
+  border-top: 1px solid var(--border);
+}
+
+.booking-term__number {
+  padding-top: 3px;
+  color: var(--site-accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+}
+
+.booking-term h3 {
+  margin: 0 0 10px;
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.booking-term p {
+  max-width: 680px;
+  margin: 0;
+  color: var(--site-muted);
+  font-size: 0.9rem;
+  line-height: 1.9;
+}
+
+
+
+/* Lock control */
+
+#services-details-page .lock-button-container {
+  display: flex;
+  justify-content: flex-end;
+  /* margin-top: 40px; */
+  /* padding-top: 20px; */
+  /* border-top: 1px solid var(--border); */
+}
+
+#services-details-page .lock-button-container button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--site-muted);
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+#services-details-page .lock-button-container button:hover {
+  color: var(--site-primary);
+}
+
+/* Responsive layouts */
+
+@media (max-width: 900px) {
+  .bridal-service {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .bridal-service__header {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+
+  .bridal-service__header .services-details-number {
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .services-details-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .services-details-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .services-details__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .services-intro {
+    padding-block: 20px 48px;
+  }
+
+  .bridal-service {
+    padding: 24px 20px;
+  }
+
+  .bridal-service__price {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .bridal-service__price .button {
+    width: 100%;
+  }
+
+  .other-services {
+    padding-bottom: 72px;
+  }
+
+  .services-details-layout {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .services-details-card:last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+
+  .services-details-card {
+    padding: 24px;
+    list-style: none;
+
+  }
+
+  .services-details__header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+
+.services-details-card li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.services-details-card li svg {
+  color: var(--site-accent);
+  flex-shrink: 0;
+}
+
+  .booking-terms {
+    padding-block: 60px;
+  }
+
+  .booking-term {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 12px;
+    padding-block: 23px;
+  }
+
+}

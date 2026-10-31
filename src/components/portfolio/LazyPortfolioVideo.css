@@ -1,0 +1,49 @@
+
+/* Image and video containers */
+.portfolio-image-container,
+.portfolio-video-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* background: var(--site-line); */
+}
+
+/* Images and videos start hidden */
+.portfolio-image-container img,
+.portfolio-video-container video {
+  display: block;
+  width: 100%;
+  height: auto;
+  opacity: 0;
+  transform: translate3d(0, 30px, 0);
+  transition:
+    opacity 900ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+/* Reveal after loading */
+.portfolio-image-container.is-loaded img,
+.portfolio-video-container.is-loaded video {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Loading indicator */
+.portfolio-image-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-image-container img,
+  .portfolio-video-container video {
+    transition: none;
+    transform: none;
+    will-change: auto;
+  }
+}

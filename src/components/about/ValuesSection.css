@@ -1,0 +1,84 @@
+
+/* Section background and top divider */
+.values-section {
+  background-color: color-mix(
+    in srgb,
+    var(--site-secondary) 40%,
+    var(--site-background)
+  );
+}
+
+.values-container {
+  width: 100%;
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 4rem 1.25rem;
+}
+
+/* Mobile-first layout */
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+/* Individual value */
+.value-card {
+  min-width: 0;
+}
+
+.value-icon {
+  display: block;
+  color: var(--site-accent);
+  margin-bottom: 1rem;
+  transition:
+    transform 250ms ease,
+    color 250ms ease;
+}
+
+.value-card:hover .value-icon {
+  transform: translateY(-3px);
+}
+
+.value-title {
+  margin: 0;
+  color: var(--site-foreground);
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.value-text {
+  margin: 0.75rem 0 0;
+  color: var(--muted-foreground);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.85;
+}
+
+/* Tablet and desktop */
+@media (min-width: 640px) {
+  .values-container {
+    padding: 5rem 2rem;
+  }
+
+  .values-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 3rem 2rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .values-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 3rem;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .value-icon {
+    transition: none;
+  }
+}
