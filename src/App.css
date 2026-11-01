@@ -69,80 +69,74 @@
   line-height: 1.8; 
 }
 
-/* Calendar */
-.rdp-root {
-  --rdp-accent-color: var(--site-accent);
-  --rdp-accent-background-color: transparent;
-  --rdp-day-height: 40px;
-  --rdp-day-width: 40px;
-  --rdp-day_button-height: 36px;
-  --rdp-day_button-width: 36px;
-
-  width: 100%;
+/* Mantine calendars */
+.mantine-calendar {
+  --day-size: 40px;
+  max-width: 100%;
   margin: 0;
   color: var(--site-primary);
   font-family: inherit;
 }
 
-.rdp-month {
-  width: 100%;
-}
-
-.rdp-month_caption {
+.mantine-calendar__header {
   min-height: 40px;
   margin-bottom: 12px;
   color: var(--site-primary);
-  /* font-family: var(--font-display); */
   font-size: 1.05rem;
   font-weight: 500;
+  text-transform: lowercase;
 }
 
-.rdp-nav {
-  inset-block: 0;
-}
-
-.rdp-button_previous,
-.rdp-button_next {
+.mantine-calendar__header-control {
   color: var(--site-muted);
   border: none;
   background: transparent;
 }
 
-.rdp-button_previous:hover,
-.rdp-button_next:hover {
+.mantine-calendar__header-control:hover {
   color: var(--site-accent);
   background: transparent;
+  background: var(--site-background) !important;
 }
 
-.rdp-weekday {
+.mantine-calendar__header-level {
+  flex: 1;
+  color: var(--site-primary);
+  text-align: left;
+  justify-content: flex-start;
+  margin-left: 12px;
+}
+
+.mantine-calendar__weekday {
   color: var(--site-muted);
   font-size: 0.65rem;
   font-weight: 500;
   text-transform: uppercase;
 }
 
-.rdp-day {
-  font-size: 0.82rem;
-}
-
-.rdp-day_button {
-  width: 36px;
-  height: 36px;
+.mantine-calendar__day {
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
-  font: inherit;
   color: var(--site-primary);
+  font-size: 0.82rem;
   transition:
     background-color 180ms ease,
     color 180ms ease;
 }
 
-.rdp-day_button:hover:not(:disabled) {
+.mantine-calendar__day:hover:not([data-disabled]):not([data-static]) {
   background-color: var(--site-line);
 }
 
+.mantine-calendar__day[data-selected] {
+  background-color: #f5e9e4;
+  color: var(--site-primary);
+}
+
 /* Past dates */
-.rdp-disabled:not(.availability-unavailable) {
+.mantine-calendar__day[data-disabled]:not(.availability-unavailable) {
   color: var(--site-muted);
   opacity: 0.3;
 }

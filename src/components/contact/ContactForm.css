@@ -1,3 +1,8 @@
+
+/* ==============================
+   FORM LAYOUT
+============================== */
+
 .contact-form {
   display: grid;
   gap: 24px;
@@ -10,140 +15,355 @@
   gap: 18px;
 }
 
-.contact-form label {
+.contact-form__field {
   display: grid;
   min-width: 0;
   gap: 10px;
 }
-/* .contact-detail-label {
-  margin: 0 0 5px;
-  color: var(--site-muted);
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-} */
 
-.contact-form label > span {
+
+/* ==============================
+   LABELS
+============================== */
+
+.contact-form .contact-form__label {
+  margin: 0;
+  color: var(--site-primary);
+  font-family: inherit;
   font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.contact-form input,
-.contact-form select,
-.contact-form textarea {
+/* ==============================
+   CLEAR BUTTON
+============================== */
+.contact-form .mantine-InputClearButton-root {
+  background: transparent !important;
+  color: var(--site-accent)
+}
+
+/* ==============================
+   INPUTS
+============================== */
+
+.contact-form .contact-form__input {
   display: block;
   width: 100%;
   min-width: 0;
+  min-height: 48px;
+  padding: 0 13px;
+
   border: 1px solid var(--site-line);
-  border-radius: 2px;
+  border-radius: var(--border-radius);
+
   outline: none;
   background: #fefbf8;
   color: var(--site-primary);
+
   font-family: inherit;
   font-size: 0.9rem;
   font-weight: 400;
   letter-spacing: normal;
+  line-height: 1.5;
   text-transform: none;
+
   transition:
     border-color 180ms ease,
     box-shadow 180ms ease,
     background 180ms ease;
 }
 
-.contact-form input,
-.contact-form select {
-  min-height: 48px;
-  padding: 0 13px;
-}
-
-.contact-form select {
-  cursor: pointer;
-}
-
-.contact-form textarea {
+.contact-form textarea.contact-form__input {
   min-height: 145px;
   padding: 13px;
   line-height: 1.7;
   resize: vertical;
 }
 
-.contact-form input:hover,
-.contact-form select:hover,
-.contact-form textarea:hover {
+.contact-form .contact-form__input:hover {
   border-color: var(--site-muted);
 }
 
-.contact-form input:focus,
-.contact-form select:focus,
-.contact-form textarea:focus {
+.contact-form .contact-form__input:focus {
   border-color: var(--site-accent);
   background: #fff;
   box-shadow: 0 0 0 3px rgb(167 83 61 / 10%);
 }
 
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: #99918b;
+.contact-form .contact-form__input::placeholder {
+  color: var(--site-placeholder);
   opacity: 1;
 }
 
-.contact-form input:focus-visible,
-.contact-form select:focus-visible,
-.contact-form textarea:focus-visible {
+.contact-form .contact-form__input:focus-visible {
   outline: none;
 }
 
-/* Submit button */
+
+/* ==============================
+   FIELD GROUPS
+============================== */
+
+.contact-form__field-group {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact-form__error {
+  margin: 5px 0 0;
+  color: var(--site-error);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Röd kant när fältet har ett fel */
+.contact-form__field-group.has-error .contact-form__input,
+.contact-form__message-field.has-error .contact-form__input {
+  border-color: var(--site-error);
+}
+
+.contact-form__field-group.has-error .contact-form__input:focus,
+.contact-form__message-field.has-error .contact-form__input:focus {
+  border-color: var(--site-error);
+  box-shadow: 0 0 0 3px rgb(180 83 83 / 10%);
+}
+
+/* Datumfältets felmarkering */
+.contact-form__date-field.has-error .contact-form__date-input {
+  border-color: var(--site-error);
+}
+
+.contact-form__date-field.has-error .contact-form__date-input:focus {
+  box-shadow: 0 0 0 3px rgb(180 83 83 / 10%);
+}
+
+/* ==============================
+   SELECT
+============================== */
+
+.contact-form .mantine-Select-input {
+  cursor: pointer;
+}
+
+.contact-form .mantine-Select-dropdown {
+  border: 1px solid var(--site-line);
+  border-radius: var(--border-radius);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 8%);
+}
+
+.contact-form .mantine-Select-option {
+  color: var(--site-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+
+.contact-form .mantine-Select-option[data-selected] {
+  background: #f5e9e4;
+  color: var(--site-primary);
+}
+
+/* ==============================
+   DATE FIELD
+============================== */
+
+.contact-form__date-field {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contact-form .contact-form__date-input {
+  width: 100%;
+  min-height: 48px;
+  height: auto;
+  padding: 0 13px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+
+  border: 1px solid var(--site-line);
+  border-radius: var(--border-radius);
+
+  background: #fefbf8;
+  color: var(--site-primary);
+
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
+}
+
+.contact-form .contact-form__date-input:hover {
+  border-color: var(--site-muted);
+  background: #fefbf8;
+}
+
+.contact-form .contact-form__date-input:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 2px;
+}
+
+.contact-form .contact-form__date-input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.contact-form .contact-form__date-input svg {
+  flex-shrink: 0;
+  color: var(--site-placeholder);
+}
+
+/* Placera text och ikon på varsin sida */
+.contact-form .contact-form__date-input .mantine-Button-inner {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.contact-form .contact-form__date-input .mantine-Button-label {
+  flex: 1;
+  text-align: left;
+  color: var(--site-placeholder);
+}
+
+/* ==============================
+   DATE PICKER / POPOVER
+============================== */
+
+.contact-form .mantine-Popover-dropdown {
+  max-width: calc(100vw - 32px);
+  padding: 12px;
+
+  border: 1px solid var(--site-line);
+  border-radius: var(--border-radius);
+  background: #fff;
+
+  box-shadow: 0 12px 32px rgb(0 0 0 / 10%);
+}
+
+.contact-form .mantine-calendar {
+  --day-size: 36px;
+  width: auto;
+  max-width: 100%;
+}
+
+.contact-form .mantine-calendar__day[data-selected] {
+  background-color: #f5e9e4;
+  color: var(--site-primary);
+}
+
+.contact-form .mantine-calendar__day[data-disabled] {
+  opacity: 0.35;
+}
+
+.contact-form__date-hint {
+  margin: 8px 0 0;
+  color: var(--site-muted);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+/* ==============================
+   MESSAGE / CHARACTER COUNT
+============================== */
+
+.contact-form__message-field {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+/* ==============================
+   PRIVACY INFORMATION
+============================== */
+
+.contact-form__privacy {
+  margin-top: 4px;
+  color: var(--site-muted);
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+
+.contact-form__privacy p {
+  margin: 0;
+}
+
+.contact-form__privacy a {
+  color: var(--site-primary);
+  text-decoration: underline;
+  text-decoration-color: var(--site-accent);
+  text-underline-offset: 3px;
+  transition: color 180ms ease;
+}
+
+.contact-form__privacy a:hover {
+  color: var(--site-accent);
+}
+
+
+/* ==============================
+   SUBMIT BUTTON
+============================== */
+
 .button--submit {
   justify-self: start;
+  padding: 1rem 2rem;
+  letter-spacing: 0.2em;
+  width: 100%;
 }
-.submit-button {
-  display: inline-flex;
-  min-height: 50px;
-  justify-self: start;
+
+.button--submit .mantine-Button-inner {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 24px;
-  padding: 0 20px;
-  border: 1px solid var(--site-primary);
-  border-radius: 2px;
-  background: var(--site-primary);
-  color: var(--site-primary-foreground);
-  font-family: inherit;
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background 180ms ease,
-    color 180ms ease,
-    border-color 180ms ease;
+  gap: 1rem;
 }
 
-.submit-button:hover {
-  border-color: var(--site-accent);
-  background: var(--site-accent);
+.button--submit .mantine-Button-label {
+  overflow: visible;
+    margin: 0;
+
 }
 
-.submit-button:focus-visible,
-.text-button:focus-visible {
+.button--submit svg {
+  flex-shrink: 0;
+  display: block;
+  margin: 0;
+}
+
+.button--submit:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 4px;
 }
 
-.submit-button svg {
-  flex-shrink: 0;
-  transition: transform 180ms ease;
+.button--submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
-.submit-button:hover svg {
-  transform: translateX(3px);
+
+/* ==============================
+   FORM STATUS
+============================== */
+
+.contact-form .mantine-Alert-root {
+  border-radius: var(--border-radius);
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
-/* Success state */
+
+/* ==============================
+   SUCCESS STATE
+============================== */
 
 .success-message {
   display: flex;
@@ -151,7 +371,9 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+
   padding: clamp(24px, 4vw, 40px);
+
   border: 1px solid var(--site-line);
   background: var(--site-secondary);
 }
@@ -192,75 +414,137 @@
   color: var(--site-accent);
 }
 
-.contact-form__date-field {
-  display: grid;
-  gap: 10px;
-  min-width: 0;
+.text-button:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 4px;
 }
 
-.contact-form__date-picker {
-  position: relative;
-  width: 100%;
-}
+/* ==============================
+   ERROR SUMMARY
+============================== */
 
-.contact-form__date-input {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  min-height: 48px;
-  padding: 0 13px;
-  border: 1px solid var(--site-line);
-  border-radius: 2px;
-  background: #fefbf8;
+.contact-form__error-summary {
+  padding: 20px 22px;
+
+  border: 1px solid var(--site-error);
+  border-left: 3px solid var(--site-error);
+  border-radius: var(--border-radius);
+
+  background: #fff9f8;
   color: var(--site-primary);
-  font: inherit;
-  font-size: 0.9rem;
-  text-align: left;
-  cursor: pointer;
-  transition:
-    border-color 180ms ease,
-    box-shadow 180ms ease,
-    background 180ms ease;
 }
 
-.contact-form__date-input:hover {
-  border-color: var(--site-muted);
+.contact-form__error-summary:focus {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
 }
 
-.contact-form__date-input:focus-visible {
-  outline: none;
-  border-color: var(--site-accent);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgb(167 83 61 / 10%);
+.contact-form__error-summary h2 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
 }
 
-.contact-form__date-input svg {
-  flex-shrink: 0;
-  color: var(--site-muted);
+.contact-form__error-summary p {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  line-height: 1.6;
 }
 
-.contact-form__calendar {
-  position: absolute;
-  z-index: 20;
-  top: calc(100% + 8px);
-  left: 0;
-  padding: 12px;
-  border: 1px solid var(--site-line);
-  border-radius: 4px;
-  background: #fff;
-  box-shadow: 0 12px 32px rgb(0 0 0 / 10%);
+.contact-form__error-summary ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 20px;
 }
 
-/* Keep the calendar within the form on small screens. */
-.contact-form__calendar .rdp-root {
-  --rdp-accent-background-color: #f5e9e4;
+.contact-form__error-summary li {
+  font-size: 0.82rem;
+  line-height: 1.5;
 }
 
-/* Mobile */
+.contact-form__error-summary a {
+  color: var(--site-error);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 
-@media (max-width: 480px) {
+.contact-form__error-summary a:hover {
+  color: var(--site-accent);
+}
+
+.contact-form__error-summary a:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 3px;
+}
+
+
+/* ==============================
+   FIELD ERROR MESSAGES
+============================== */
+
+.contact-form__error-slot {
+  min-height: 0;
+  margin-top: 5px;
+
+  color: var(--site-error);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.contact-form__date-field .contact-form__error-slot:empty {
+  display: none;
+}
+
+.contact-form__field-group.has-error .contact-form__error-slot,
+.contact-form__message-field.has-error .contact-form__error-slot,
+.contact-form__date-field.has-error .contact-form__error-slot {
+  min-height: 1.2em;
+}
+
+
+/* ==============================
+   DATE LIMIT MESSAGE
+============================== */
+
+.contact-form__date-limit {
+  margin: 8px 0 0;
+  color: var(--site-error);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+/* ==============================
+   ERROR FOCUS
+============================== */
+
+.contact-form__field-group.has-error .contact-form__input,
+.contact-form__message-field.has-error .contact-form__input {
+  border-color: var(--site-error);
+}
+
+.contact-form__date-field.has-error .contact-form__date-input {
+  border-color: var(--site-error);
+}
+
+.contact-form__field-group.has-error .contact-form__input:focus,
+.contact-form__message-field.has-error .contact-form__input:focus {
+  border-color: var(--site-error);
+  box-shadow: 0 0 0 3px rgb(180 83 83 / 10%);
+}
+
+.contact-form__date-field.has-error .contact-form__date-input:focus-visible {
+  outline: 2px solid var(--site-error);
+  outline-offset: 2px;
+}
+
+
+/* ==============================
+   MOBILE
+============================== */
+
+@media (max-width: 600px) {
   .contact-form {
     gap: 22px;
   }
@@ -270,8 +554,7 @@
     gap: 22px;
   }
 
-  .submit-button {
-    width: 100%;
+  .button--submit {
     justify-self: stretch;
   }
 
@@ -280,8 +563,26 @@
     padding: 24px 20px;
   }
 
-  .contact-form__calendar {
-    max-width: calc(100vw - 48px);
+  .contact-form .mantine-Popover-dropdown {
+    max-width: calc(100vw - 32px);
     overflow-x: auto;
+  }
+
+  .contact-form .mantine-calendar {
+    --day-size: 34px;
+  }
+}
+
+
+/* ==============================
+   REDUCED MOTION
+============================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-form *,
+  .success-message *,
+  .text-button {
+    transition: none !important;
+    animation: none !important;
   }
 }

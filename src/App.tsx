@@ -5,6 +5,7 @@ import { ContactPage } from "./pages/ContactPage";
 import { HomePage } from "./pages/HomePage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { PortfolioPage } from "./pages/PortfolioPage";
+import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { ServicesPage } from "./pages/ServicesPage";
 import { ServicesDetailsPage } from "./pages/ServicesDetailsPage";
 import { schedulePortfolioImagePreload } from "./utils/preloadPortfolioImages";
@@ -24,6 +25,7 @@ function App() {
           <Route path="/tjanster-detaljer" element={<ServicesDetailsPage />}/>
           <Route path="portfolio" element={<PortfolioPage />} />
           <Route path="kontakt" element={<ContactPage />} />
+          <Route path="integritetspolicy" element={<PrivacyPolicyPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

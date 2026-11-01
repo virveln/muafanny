@@ -1,20 +1,26 @@
 
 .availability-calendar {
-    margin-top: 1rem;
-    max-width: 340px;
+  margin-top: 1rem;
+  /* max-width: 340px; */
+  padding: 12px;
+  border: 1px solid var(--site-line);
+  border-radius: var(--border-radius);
+  width: fit-content;
 }
 
-/* Unavailable dates */
+.availability-calendar .mantine-calendar {
+  width: 100%;
+}
+
 .availability-calendar .availability-unavailable {
-  color: var(--site-primary);
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--site-accent) 25%, var(--site-background) 75%);
+  text-decoration-color: var(--site-primary);
 }
 
-.availability-calendar .availability-unavailable
-.rdp-day_button {
-    background-color: var(--site-accent);
-    color: var(--site-paper);
-    text-decoration: line-through;
-    text-decoration-color: var(--site-primary);
+.availability-calendar .availability-unavailable[data-disabled] {
+  /* color: var(--site-paper); */
+  opacity: 0.8;
 }
 
 /* Legend */
@@ -32,13 +38,12 @@
   height: 9px;
   flex-shrink: 0;
   border-radius: 50%;
-  background: var(--site-accent);
+  background-color: color-mix(in srgb, var(--site-accent) 35%, var(--site-background) 65%);
   opacity: 0.8;
 }
 
-/* Prevent date interaction */
-.availability-calendar .rdp-day {
-  pointer-events: none;
+.availability-calendar .mantine-calendar__day {
+  cursor: default;
 }
 
 @media (max-width: 760px) {

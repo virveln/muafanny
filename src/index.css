@@ -10,6 +10,7 @@
   --site-width-wide: 1320px;
   --site-width-narrow: 860px;
   --site-gutter: clamp(20px, 5vw, 76px);
+  --border-radius: 3px;
 
   --site-background: #faf6f1;
   --site-foreground: #2a1e1a;
@@ -22,10 +23,14 @@
   --site-line: #ddd6d0;
   --site-paper: #f8f6f2;
   --site-paper: #fffefa;
+  --site-error: var(--site-accent);
+  --site-placeholder: #99918b;
 
   --ring: var(--site-accent);
   --border: #dfd5ce;
   --muted-foreground: #6e605a;
+  
+  /*error om accent byts ut ##b45353*/
 }
 
 * {
@@ -106,7 +111,7 @@ button {
   padding: 0 20px;
 
   border: 1px solid var(--site-primary);
-  border-radius: 3px;
+  border-radius: var(--border-radius);
 
   background: var(--site-primary);
   color: var(--site-primary-foreground);

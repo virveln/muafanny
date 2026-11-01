@@ -7,7 +7,7 @@ export const services = [
   {
     number: "02",
     title: "Event",
-    text: "Makeup och hår för fest, fotografering och andra tillfällen när du vill känna dig extra fin.",
+    text: "Makeup och/eller hår för fest, fotografering och andra tillfällen när du vill känna dig extra fin.",
   },
   {
     number: "03",
