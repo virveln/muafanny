@@ -4,16 +4,20 @@ import "./LazyPortfolioImage.css";
 type LazyPortfolioImageProps = {
   src: string;
   alt: string;
+  width?: number;
+  height?: number;
   loadImmediately?: boolean;
 };
 
 export function LazyPortfolioImage({
   src,
   alt,
+  width,
+  height,
   loadImmediately = false,
 }: LazyPortfolioImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(false);
+  const [shouldLoad, setShouldLoad] = useState(loadImmediately);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
 
@@ -54,6 +58,7 @@ export function LazyPortfolioImage({
       className={`portfolio-image-container ${
         loaded ? "is-loaded" : ""
       } ${loadImmediately}`}
+      style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
       {shouldLoad && !loaded && !error && (
         <div className="portfolio-image-loader">
@@ -65,7 +70,10 @@ export function LazyPortfolioImage({
         <img
           src={src}
           alt={alt}
+          width={width}
+          height={height}
           loading="eager"
+            fetchPriority={loadImmediately ? "high" : "auto"}
           decoding="async"
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}

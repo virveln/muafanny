@@ -7,8 +7,11 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { PortfolioPage } from "./pages/PortfolioPage";
 import { ServicesPage } from "./pages/ServicesPage";
 import { ServicesDetailsPage } from "./pages/ServicesDetailsPage";
+import { schedulePortfolioImagePreload } from "./utils/preloadPortfolioImages";
 
 import "./App.css";
+
+schedulePortfolioImagePreload();
 
 function App() {
   return (

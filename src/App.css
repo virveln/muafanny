@@ -69,6 +69,87 @@
   line-height: 1.8; 
 }
 
+/* Calendar */
+.rdp-root {
+  --rdp-accent-color: var(--site-accent);
+  --rdp-accent-background-color: transparent;
+  --rdp-day-height: 40px;
+  --rdp-day-width: 40px;
+  --rdp-day_button-height: 36px;
+  --rdp-day_button-width: 36px;
+
+  width: 100%;
+  margin: 0;
+  color: var(--site-primary);
+  font-family: inherit;
+}
+
+.rdp-month {
+  width: 100%;
+}
+
+.rdp-month_caption {
+  min-height: 40px;
+  margin-bottom: 12px;
+  color: var(--site-primary);
+  /* font-family: var(--font-display); */
+  font-size: 1.05rem;
+  font-weight: 500;
+}
+
+.rdp-nav {
+  inset-block: 0;
+}
+
+.rdp-button_previous,
+.rdp-button_next {
+  color: var(--site-muted);
+  border: none;
+  background: transparent;
+}
+
+.rdp-button_previous:hover,
+.rdp-button_next:hover {
+  color: var(--site-accent);
+  background: transparent;
+}
+
+.rdp-weekday {
+  color: var(--site-muted);
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.rdp-day {
+  font-size: 0.82rem;
+}
+
+.rdp-day_button {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  font: inherit;
+  color: var(--site-primary);
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.rdp-day_button:hover:not(:disabled) {
+  background-color: var(--site-line);
+}
+
+/* Past dates */
+.rdp-disabled:not(.availability-unavailable) {
+  color: var(--site-muted);
+  opacity: 0.3;
+}
+
+
+
+
 @media (prefers-reduced-motion: no-preference) {
   .animation-fade-up, .page-heading { 
     animation: fade-up 700ms cubic-bezier(0.22, 1, 0.36, 1) both; 

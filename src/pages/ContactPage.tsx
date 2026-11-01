@@ -1,29 +1,12 @@
 
-import { Mail, MapPin } from "lucide-react";
-import { ContactForm } from "../components/contactform/ContactForm";
+import { Mail, MapPin, CalendarDays } from "lucide-react";
+import { ContactForm } from "../components/contact/ContactForm";
 import { Eyebrow } from "../components/Eyebrow";
-
+import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
+import { contactDetails } from "../data/contactDetails"
 import "./ContactPage.css";
 
-const contactDetails = [
-  {
-    icon: Mail,
-    label: "E-post",
-    value: "info@muafanny.se",
-    href: "mailto:info@muafanny.se",
-  },
-  {
-    icon: Mail,
-    label: "Instagram",
-    value: "@fannyehrnholm",
-    href: "https://www.instagram.com/",
-  },
-  {
-    icon: MapPin,
-    label: "Utgår från",
-    value: "Stockholm, Sverige",
-  },
-];
+
 
 export function ContactPage() {
   return (
@@ -33,7 +16,7 @@ export function ContactPage() {
         <h1>Låt oss höras.</h1>
         <p>
           Berätta om ditt datum, tillfälle och vilken stil du har
-          i åtanke. Jag svarar vanligtvis inom 24 timmar.
+          i åtanke. Jag svarar vanligtvis inom 48 timmar.
         </p>
       </section>
 
@@ -68,6 +51,18 @@ export function ContactPage() {
               );
             })}
           </div>
+          <section className="availability-calendar-container">
+            <div className="contact-detail">
+              <div className="contact-detail-icon">
+                <CalendarDays size={19} strokeWidth={1.5} aria-hidden="true"/>
+              </div>
+              <div className="contact-detail-text">
+                <p className="contact-detail-label">Tillgänglighet</p>
+                <p className="contact-detail-value">Lediga datum</p>
+              </div>
+            </div>
+            <AvailabilityCalendar />
+          </section>
 
           <div className="contact-note">
             <span className="contact-note-line" />

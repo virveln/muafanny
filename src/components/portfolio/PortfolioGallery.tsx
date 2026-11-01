@@ -4,87 +4,27 @@ import type { MouseEvent } from "react";
 import { X, ArrowLeft, ArrowRight, Play } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
 import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
+import { CategorySwitch } from "../CategorySwitch";
+
+import {
+  eventMedia,
+  tvMedia,
+  type PortfolioMedia,
+} from "../../data/portfolioMedia";
 import "./PortfolioGallery.css";
-
-type PortfolioCategory = "event" | "tv";
-
-type PortfolioMedia = {
-  src: string;
-  filename: string;
-  type: "image" | "video";
-};
-
-// Load images from both folders
-const eventImageModules = import.meta.glob(
-  "/src/assets/portfolio/event/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  },
-) as Record<string, string>;
-
-const tvImageModules = import.meta.glob(
-  "/src/assets/portfolio/tv/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  },
-) as Record<string, string>;
-
-// Load videos from both folders
-const eventVideoModules = import.meta.glob(
-  "/src/assets/portfolio/event/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  },
-) as Record<string, string>;
-
-const tvVideoModules = import.meta.glob(
-  "/src/assets/portfolio/tv/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
-  {
-    eager: true,
-    query: "?url",
-    import: "default",
-  },
-) as Record<string, string>;
-
-// Create the media arrays
-function createMedia(
-  images: Record<string, string>,
-  videos: Record<string, string>,
-): PortfolioMedia[] {
-  return [
-    ...Object.entries(images).map(([path, src]) => ({
-      src,
-      filename: path.split("/").pop() ?? path,
-      type: "image" as const,
-    })),
-
-    ...Object.entries(videos).map(([path, src]) => ({
-      src,
-      filename: path.split("/").pop() ?? path,
-      type: "video" as const,
-    })),
-  ].sort((a, b) =>
-    a.filename.localeCompare(b.filename, undefined, {
-      numeric: true,
-      sensitivity: "base",
-    }),
-  );
-}
-
-const eventMedia = createMedia(eventImageModules, eventVideoModules);
-const tvMedia = createMedia(tvImageModules, tvVideoModules);
 
 if (import.meta.env.DEV) {
   console.info(
     `[PortfolioGallery] Event: ${eventMedia.length} items, TV: ${tvMedia.length} items.`,
   );
 }
+
+type PortfolioCategory = "event" | "tv";
+
+const portfolioCategories = [
+  { value: "event", label: "Bröllop/Event" },
+  { value: "tv", label: "TV-produktion" },
+] as const;
 
 
 export function PortfolioGallery() {
@@ -98,18 +38,6 @@ export function PortfolioGallery() {
 
   const media = category === "event" ? eventMedia : tvMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
-
-    // PRELOAD THE FIRST 4 TV IMAGES
-  useEffect(() => {
-    const imagesToPreload = tvMedia
-      .filter((item) => item.type === "image")
-      .slice(0, 4);
-
-    imagesToPreload.forEach((item) => {
-      const img = new Image();
-      img.src = item.src;
-    });
-  }, []);
 
   function changeCategory(nextCategory: PortfolioCategory) {
     setCategory(nextCategory);
@@ -182,12 +110,19 @@ export function PortfolioGallery() {
       document.removeEventListener("keydown", handleKeyDown);
       document.body.style.overflow = previousOverflow;
     };
-  }, [activeIndex]);
+  }, [activeIndex, media.length]);
 
   function renderGallery(
     galleryMedia: PortfolioMedia[],
     isVisible: boolean,
   ) {
+    const priorityImages = new Set(
+      galleryMedia
+        .filter((item) => item.type === "image")
+        .slice(0, 3)
+        .map((item) => item.src),
+    );
+
     return (
       <div
         className="portfolio-gallery-panel"
@@ -219,15 +154,18 @@ export function PortfolioGallery() {
                   <LazyPortfolioImage
                     src={item.src}
                     alt={item.filename}
-                    loadImmediately={!isVisible}
+                    width={item.width}
+                    height={item.height}
+                    loadImmediately={isVisible && priorityImages.has(item.src)}
                   />
                 ) : (
                   <LazyPortfolioVideo
                     src={item.src}
                     filename={item.filename}
+                    width={item.width}
+                    height={item.height}
                     isVisible={isVisible}
                     userPlaying={userPlayingVideos.has(item.src)}
-                    loadImmediately={!isVisible}
                   />
                 )}
 
@@ -262,37 +200,12 @@ export function PortfolioGallery() {
 
   return (
     <>
-      <div
-        className="portfolio-category-switch"
-        role="group"
-        aria-label="Välj portfoliokategori"
-      >
-        <button
-          type="button"
-          className={
-            category === "event"
-              ? "portfolio-category-switch__button is-active"
-              : "portfolio-category-switch__button"
-          }
-          onClick={() => changeCategory("event")}
-          aria-pressed={category === "event"}
-        >
-          Event
-        </button>
-
-        <button
-          type="button"
-          className={
-            category === "tv"
-              ? "portfolio-category-switch__button is-active"
-              : "portfolio-category-switch__button"
-          }
-          onClick={() => changeCategory("tv")}
-          aria-pressed={category === "tv"}
-        >
-          TV-produktion
-        </button>
-      </div>
+      <CategorySwitch
+        categories={portfolioCategories}
+        value={category}
+        onChange={setCategory}
+        ariaLabel="Välj portfoliokategori"
+      />
 
       {renderGallery(eventMedia, category === "event")}
       {renderGallery(tvMedia, category === "tv")}
@@ -355,8 +268,7 @@ export function PortfolioGallery() {
                 playsInline
                 controls
                 loop
-                autoPlay
-                preload="metadata"
+                preload="none"
                 onVolumeChange={(event) => {
                   const video = event.currentTarget;
 

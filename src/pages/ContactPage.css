@@ -100,6 +100,12 @@
   line-height: 1.8;
 }
 
+.availability-calendar-container {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--site-line);
+}
+
 /* Right column: form panel */
 
 .contact-form-panel {

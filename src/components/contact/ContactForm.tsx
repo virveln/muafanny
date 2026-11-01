@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { Send, CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { DayPicker } from "react-day-picker";
+import { sv } from "date-fns/locale";
 import "react-day-picker/style.css";
 import "./ContactForm.css";
 
@@ -137,7 +138,7 @@ export function ContactForm() {
                   setSelected(date);
                   if (date) setCalendarOpen(false);
                 }}
-                locale={undefined}
+                locale={sv}
                 disabled={{ before: new Date(new Date().setHours(0, 0, 0, 0)) }}
                 showOutsideDays
                 autoFocus

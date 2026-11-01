@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/Eyebrow";
@@ -9,6 +10,8 @@ import "./HomePage.css";
 import HeroFanny from "../assets/fanny1.jpg";
 
 export function HomePage() {
+  const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+
   return (
     <main>
       <section className="home-hero site-container site-container--wide">
@@ -19,7 +22,17 @@ export function HomePage() {
           <Link className="text-link" to="/portfolio">Upptäck mitt arbete <ArrowRight size={17} aria-hidden="true" /></Link>
         </div>
         <div className="hero-image-container animation-fade-up-delay animation-fade-up">
-          <img className="hero-image" src={HeroFanny} alt="Porträtt med mjuk, naturlig makeup" />
+          <img
+            className={`hero-image${heroImageLoaded ? " is-loaded" : ""}`}
+            src={HeroFanny}
+            // src="/herofanny.JPG"
+            alt="Porträtt med mjuk, naturlig makeup"
+            loading="eager"
+            fetchPriority="high"
+            decoding="async"
+            onLoad={() => setHeroImageLoaded(true)}
+            onError={() => setHeroImageLoaded(true)}
+          />
           {/* <span className="image-caption">Naturligt uttryck, med omtanke.</span> */}
         </div>
       </section>

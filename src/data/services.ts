@@ -11,7 +11,7 @@ export const services = [
   },
   {
     number: "03",
-    title: "Editorial",
+    title: "TV-produktion",
     text: "Kreativt makeup- och hårarbete för produktion, kampanj och porträtt. Anpassat efter teamets vision.",
   },
 ];

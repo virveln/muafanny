@@ -255,9 +255,7 @@
 
 /* Keep the calendar within the form on small screens. */
 .contact-form__calendar .rdp-root {
-  --rdp-accent-color: var(--site-accent);
   --rdp-accent-background-color: #f5e9e4;
-  margin: 0;
 }
 
 /* Mobile */

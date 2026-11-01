@@ -1,0 +1,49 @@
+
+.availability-calendar {
+    margin-top: 1rem;
+    max-width: 340px;
+}
+
+/* Unavailable dates */
+.availability-calendar .availability-unavailable {
+  color: var(--site-primary);
+}
+
+.availability-calendar .availability-unavailable
+.rdp-day_button {
+    background-color: var(--site-accent);
+    color: var(--site-paper);
+    text-decoration: line-through;
+    text-decoration-color: var(--site-primary);
+}
+
+/* Legend */
+.availability-calendar-legend {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  color: var(--site-muted);
+  font-size: 0.75rem;
+}
+
+.availability-calendar-legend-dot {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--site-accent);
+  opacity: 0.8;
+}
+
+/* Prevent date interaction */
+.availability-calendar .rdp-day {
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .availability-calendar {
+    margin-top: 36px;
+    padding-top: 28px;
+  }
+}

@@ -2,26 +2,21 @@
 .portfolio-image-container {
   position: relative;
   width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* background: var(--site-line); */
 }
 
-/* Image starts slightly below its final position */
 .portfolio-image-container img {
   display: block;
   width: 100%;
   height: auto;
   opacity: 0;
-  transform: translateY(22px);
-  transition:
-    opacity 650ms ease,
-    transform 650ms ease;
+  transition: opacity 850ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Reveal when image has loaded */
 .portfolio-image-container.is-loaded img {
   opacity: 1;
-  transform: translateY(0);
 }
 
 /* Loading indicator */
@@ -59,7 +54,6 @@
 @media (prefers-reduced-motion: reduce) {
   .portfolio-image-container img {
     transition: none;
-    transform: none;
   }
 
   .portfolio-spinner {

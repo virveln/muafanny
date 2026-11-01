@@ -17,7 +17,13 @@ export function AboutPage() {
             <p>Makeupartist med kärlek till detaljer, människor och personliga uttryck.</p>
         </section>
         <section className="about-layout">
-            <img src={ImgFanny} alt="Porträtt av Fanny" />
+            <img
+                src={ImgFanny}
+                alt="Porträtt av Fanny"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+            />
             <div>
             <h2>Du ska fortfarande känna igen dig.</h2>
             <p>För mig börjar en fin makeup med ett samtal. Jag vill förstå vad du tycker om, hur du vill känna dig och vad dagen betyder för dig.</p>

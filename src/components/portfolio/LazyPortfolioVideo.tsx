@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 type LazyPortfolioVideoProps = {
   src: string;
   filename: string;
+  width?: number;
+  height?: number;
   isVisible: boolean;
   userPlaying: boolean;
   loadImmediately?: boolean;
@@ -12,6 +14,8 @@ type LazyPortfolioVideoProps = {
 export function LazyPortfolioVideo({
   src,
   filename,
+  width,
+  height,
   isVisible,
   userPlaying,
   loadImmediately = false,
@@ -68,8 +72,9 @@ export function LazyPortfolioVideo({
       className={`portfolio-video-container ${
         loaded ? "is-loaded" : ""
       }`}
+      style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
-      {!loaded && !error && (
+      {shouldLoad && !loaded && !error && (
         <div className="portfolio-image-loader">
           <span className="portfolio-spinner" />
         </div>
@@ -79,12 +84,14 @@ export function LazyPortfolioVideo({
         <video
           ref={videoRef}
           src={src}
+          width={width}
+          height={height}
           muted
           playsInline
           loop
           preload="metadata"
           aria-label={`Portfolio video: ${filename}`}
-          onLoadedMetadata={() => setLoaded(true)}
+          onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}
         />
       )}
