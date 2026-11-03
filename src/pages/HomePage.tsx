@@ -25,7 +25,6 @@ export function HomePage() {
           <img
             className={`hero-image${heroImageLoaded ? " is-loaded" : ""}`}
             src={HeroFanny}
-            // src="/herofanny.JPG"
             alt="Porträtt med mjuk, naturlig makeup"
             loading="eager"
             fetchPriority="high"
