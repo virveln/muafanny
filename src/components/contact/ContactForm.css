@@ -207,9 +207,18 @@
   background: #fefbf8;
 }
 
-.contact-form .contact-form__date-input:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 2px;
+.contact-form .contact-form__date-input:active {
+  transform: none;
+  box-shadow: 0 0 0 3px rgb(167 83 61 / 10%);
+}
+
+.contact-form .contact-form__date-input:focus,
+.contact-form .contact-form__date-input:focus-visible,
+.contact-form .contact-form__date-input[data-expanded] {
+  border-color: var(--site-accent);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgb(167 83 61 / 10%);
+  outline: none;
 }
 
 .contact-form .contact-form__date-input:disabled {
@@ -220,6 +229,13 @@
 .contact-form .contact-form__date-input svg {
   flex-shrink: 0;
   color: var(--site-placeholder);
+}
+
+.contact-form__date-field.has-error .contact-form__date-input:focus,
+.contact-form__date-field.has-error .contact-form__date-input:focus-visible,
+.contact-form__date-field.has-error .contact-form__date-input[data-expanded] {
+  border-color: var(--site-error);
+  box-shadow: 0 0 0 3px rgb(180 83 83 / 10%);
 }
 
 /* Placera text och ikon på varsin sida */
@@ -477,6 +493,8 @@
   outline: 2px solid var(--site-accent);
   outline-offset: 3px;
 }
+
+
 
 
 /* ==============================

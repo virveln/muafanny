@@ -1,4 +1,3 @@
-
 import {
   format,
   parseISO,
@@ -15,6 +14,10 @@ export function formatSelectedDates(dates: string[]) {
   const sortedDates = [...dates]
     .sort()
     .map((date) => parseISO(date));
+
+  const allSameYear = sortedDates.every((date) =>
+    isSameYear(date, sortedDates[0])
+  );
 
   const ranges: Date[][] = [];
   let currentRange = [sortedDates[0]];
@@ -33,36 +36,36 @@ export function formatSelectedDates(dates: string[]) {
 
   ranges.push(currentRange);
 
-  return ranges
-    .map((range) => {
-      const first = range[0];
-      const last = range[range.length - 1];
+  const formattedRanges = ranges.map((range) => {
+    const first = range[0];
+    const last = range[range.length - 1];
 
-      if (range.length === 1) {
-        return format(first, "d MMMM yyyy", { locale: sv });
-      }
-
-      if (isSameMonth(first, last) && isSameYear(first, last)) {
-        return `${format(first, "d", { locale: sv })}–${format(
-          last,
-          "d MMMM yyyy",
-          { locale: sv }
-        )}`;
-      }
-
-      if (isSameYear(first, last)) {
-        return `${format(first, "d MMMM", { locale: sv })}–${format(
-          last,
-          "d MMMM yyyy",
-          { locale: sv }
-        )}`;
-      }
-
-      return `${format(first, "d MMMM yyyy", {
+    if (range.length === 1) {
+      return format(first, allSameYear ? "d MMM" : "d MMM yyyy", {
         locale: sv,
-      })}–${format(last, "d MMMM yyyy", {
-        locale: sv,
-      })}`;
-    })
-    .join(", ");
+      });
+    }
+
+    if (isSameMonth(first, last)) {
+      return `${format(first, "d", { locale: sv })}–${format(
+        last,
+        allSameYear ? "d MMM" : "d MMM yyyy",
+        { locale: sv }
+      )}`;
+    }
+
+    return `${format(
+      first,
+      allSameYear ? "d MMM" : "d MMM yyyy",
+      { locale: sv }
+    )}–${format(last, allSameYear ? "d MMM" : "d MMM yyyy", {
+      locale: sv,
+    })}`;
+  });
+
+  const result = formattedRanges.join(", ").replace(/\./g, "");
+
+  return allSameYear
+    ? `${result} ${format(sortedDates[0], "yyyy")}`
+    : result;
 }

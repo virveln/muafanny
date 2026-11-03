@@ -3,6 +3,9 @@
   margin-top: 1rem;
   /* max-width: 340px; */
   padding: 12px;
+  background-color: var(--site-paper);
+  background-color: color-mix(in srgb, var(--site-paper) 45%, var(--site-background) 55%);
+
   border: 1px solid var(--site-line);
   border-radius: var(--border-radius);
   width: fit-content;
@@ -48,7 +51,8 @@
 
 @media (max-width: 760px) {
   .availability-calendar {
-    margin-top: 36px;
+    width: fit-content;
+    margin: 36px auto 0;
     padding-top: 28px;
   }
 }
