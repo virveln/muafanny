@@ -39,13 +39,6 @@ export function PortfolioGallery() {
   const media = category === "event" ? eventMedia : tvMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
 
-  function changeCategory(nextCategory: PortfolioCategory) {
-    setCategory(nextCategory);
-    setActiveIndex(null);
-    setIsZoomed(false);
-    setUserPlayingVideos(new Set());
-  }
-
   function showPrevious() {
     setActiveIndex((current) =>
       current === null

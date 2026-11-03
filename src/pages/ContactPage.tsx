@@ -1,5 +1,5 @@
 
-import { Mail, MapPin, CalendarDays } from "lucide-react";
+import { CalendarDays } from "lucide-react";
 import { ContactForm } from "../components/contact/ContactForm";
 import { Eyebrow } from "../components/Eyebrow";
 import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
