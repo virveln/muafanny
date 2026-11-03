@@ -19,22 +19,9 @@
   font-size: 1rem; 
   line-height: 1.8; 
 }
-.text-link { 
-  display: inline-flex; 
-  min-height: 38px; 
-  align-items: center; 
-  gap: 12px; 
-  color: var(--site-primary); 
-  font-size: 0.86rem; 
-  font-weight: 500; 
-  text-decoration: none; 
-}
 .text-link svg, .footer-contact svg { 
   color: var(--site-accent); 
   transition: transform 180ms ease; 
-}
-.text-link:hover svg, .footer-contact:hover svg { 
-  transform: translateX(4px); 
 }
 .hero-image-container { 
   position: relative; 

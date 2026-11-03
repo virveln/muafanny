@@ -1,4 +1,4 @@
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, LockKeyhole } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/Eyebrow";
 import { services } from "../data/services";
@@ -25,12 +25,21 @@ export function ServicesPage() {
                     </Link>
                 </article>
                 ))}
+                
             </section>
-            <div className="services-cta">
+            <div className="services-tell-more">
                 <p>Har du något annat i tankarna eller vill ha kostnadsförslag?</p>
                 <Link className="text-link" to="/kontakt">Kontakta mig och berätta mer <ArrowRight size={17} aria-hidden="true" /></Link>
             </div>
+            <div className="service-details-link">
+                <Link className="text-link" to="/tjanster-detaljer">
+                    <LockKeyhole size={13} aria-hidden="true" />
+                    Detaljerad information
+                    <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+            </div>
         </div>
+        
         <CTASection
                 title="Redo att boka?"
                 description="Berätta om ditt datum och dina önskemål - jag svarar vanligtvis inom 24 timmar."
