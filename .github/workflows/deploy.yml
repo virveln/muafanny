@@ -38,6 +38,7 @@ jobs:
 
       - name: Build
         run: npm run build
+        env: VITE_SERVICES_DETAILS_PASSWORD: ${{ secrets.VITE_SERVICES_DETAILS_PASSWORD }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

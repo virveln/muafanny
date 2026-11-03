@@ -21,7 +21,7 @@ export function ServicesDetailsPage() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const correctPassword = import.meta.env.VITE_SERVICE_PAGE_PASSWORD;
+    const correctPassword = import.meta.env.VITE_SERVICES_DETAILS_PASSWORD;
 
     if (!correctPassword) {
       setError("Lösenordet är inte konfigurerat.");
