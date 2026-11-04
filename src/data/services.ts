@@ -7,11 +7,11 @@ export const services = [
   {
     number: "02",
     title: "Event",
-    text: "Makeup och/eller hår för fest, fotografering och andra tillfällen när du vill känna dig extra fin.",
+    text: "Makeup och/eller hår för fest, fotografering och andra event där du själv, dina gäster eller besökare vill få en extra fin och omhändertagande upplevelse.",
   },
   {
     number: "03",
-    title: "TV-produktion",
+    title: "Produktion",
     text: "Kreativt makeup- och hårarbete för produktion, kampanj och porträtt. Anpassat efter teamets vision.",
   },
 ];

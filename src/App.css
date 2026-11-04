@@ -39,11 +39,13 @@
 
 .page-main { 
   min-height: 62vh; 
-  padding-block: clamp(72px, 10vw, 130px) clamp(90px, 12vw, 155px); 
+  padding-block: clamp(72px, 10vw, 80px) clamp(90px, 12vw, 155px); 
 }
+/*PAGE HEADING*/
 .page-heading { 
   max-width: 700px; 
-  margin-bottom: 58px; 
+  margin: 0 auto 58px;
+  text-align: center;
 }
 .page-heading--wide { 
   max-width: 800px; 
@@ -52,7 +54,7 @@
 .page-heading h1 { 
   margin: 0; 
   color: var(--site-primary); 
-  font-size: clamp(3rem, 4.5vw, 5rem); 
+  font-size: clamp(3rem, 4.5vw, 4.5rem); 
   font-weight: 400; 
   line-height: 0.98; 
 }
@@ -61,12 +63,20 @@
   font-weight: 400; 
 }
 
+.page-heading h2 {
+    font-size: clamp(1rem, 2.5vw, 3rem);
+}
+
 .page-heading > p:not(.eyebrow) { 
-  max-width: 540px; 
   margin: 22px 0 0; 
   color: var(--site-muted); 
   font-size: 1rem; 
   line-height: 1.8; 
+}
+
+.section-top {
+  padding-top: 80px;
+  border-top: 1px solid var(--border);
 }
 
 /*Link arrows*/

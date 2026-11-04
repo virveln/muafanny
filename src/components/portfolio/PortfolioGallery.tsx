@@ -8,22 +8,23 @@ import { CategorySwitch } from "../CategorySwitch";
 
 import {
   eventMedia,
-  tvMedia,
+  productionMedia,
   type PortfolioMedia,
 } from "../../data/portfolioMedia";
+
 import "./PortfolioGallery.css";
 
 if (import.meta.env.DEV) {
   console.info(
-    `[PortfolioGallery] Event: ${eventMedia.length} items, TV: ${tvMedia.length} items.`,
+    `[PortfolioGallery] Event: ${eventMedia.length} items, Produktion: ${productionMedia.length} items.`,
   );
 }
 
-type PortfolioCategory = "event" | "tv";
+type PortfolioCategory = "event" | "production";
 
 const portfolioCategories = [
   { value: "event", label: "Bröllop/Event" },
-  { value: "tv", label: "TV-produktion" },
+  { value: "production", label: "Produktion" },
 ] as const;
 
 
@@ -36,7 +37,7 @@ export function PortfolioGallery() {
     () => new Set(),
   );
 
-  const media = category === "event" ? eventMedia : tvMedia;
+  const media = category === "event" ? eventMedia : productionMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
 
   function showPrevious() {
@@ -201,7 +202,7 @@ export function PortfolioGallery() {
       />
 
       {renderGallery(eventMedia, category === "event")}
-      {renderGallery(tvMedia, category === "tv")}
+      {renderGallery(productionMedia, category === "production")}
 
       {activeMedia && activeIndex !== null && (
         <div

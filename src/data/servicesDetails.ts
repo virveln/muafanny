@@ -39,7 +39,7 @@ export const servicesPageContent = {
     trialDescription:
       "Under provtillfället testar vi make-up och hår tillsammans så att du kan känna dig trygg inför din bröllopsdag. Provet görs förslagsvis hos mig på Kungsholmen en vardag, cirka 1–2 månader innan bröllopet, om inget annat datum bestäms.",
 
-    price: "Pris enligt överenskommelse",
+    price: "8000:-",
 
     ctaText: "Skicka en förfrågan",
     ctaHref: "/kontakt",
@@ -49,9 +49,9 @@ export const servicesPageContent = {
     {
       number: "02",
       eyebrow: "För brudfölje & tärnor",
-      title: "Tärnpaket",
+      title: "Tärnor paket",
       description: "Ett harmoniskt skönhetsupplägg för brudföljet, med make-up och hår som kompletterar brudens stil och bröllopets helhet.",
-      price: "Från 1500 kr/person för make-up och hårstyling",
+      price: "3000:-",
       details: ["Personligt anpassad make-up för varje tärna", "Håruppsättning eller hårstyling enligt överenskommelse", "Anpassning efter önskad stil, klädsel och bröllopets tema", "Samordning av looken med brudens styling."],
     },
     {

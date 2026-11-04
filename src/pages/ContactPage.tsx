@@ -1,8 +1,8 @@
 
-import { CalendarDays } from "lucide-react";
+// import { CalendarDays } from "lucide-react";
 import { ContactForm } from "../components/contact/ContactForm";
 import { Eyebrow } from "../components/Eyebrow";
-import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
+// import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
 import { contactDetails } from "../data/contactDetails"
 import "./ContactPage.css";
 
@@ -51,7 +51,7 @@ export function ContactPage() {
               );
             })}
           </div>
-          <section className="availability-calendar-container">
+          {/* <section className="availability-calendar-container">
             <div className="contact-detail">
               <div className="contact-detail-icon">
                 <CalendarDays size={19} strokeWidth={1.5} aria-hidden="true"/>
@@ -62,7 +62,7 @@ export function ContactPage() {
               </div>
             </div>
             <AvailabilityCalendar />
-          </section>
+          </section> */}
 
           <div className="contact-note">
             <span className="contact-note-line" />

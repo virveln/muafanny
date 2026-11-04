@@ -9,6 +9,8 @@ import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { ServicesPage } from "./pages/ServicesPage";
 import { ServicesDetailsPage } from "./pages/ServicesDetailsPage";
 import { schedulePortfolioImagePreload } from "./utils/preloadPortfolioImages";
+import { ScrollToHash } from "./components/features/ScrollToHash";
+
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
@@ -26,6 +28,7 @@ function App() {
         zIndex={1000}
       />
       <BrowserRouter>
+        <ScrollToHash />
         <Routes>
           <Route element={<SiteLayout />}>
             <Route index element={<HomePage />} />

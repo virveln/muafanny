@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Eyebrow } from "../Eyebrow";
 import "./PortfolioPreview.css";
 
-import image1 from "../../assets/portfolio/tv/allsangen.webp";
+import image1 from "../../assets/portfolio/production/allsangen.webp";
 import image2 from "../../assets/portfolio/event/tone.jpg";
 import image3 from "../../assets/portfolio/event/andrea.webp";
 

@@ -2,6 +2,7 @@ import { ArrowRight, LockKeyhole } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/Eyebrow";
 import { services } from "../data/services";
+import { BridalFAQ } from "../components/services/BridalFAQ";
 import CTASection from "../components/CTASection/CTASection";
 import "./ServicesPage.css";
 
@@ -39,6 +40,8 @@ export function ServicesPage() {
                 </Link>
             </div>
         </div>
+
+        <BridalFAQ />
         
         <CTASection
                 title="Redo att boka?"

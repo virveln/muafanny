@@ -1,4 +1,4 @@
-export type PortfolioCategory = "event" | "tv";
+export type PortfolioCategory = "event" | "production";
 
 export type PortfolioMedia = {
   src: string;
@@ -51,8 +51,8 @@ const eventImageModules = import.meta.glob(
   },
 ) as Record<string, string>;
 
-const tvImageModules = import.meta.glob(
-  "/src/assets/portfolio/tv/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
+const productionImageModules = import.meta.glob(
+  "/src/assets/portfolio/production/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
   {
     eager: true,
     query: "?url",
@@ -69,8 +69,8 @@ const eventVideoModules = import.meta.glob(
   },
 ) as Record<string, string>;
 
-const tvVideoModules = import.meta.glob(
-  "/src/assets/portfolio/tv/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
+const productionVideoModules = import.meta.glob(
+  "/src/assets/portfolio/production/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
   {
     eager: true,
     query: "?url",
@@ -114,10 +114,10 @@ function createMedia(
 }
 
 export const eventMedia = createMedia(eventImageModules, eventVideoModules);
-export const tvMedia = createMedia(tvImageModules, tvVideoModules);
+export const productionMedia = createMedia(productionImageModules, productionVideoModules);
 
 export const startupPortfolioImages = [
   eventMedia.find((item) => item.filename.toLowerCase() === "andrea.webp"),
-  tvMedia.find((item) => item.filename.toLowerCase() === "allsangen.webp"),
+  productionMedia.find((item) => item.filename.toLowerCase() === "allsangen.webp"),
   eventMedia.find((item) => item.filename.toLowerCase() === "img_4602.webp"),
 ].filter((item): item is PortfolioMedia => item?.type === "image");

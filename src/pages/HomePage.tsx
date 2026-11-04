@@ -13,7 +13,7 @@ export function HomePage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
   return (
-    <main>
+    <main id="home-page">
       <section className="home-hero site-container site-container--wide">
         <div className="hero-copy page-heading animation-fade-up">
           <Eyebrow>Makeup artist · Hår stylist · Stockholm & överallt</Eyebrow>
