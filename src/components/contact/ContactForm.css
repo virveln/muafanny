@@ -55,9 +55,6 @@
   min-height: 48px;
   padding: 0 13px;
 
-  border: 1px solid var(--site-line);
-  border-radius: var(--border-radius);
-
   outline: none;
   background: #fefbf8;
   color: var(--site-primary);
@@ -149,8 +146,6 @@
 }
 
 .contact-form .mantine-Select-dropdown {
-  border: 1px solid var(--site-line);
-  border-radius: var(--border-radius);
   box-shadow: 0 12px 32px rgb(0 0 0 / 8%);
 }
 
@@ -182,9 +177,6 @@
   padding: 0 13px;
   margin-top: 10px;
   margin-bottom: 5px;
-
-  border: 1px solid var(--site-line);
-  border-radius: var(--border-radius);
 
   background: #fefbf8;
   color: var(--site-primary);
@@ -258,11 +250,7 @@
 .contact-form .mantine-Popover-dropdown {
   max-width: calc(100vw - 32px);
   padding: 12px;
-
-  border: 1px solid var(--site-line);
-  border-radius: var(--border-radius);
   background: #fff;
-
   box-shadow: 0 12px 32px rgb(0 0 0 / 10%);
 }
 
@@ -369,13 +357,10 @@
 /* ==============================
    FORM STATUS
 ============================== */
-
 .contact-form .mantine-Alert-root {
-  border-radius: var(--border-radius);
   font-size: 0.85rem;
   line-height: 1.6;
 }
-
 
 /* ==============================
    SUCCESS STATE
@@ -444,7 +429,6 @@
 
   border: 1px solid var(--site-error);
   border-left: 3px solid var(--site-error);
-  border-radius: var(--border-radius);
 
   background: #fff9f8;
   color: var(--site-primary);

@@ -56,10 +56,6 @@
   color: var(--site-accent); 
 }
 
-#home-page .home-hero .text-link { 
-  margin-top: 14px; 
-}
-
 .intro-band { 
   background: var(--site-secondary); 
 }

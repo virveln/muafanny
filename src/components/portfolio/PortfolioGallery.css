@@ -292,11 +292,11 @@
 }
 
 @media (max-width: 560px) {
-  .portfolio-category-switch {
+  .category-switch {
     margin-bottom: 24px;
   }
 
-  .portfolio-category-switch__button {
+  .category-switch__button {
     min-height: 40px;
     padding: 0 19px;
     font-size: 0.78rem;
@@ -309,7 +309,7 @@
   .lightbox-image,
   .lightbox-close,
   .lightbox-arrow-icon,
-  .portfolio-category-switch__button {
+  .category-switch__button {
     transition: none;
   }
 }

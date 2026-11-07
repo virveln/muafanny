@@ -21,7 +21,7 @@ const values: Value[] = [
   },
   {
     title: "Framhäva, inte maskera",
-    text: "Mitt signum är en strålande, hudliknande makeup som gör dig vackrare och som fortfarande känns som du.",
+    text: "Mitt signum är en strålande, hudliknande make-up som gör dig vackrare och som fortfarande känns som du.",
     icon: Sparkles,
   },
   {

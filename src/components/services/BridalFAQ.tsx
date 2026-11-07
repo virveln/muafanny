@@ -7,7 +7,7 @@ import "./BridalFAQ.css";
 export function BridalFAQ() {
   return (
     <section
-      id="bridal-faq"
+      id="faq-brollop"
       className=" bridal-faq section-top "
       aria-labelledby="bridal-faq-title"
     >

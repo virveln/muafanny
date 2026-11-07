@@ -33,20 +33,28 @@
   /*error om accent byts ut ##b45353*/
 }
 
+.border-line,
+input,
+textarea,
+select {
+  border: 1px solid var(--site-line);
+  border-radius: var(--border-radius) !important;
+}
+
 * {
   box-sizing: border-box;
   border-color: var(--border);
 }
 
 html {
-  min-width: 320px;
+  min-width: min(320px, 100%);
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
 }
 
 body {
   margin: 0;
-  min-width: 320px;
+  min-width: min(320px, 100%);
   min-height: 100vh;
   background-color: var(--site-background, var(--background));
   color: var(--site-primary, var(--foreground));
@@ -60,6 +68,12 @@ body {
 
 #root {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root > main {
+  flex: 1;
 }
 
 h1,
@@ -112,7 +126,6 @@ button {
 
   border: 1px solid var(--site-primary);
   border-radius: var(--border-radius);
-
   background: var(--site-primary);
   color: var(--site-primary-foreground);
 

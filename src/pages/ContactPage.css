@@ -113,8 +113,6 @@
 .contact-form-panel {
   min-width: 0;
   padding: clamp(24px, 4vw, 40px);
-  border: 1px solid var(--site-line);
-  border-radius: var(--border-radius);
   background: var(--site-paper);
 }
 

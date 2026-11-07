@@ -9,11 +9,9 @@
   gap: 28px; 
   border-bottom: 1px solid var(--site-line); 
 }
-.service-item:not(:last-child) { 
-}
+
 .service-number { 
-  align-self: start; 
-  padding-top: 41px; 
+  align-self: center; 
   color: var(--site-accent); 
   font-size: 0.72rem; 
 }
@@ -62,10 +60,11 @@
   z-index: -1;
   top: 0;
   bottom: 0;
-  left: 50%;
-  width: 100vw;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
   background-color: var(--site-secondary);
+  box-shadow: 0 0 0 100vmax var(--site-secondary);
+  clip-path: inset(0 -100vmax);
 }
 
 .services-tell-more p { 
@@ -101,9 +100,7 @@
     gap: 12px; 
     padding-block: 22px; 
   }
-  .service-number { 
-    padding-top: 7px; 
-  }
+
   .service-item h2 { 
     font-size: 1.6rem; 
   }

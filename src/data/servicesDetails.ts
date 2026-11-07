@@ -1,4 +1,7 @@
+export type ServiceCategory = "wedding" | "event";
+
 export interface Service {
+  category: ServiceCategory;
   number: string;
   eyebrow: string;
   title: string;
@@ -16,7 +19,8 @@ export interface BookingTerm {
 export const servicesPageContent = {
   heading: {
     eyebrow: "Information inför bokning",
-    title: "Tjänster & villkor.",
+    title: "Tjänster &",
+    titleItalic: "villkor.",
     description:
       "Här hittar du mer information om mina tjänster, vad som ingår i brudpaketet och vad som gäller inför din bokning.",
   },
@@ -30,8 +34,8 @@ export const servicesPageContent = {
 
     includedHeading: "Det här ingår",
     included: [
-      "Make-up inför bröllopsdagen",
-      "Håruppsättning inför bröllopsdagen",
+      "Make-up enligt överenskommelse",
+      "Håruppsättning enligt överenskommelse",
       "Ett provtillfälle för make-up och hår",
     ],
 
@@ -45,36 +49,115 @@ export const servicesPageContent = {
     ctaHref: "/kontakt",
   },
 
-  otherServices: [
-    {
-      number: "02",
-      eyebrow: "För brudfölje & tärnor",
-      title: "Tärnor paket",
-      description: "Ett harmoniskt skönhetsupplägg för brudföljet, med make-up och hår som kompletterar brudens stil och bröllopets helhet.",
-      price: "3000:-",
-      details: ["Personligt anpassad make-up för varje tärna", "Håruppsättning eller hårstyling enligt överenskommelse", "Anpassning efter önskad stil, klädsel och bröllopets tema", "Samordning av looken med brudens styling"],
-    },
-    {
-      number: "03",
-      eyebrow: "För fest & event",
-      title: "Make-up",
-      description: "En make-up som framhäver dina naturliga drag och anpassas efter din personliga stil, dina önskemål och tillfället.",
-      price: "Pris lämnas på förfrågan",
-      details: ["Genomgång av önskemål och inspiration", "Anpassad bas, ögonmake-up och läppar", "Finish anpassad efter tillfället och önskat uttryck", "Möjlighet att välja mellan en naturlig, klassisk eller mer markerad look"],
-    },
-    {
-      number: "04",
-      eyebrow: "För fest & event",
-      title: "Håruppsättning",
-      description: "En personlig hårstyling med fokus på form, textur och detaljer — från mjuka vågor till eleganta uppsättningar.",
-      price: "Pris lämnas på förfrågan",
-      details: ["Genomgång av önskad frisyr och inspirationsbilder", "Styling enligt överenskommen frisyr", "Anpassning efter hårtyp, hårlängd och önskat resultat", "Finputsning för en hållbar och välbalanserad look"],
-    },
-  ] satisfies Service[],
+
+otherServices: [
+  {
+    category: "wedding",
+    number: "02",
+    eyebrow: "För bruden",
+    title: "Make-up brud",
+    description:
+      "En personlig brudmake-up som framhäver din naturliga skönhet och skapas utifrån din stil och dina önskemål.",
+    price: "5000:-",
+    details: [
+      "Personligt anpassad brudmake-up",
+      "Val av stil och finish enligt önskemål",
+      "Anpassning efter klädsel och bröllopets helhet",
+    ],
+  },
+  {
+    category: "wedding",
+    number: "03",
+    eyebrow: "För bruden",
+    title: "Hårstyling brud",
+    description:
+      "En exklusiv hårstyling för bröllopsdagen, skapad utifrån din personliga stil, önskade frisyr och bröllopets helhet.",
+    price: "3500:-",
+    details: [
+      "Håruppsättning enligt överenskommelse",
+      "Val av form och stil utifrån dina önskemål",
+      "Anpassning efter hårtyp, klädsel och bröllopets tema",
+    ],
+  },
+  {
+    category: "wedding",
+    number: "04",
+    eyebrow: "För brudfölje & tärnor",
+    title: "Tärnor paket",
+    description:
+      "Ett harmoniskt skönhetsupplägg för brudföljet, med make-up och hårstyling som kompletterar brudens stil och bröllopets helhet.",
+    price: "3000:-",
+    details: [
+      "Personligt anpassad make-up för varje tärna",
+      "Håruppsättning eller hårstyling enligt överenskommelse",
+      "Styling anpassad efter klädsel och bröllopets tema",
+    ],
+  },
+  {
+    category: "wedding",
+    number: "05",
+    eyebrow: "För brudfölje & gäster",
+    title: "Tärnor & gäster",
+    description:
+      "Make-up eller hårstyling för tärnor och bröllopsgäster, anpassad efter personliga önskemål och bröllopets stil.",
+    price: "2000:-",
+    details: [
+      "Valfri make-up eller hårstyling",
+      "Personlig konsultation kring önskad stil",
+      "Styling anpassad efter klädsel och tillfälle",
+    ],
+  },
+  {
+    category: "wedding",
+    number: "06",
+    eyebrow: "För brudgum & näbb",
+    title: "Brudgum & näbb",
+    description:
+      "En personlig och stilren styling med fokus på ett välvårdat, naturligt resultat inför bröllopsdagen.",
+    price: "Från 500:-",
+    details: [
+      "Enklare styling anpassad efter önskemål",
+      "Fokus på ett naturligt och välvårdat resultat",
+      "Anpassning efter person och bröllopets tema",
+    ],
+  },
+  {
+    category: "event",
+    number: "01",
+    eyebrow: "För fest & event",
+    title: "Make-up",
+    description:
+      "En make-up som framhäver dina naturliga drag och anpassas efter din personliga stil, dina önskemål och tillfället.",
+    price: "Pris lämnas på förfrågan",
+    details: [
+      "Genomgång av önskemål och inspiration",
+      "Anpassad bas, ögonmake-up och läppar",
+      "Finish utifrån önskat uttryck och tillfälle",
+      "Naturlig, klassisk eller mer markerad look",
+    ],
+  },
+  {
+    category: "event",
+    number: "02",
+    eyebrow: "För fest & event",
+    title: "Håruppsättning",
+    description:
+      "En personlig hårstyling med fokus på form, textur och detaljer – från mjuka vågor till eleganta uppsättningar.",
+    price: "Pris lämnas på förfrågan",
+    details: [
+      "Genomgång av önskad frisyr och inspiration",
+      "Styling enligt överenskommen frisyr",
+      "Anpassning efter hårtyp och hårlängd",
+      "Finputsning för ett hållbart och välbalanserat resultat",
+    ],
+  },
+] satisfies Service[],
+
 
   bookingTermsHeading: {
     eyebrow: "Viktig information",
-    title: "Villkor vid bokning av Brudpaket",
+    title: "Villkor vid bokning av",
+    titleItalic: "Brudpaket",
     description:
       "Läs igenom villkoren inför din bokning så att du vet vad som gäller före, under och efter din bokning.",
   },

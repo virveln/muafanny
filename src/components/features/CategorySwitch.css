@@ -2,7 +2,7 @@
    Portfolio category switch
 ======================================== */
 
-.portfolio-category-switch {
+.category-switch {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@
   background: #f5f0ea;
 }
 
-.portfolio-category-switch__button {
+.category-switch__button {
   min-height: 42px;
   padding: 0 24px;
   border: 0;
@@ -33,17 +33,17 @@
     box-shadow 200ms ease;
 }
 
-.portfolio-category-switch__button:hover {
+.category-switch__button:hover {
   color: var(--site-primary);
 }
 
-.portfolio-category-switch__button.is-active {
+.category-switch__button.is-active {
   background: #fffefa;
   color: var(--site-primary);
   box-shadow: 0 2px 8px rgb(41 39 34 / 8%);
 }
 
-.portfolio-category-switch__button:focus-visible {
+.category-switch__button:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 3px;
 }

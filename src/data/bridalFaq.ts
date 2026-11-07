@@ -22,9 +22,9 @@ export const bridalFaqContent = {
       ],
     },
     {
-      question: "Ingår en provning av hår och makeup i priset?",
+      question: "Ingår en provning av hår och make-up i priset?",
       answer: [
-        "Ja! När du bokar din bröllopsstyling hos mig ingår en provning där vi tillsammans går igenom hår och makeup inför den stora dagen. Det är ett tillfälle för oss att lära känna varandra, testa oss fram och landa i en look som känns helt rätt för dig.",
+        "Ja! När du bokar din bröllopsstyling hos mig ingår en provning där vi tillsammans går igenom hår och make-up inför den stora dagen. Det är ett tillfälle för oss att lära känna varandra, testa oss fram och landa i en look som känns helt rätt för dig.",
       ],
     },
     {
@@ -34,7 +34,7 @@ export const bridalFaqContent = {
       ],
     },
     {
-      question: "Gör du även hår och makeup på tärnor och gäster?",
+      question: "Gör du även hår och make-up på tärnor och gäster?",
       answer: [
         "Absolut! Jag erbjuder även styling för tärnor och övriga bröllopsgäster. När du skickar in din förfrågan går vi tillsammans igenom era önskemål och hittar ett upplägg som passar er och dagens tidsplan.",
       ],
@@ -47,16 +47,16 @@ export const bridalFaqContent = {
     },
     {
       question:
-        "Behöver jag ta med mig något till provningen av hår och makeup?",
+        "Behöver jag ta med mig något till provningen av hår och make-up?",
       answer: [
         "Du behöver inte förbereda eller ta med dig något särskilt. Om du planerar att bära slöja eller har andra håraccessoarer får du gärna ta med dem, så kan vi testa hur de passar in i helheten.",
-        "Har du någon favoritprodukt inom makeup som du gärna vill använda även på bröllopsdagen får du självklart ta med den. Då ser vi om och hur vi kan inkludera den i din look.",
+        "Har du någon favoritprodukt inom make-up som du gärna vill använda även på bröllopsdagen får du självklart ta med den. Då ser vi om och hur vi kan inkludera den i din look.",
       ],
     },
     {
       question: "Vad ska jag tänka på med min hudvård inför bröllopet?",
       answer: [
-        "En väl förberedd hud ger fina förutsättningar för en jämn och hållbar makeup. Här är några av mina bästa tips inför bröllopsdagen:",
+        "En väl förberedd hud ger fina förutsättningar för en jämn och hållbar make-up. Här är några av mina bästa tips inför bröllopsdagen:",
       ],
       tips: [
         {
@@ -69,7 +69,7 @@ export const bridalFaqContent = {
         },
         {
           title: "Exfoliera med omtanke",
-          text: "En skonsam exfoliering kan bidra till en jämnare hudyta och en finare makeupbas. Om du vill börja exfoliera rekommenderar jag att du rådgör med en hudterapeut och introducerar produkterna i god tid, snarare än att testa något nytt precis innan bröllopet.",
+          text: "En skonsam exfoliering kan bidra till en jämnare hudyta och en finare makeup-bas. Om du vill börja exfoliera rekommenderar jag att du rådgör med en hudterapeut och introducerar produkterna i god tid, snarare än att testa något nytt precis innan bröllopet.",
         },
         {
           title: "Glöm inte läpparna",
@@ -105,15 +105,15 @@ export const bridalFaqContent = {
       question: "Vad händer om jag vill ändra något efter provningen?",
       answer: [
         "Självklart! Provningen är till för att vi tillsammans ska hitta fram till en look som känns helt rätt för dig. Det är viktigt att du känner dig bekväm med att berätta vad du tycker, både om det är något du vill justera och sådant du tycker extra mycket om.",
-        "Det kan ibland kännas ovant att se sig själv i en ny makeup eller frisyr, så ge dig själv lite tid att känna efter. Mitt mål är att skapa en look som fortfarande känns som du, men med en extra genomarbetad och professionell touch.",
+        "Det kan ibland kännas ovant att se sig själv i en ny make-up eller frisyr, så ge dig själv lite tid att känna efter. Mitt mål är att skapa en look som fortfarande känns som du, men med en extra genomarbetad och professionell touch.",
       ],
     },
     {
       question:
-        "Hur ser du till att makeup och frisyr håller hela dagen och kvällen?",
+        "Hur ser du till att make-up och frisyr håller hela dagen och kvällen?",
       answer: [
-        "Jag anpassar både makeup och hår efter dina personliga förutsättningar, önskemål och dagens förutsättningar. Med rätt produkter och tekniker skapar vi en look som är genomtänkt för att hålla från vigsel till fest.",
-        "För att enkelt kunna fräscha upp makeupen under dagen rekommenderar jag att du har med dig ett litet bättringskit med puder, puderpuff och dina valda läpprodukter. Då har du det viktigaste nära till hands för små touch-ups under dagen.",
+        "Jag anpassar både make-up och hår efter dina personliga förutsättningar, önskemål och dagens förutsättningar. Med rätt produkter och tekniker skapar vi en look som är genomtänkt för att hålla från vigsel till fest.",
+        "För att enkelt kunna fräscha upp make-upen under dagen rekommenderar jag att du har med dig ett litet bättringskit med puder, puderpuff och dina valda läpprodukter. Då har du det viktigaste nära till hands för små touch-ups under dagen.",
       ],
     },
   ] satisfies BridalFaqQuestion[],

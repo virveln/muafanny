@@ -58,9 +58,9 @@
   font-weight: 400; 
   line-height: 0.98; 
 }
-.page-heading h1 em { 
+.page-heading h1 em,
+.page-heading h2 em { 
   color: var(--site-accent); 
-  font-weight: 400; 
 }
 
 .page-heading h2 {
@@ -72,6 +72,10 @@
   color: var(--site-muted); 
   font-size: 1rem; 
   line-height: 1.8; 
+}
+
+.page-heading a { 
+  margin-top: 14px; 
 }
 
 /*Link arrows*/

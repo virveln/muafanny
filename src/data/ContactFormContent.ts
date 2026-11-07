@@ -30,7 +30,7 @@ export const contactFormContent = {
       placeholder: "Välj en kategori",
       options: [
         "Bröllop",
-        "Fest / Event",
+        "Event",
         "Produktion",
         "Annat",
       ],

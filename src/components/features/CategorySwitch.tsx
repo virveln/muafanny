@@ -20,7 +20,7 @@ export function CategorySwitch<T extends string>({
 }: CategorySwitchProps<T>) {
   return (
     <div
-      className="portfolio-category-switch"
+      className="category-switch"
       role="group"
       aria-label={ariaLabel}
     >
@@ -31,7 +31,7 @@ export function CategorySwitch<T extends string>({
           <button
             key={category.value}
             type="button"
-            className={`portfolio-category-switch__button ${
+            className={`category-switch__button ${
               isActive ? "is-active" : ""
             }`}
             onClick={() => onChange(category.value)}

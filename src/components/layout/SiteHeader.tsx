@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { aboutContent } from "../../data/about";
 
 import "./SiteHeader.css";
 
@@ -16,7 +17,7 @@ export function SiteHeader() {
       <div className="site-container site-container--wide header-inner">
         <NavLink className="wordmark" to="/" aria-label="Fanny Ehrnholm, hem">
           Fanny Ehrnholm
-          <small>MAKEUP ARTIST · HÅR STYLIST</small>
+          <small>{aboutContent.work.professionMakeup} · {aboutContent.work.professionHair}</small>
         </NavLink>
         <nav className="main-nav" aria-label="Huvudmeny">
           {navigation.map(({ label, to }) => (

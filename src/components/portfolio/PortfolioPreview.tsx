@@ -9,7 +9,7 @@ import image2 from "../../assets/portfolio/event/tone.jpg";
 import image3 from "../../assets/portfolio/event/andrea.webp";
 
 const previewImages = [
-  { src: image1, alt: "Selected makeup look" },
+  { src: image1, alt: "Selected make-up look" },
   { src: image2, alt: "Selected hairstyling look" },
   { src: image3, alt: "Selected beauty look" },
 ];

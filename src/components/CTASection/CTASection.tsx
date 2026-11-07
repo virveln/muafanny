@@ -1,5 +1,7 @@
 
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+
 import "./CTASection.css";
 
 type CTASectionProps = {
@@ -22,10 +24,7 @@ export default function CTASection({
       <div className="cta-content">
         <h2>{title}</h2>
         <p>{description}</p>
-        <a href={buttonHref} className="button button--cta">
-          {buttonText}
-          <ArrowRight size={16} aria-hidden="true" />
-        </a>
+        <Link className="button button--cta" to={buttonHref}>{buttonText} <ArrowRight size={17} aria-hidden="true" /></Link>
       </div>
     </section>
   );
