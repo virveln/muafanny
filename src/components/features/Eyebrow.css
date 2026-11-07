@@ -1,0 +1,25 @@
+.eyebrow {
+  margin: 0 0 18px;
+  color: var(--site-accent);
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.eyebrow__separator {
+  margin: 0 7px;
+}
+
+@media (max-width: 600px) {
+  .eyebrow__separator--location {
+    display: none;
+  }
+
+  .eyebrow__location {
+    display: block;
+    margin-top: 4px;
+  }
+}

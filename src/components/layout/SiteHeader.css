@@ -57,4 +57,9 @@
     gap: 16px; 
     padding-block: 18px 14px; 
   }
+
+  .wordmark {
+    align-self: center;
+    text-align: center;
+  }
 }

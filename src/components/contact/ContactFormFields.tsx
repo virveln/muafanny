@@ -14,7 +14,7 @@ import { CalendarDays } from "lucide-react";
 import { format } from "date-fns";
 
 import type { ContactFormData } from "./ContactFormSchema";
-import { contactFormContent as content } from "./ContactFormContent";
+import { contactFormContent as content } from "../../data/ContactFormContent";
 import { formatSelectedDates } from "../../utils/formatSelectedDates";
 
 interface ContactFormFieldsProps {
@@ -98,24 +98,6 @@ export function ContactFormFields({
       {/* CONTACT INFORMATION */}
 
       <div className="form-row">
-        <div className={`contact-form__field-group ${errors.phone ? "has-error" : ""}`}>
-          <TextInput
-            id="phone"
-            classNames={fieldClassNames}
-            label={content.fields.phone.label}
-            type="tel"
-            autoComplete="tel"
-            placeholder={content.fields.phone.placeholder}
-            {...register("phone")}
-            aria-invalid={!!errors.phone}
-            aria-describedby={errors.phone ? "phone-error" : undefined}
-          />
-
-          <div id="phone-error" className="contact-form__error-slot">
-            {errors.phone?.message}
-          </div>
-        </div>
-
         <div className={`contact-form__field-group ${errors.email ? "has-error" : ""}`}>
           <TextInput
             id="email"
@@ -131,6 +113,24 @@ export function ContactFormFields({
 
           <div id="email-error" className="contact-form__error-slot">
             {errors.email?.message}
+          </div>
+        </div>
+        
+        <div className={`contact-form__field-group ${errors.phone ? "has-error" : ""}`}>
+          <TextInput
+            id="phone"
+            classNames={fieldClassNames}
+            label={content.fields.phone.label}
+            type="tel"
+            autoComplete="tel"
+            placeholder={content.fields.phone.placeholder}
+            {...register("phone")}
+            aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
+          />
+
+          <div id="phone-error" className="contact-form__error-slot">
+            {errors.phone?.message}
           </div>
         </div>
       </div>

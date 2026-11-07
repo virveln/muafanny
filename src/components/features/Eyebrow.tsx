@@ -1,5 +1,8 @@
+import type { ReactNode } from "react";
+import "./Eyebrow.css";
+
 type EyebrowProps = {
-  children: string;
+  children: ReactNode;
 };
 
 export function Eyebrow({ children }: EyebrowProps) {

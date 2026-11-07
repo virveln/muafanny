@@ -12,6 +12,7 @@ export const services = [
   {
     number: "03",
     title: "Produktion",
-    text: "Kreativt makeup- och hårarbete för produktion, kampanj och porträtt. Anpassat efter teamets vision.",
+    text: "Makeup och hår för TV och rörlig bild. Jag skapar uttryck som förstärker produktionens visuella vision anpassad efter format, karaktär och sammanhang.",
+    
   },
 ];

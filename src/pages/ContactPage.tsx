@@ -1,7 +1,7 @@
 
 // import { CalendarDays } from "lucide-react";
 import { ContactForm } from "../components/contact/ContactForm";
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 // import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
 import { contactDetails } from "../data/contactDetails"
 import "./ContactPage.css";
@@ -21,7 +21,7 @@ export function ContactPage() {
       </section>
 
       <section className="contact-layout ">
-        <aside className="contact-details animation-fade-up">
+        <aside className="contact-details animation-fade-up animation-fade-up-delay">
           <div className="contact-details-list">
             {contactDetails.map((detail) => {
               const Icon = detail.icon;

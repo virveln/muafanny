@@ -15,7 +15,7 @@ import {
   type ContactFormData,
 } from "./ContactFormSchema";
 
-import { contactFormContent as content } from "./ContactFormContent";
+import { contactFormContent as content } from "../../data/ContactFormContent";
 import { ContactFormFields } from "./ContactFormFields";
 
 import "./ContactForm.css";

@@ -4,7 +4,7 @@ import type { MouseEvent } from "react";
 import { X, ArrowLeft, ArrowRight, Play } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
 import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
-import { CategorySwitch } from "../CategorySwitch";
+import { CategorySwitch } from "../features/CategorySwitch";
 
 import {
   eventMedia,
@@ -193,7 +193,7 @@ export function PortfolioGallery() {
   }
 
   return (
-    <>
+    <div className="animation-fade-up animation-fade-up-delay">
       <CategorySwitch
         categories={portfolioCategories}
         value={category}
@@ -291,6 +291,6 @@ export function PortfolioGallery() {
           </span>
         </div>
       )}
-    </>
+    </div>
   );
 }

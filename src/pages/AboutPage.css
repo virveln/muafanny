@@ -11,9 +11,13 @@
 
 #about-page .about-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    grid-template-areas: "image content";
   align-items: center;
   gap: clamp(36px, 7vw, 88px);
+  gap: clamp(36px, 6vw, 80px)
 }
 
 #about-page .about-layout img {
@@ -23,9 +27,11 @@
   aspect-ratio: 0.82;
   object-fit: cover;
   object-position: center;
+  grid-area: image;
 }
 
 #about-page .about-layout .page-heading {
+  grid-area: content;
   margin: 0;
   max-width: 480px;
 }
@@ -44,17 +50,24 @@
   margin-top: 14px;
 }
 
-/* Experience */
+/* Background & approach */
 
-#about-page .about-story {
-  margin-top: clamp(64px, 9vw, 100px);
-  padding-top: clamp(38px, 5vw, 56px);
-  border-top: 1px solid var(--site-line);
+#about-page .about-details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(36px, 6vw, 80px);
+
+  margin-top: clamp(64px, 9vw, 50px);
+  /* border-top: 1px solid var(--site-line); */
 }
 
-#about-page .about-story__inner {
+#about-page .about-story,
+#about-page .about-approach {
+  min-width: 0;
   max-width: 680px;
-  margin-inline: auto;
+  margin: 0;
+  padding-top: clamp(38px, 5vw, 56px);
 }
 
 #about-page .about-story h2,
@@ -70,30 +83,20 @@
   line-height: 1.9;
 }
 
-/* Personal approach */
-
-#about-page .about-approach {
-  max-width: 680px;
-  margin: clamp(48px, 7vw, 72px) auto 0;
-  padding-top: clamp(34px, 4vw, 46px);
-  border-top: 1px solid var(--site-line);
-}
-
-#about-page .about-approach h2 {
-  margin-top: 10px;
-  margin-bottom: 22px;
-}
-
 /* Responsive */
 
 @media (max-width: 760px) {
-  #about-page .page-main {
-    padding-top: 30px;
-    padding-bottom: 64px;
+
+
+  #about-page .page-heading {
+    text-align: center;
   }
 
   #about-page .about-layout {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "content"
+      "image";
     gap: 30px;
   }
 
@@ -112,9 +115,15 @@
     margin-bottom: 18px;
   }
 
-  #about-page .about-story {
+  #about-page .about-details {
+    grid-template-columns: 1fr;
+    gap: 44px;
     margin-top: 64px;
-    padding-top: 34px;
+  }
+
+  #about-page .about-story,
+  #about-page .about-approach {
+    padding-top: 0;
   }
 
   #about-page .about-story h2,
@@ -122,14 +131,9 @@
     margin-bottom: 16px;
   }
 
-  #about-page .about-approach {
-    margin-top: 44px;
-    padding-top: 32px;
-  }
-
   #about-page .about-layout p:not(.eyebrow),
-  #about-page .about-story p,
-  #about-page .about-approach p {
+  #about-page .about-story p:not(.eyebrow),
+  #about-page .about-approach p:not(.eyebrow) {
     font-size: 0.92rem;
     line-height: 1.8;
   }
@@ -146,11 +150,8 @@
     aspect-ratio: 1;
   }
 
-  #about-page .about-story {
+  #about-page .about-details {
     margin-top: 52px;
-  }
-
-  #about-page .about-approach {
-    margin-top: 38px;
+    gap: 38px;
   }
 }

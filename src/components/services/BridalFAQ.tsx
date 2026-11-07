@@ -1,14 +1,14 @@
 
 import { Accordion } from "@mantine/core";
 import { bridalFaqContent } from "../../data/bridalFaq";
-import { Eyebrow } from "../Eyebrow";
+import { Eyebrow } from "../features/Eyebrow";
 import "./BridalFAQ.css";
 
 export function BridalFAQ() {
   return (
     <section
       id="bridal-faq"
-      className="site-container site-container--narrow bridal-faq section-top "
+      className=" bridal-faq section-top "
       aria-labelledby="bridal-faq-title"
     >
       <div className="page-heading">

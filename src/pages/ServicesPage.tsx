@@ -1,6 +1,6 @@
 import { ArrowRight, LockKeyhole } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 import { services } from "../data/services";
 import { BridalFAQ } from "../components/services/BridalFAQ";
 import CTASection from "../components/CTASection/CTASection";
@@ -13,9 +13,9 @@ export function ServicesPage() {
             <section className="page-heading page-heading--wide">
                 <Eyebrow>Det här kan vi göra</Eyebrow>
                 <h1>Små detaljer.<br /><em>Stora ögonblick.</em></h1>
-                <p>Varje uppdrag börjar med dig och vad du vill känna dig som.</p>
+                <p>Varje uppdrag börjar med dig och vad du eller dina gäster vill känna dig som.</p>
             </section>
-            <section className="services-list animation-fade-up" aria-label="Tjänster">
+            <section className="services-list animation-fade-up animation-fade-up-delay" aria-label="Tjänster">
                 {services.map(({ number, title, text }) => (
                 <article className="service-item" key={number}>
                     <span className="service-number">{number}</span>
@@ -28,10 +28,6 @@ export function ServicesPage() {
                 ))}
                 
             </section>
-            <div className="services-tell-more">
-                <p>Har du något annat i tankarna eller vill ha kostnadsförslag?</p>
-                <Link className="text-link" to="/kontakt">Kontakta mig och berätta mer <ArrowRight size={17} aria-hidden="true" /></Link>
-            </div>
             <div className="service-details-link">
                 <Link className="text-link" to="/tjanster-detaljer">
                     <LockKeyhole size={13} aria-hidden="true" />
@@ -39,13 +35,17 @@ export function ServicesPage() {
                     <ArrowRight size={16} aria-hidden="true" />
                 </Link>
             </div>
+            <div className="services-tell-more">
+                <p>Har du något annat i tankarna eller vill ha kostnadsförslag?</p>
+                <Link className="text-link" to="/kontakt">Kontakta mig och berätta mer <ArrowRight size={17} aria-hidden="true" /></Link>
+            </div>
+        <BridalFAQ />
         </div>
 
-        <BridalFAQ />
         
         <CTASection
                 title="Redo att boka?"
-                description="Berätta om ditt datum och dina önskemål - jag svarar vanligtvis inom 24 timmar."
+                description="Berätta om ditt datum och dina önskemål - jag svarar vanligtvis inom 48 timmar."
                 buttonText="Kontakta mig"
                 buttonHref="/kontakt"
                 />

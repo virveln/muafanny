@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 import { PortfolioPreview } from "../components/portfolio/PortfolioPreview";
 import CTASection from "../components/CTASection/CTASection";
+import { aboutContent } from "../data/about";
+
 
 import "./HomePage.css";
 
@@ -16,7 +18,13 @@ export function HomePage() {
     <main id="home-page">
       <section className="home-hero site-container site-container--wide">
         <div className="hero-copy page-heading animation-fade-up">
-          <Eyebrow>Makeup artist · Hår stylist · Stockholm & överallt</Eyebrow>
+          <Eyebrow>
+            <span>{aboutContent.eyebrow.profession1}</span>
+            <span className="eyebrow__separator">·</span>
+            <span>{aboutContent.eyebrow.profession2}</span>
+            <span className="eyebrow__separator eyebrow__separator--location">·</span>
+            <span className="eyebrow__location">{aboutContent.eyebrow.location}</span>
+          </Eyebrow>
           <h1>Skönhet som känns <em>som du.</em></h1>
           <p>Makeup och hår för stunder du vill minnas. Personligt, genomtänkt och alltid med plats för din egen känsla.</p>
           <Link className="text-link" to="/portfolio">Upptäck mitt arbete <ArrowRight size={17} aria-hidden="true" /></Link>

@@ -16,10 +16,6 @@
   text-align: start;
 }
 
-.text-link svg, .footer-contact svg { 
-  color: var(--site-accent); 
-  transition: transform 180ms ease; 
-}
 .hero-image-container { 
   position: relative; 
   height: min(560px, 62vw); 
@@ -43,7 +39,8 @@
   padding: 13px 17px; 
   background: var(--site-background); 
   color: var(--site-muted); 
-  font-size: 0.72rem; }
+  font-size: 0.72rem; 
+}
 .hero-scroll { 
   position: absolute; 
   bottom: 28px; 
@@ -59,6 +56,10 @@
   color: var(--site-accent); 
 }
 
+#home-page .home-hero .text-link { 
+  margin-top: 14px; 
+}
+
 .intro-band { 
   background: var(--site-secondary); 
 }
@@ -66,6 +67,7 @@
   min-height: 270px; 
   display: flex; 
   justify-content: space-between; 
+  text-align: center;
   align-items: center; 
   gap: 30px; 
 }
@@ -80,6 +82,11 @@
     gap: 20px; 
     padding-block: 58px 78px; 
   }
+
+  #home-page .page-heading {
+    text-align: center;
+  }
+
   .hero-copy { 
     max-width: 560px; 
     padding: 0; 
@@ -91,10 +98,19 @@
 
   .hero-image-container {
     height: 112vw; 
+    height: auto;
     min-height: 330px; 
     max-height: 580px; 
     margin-right: 10px; 
   }
+
+  #home-page .hero-image-container img {
+    width: 100%;
+    max-height: 520px;
+    aspect-ratio: 1;
+    object-position: center 40%;
+  }
+
   .image-caption { 
     right: -10px; 
     bottom: 16px; 
@@ -109,6 +125,7 @@
   }
   .intro-band h2 { 
     max-width: 540px; 
+    padding-inline: 12px;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 import { PortfolioGallery } from "../components/portfolio/PortfolioGallery";
 import CTASection from "../components/CTASection/CTASection";
 

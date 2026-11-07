@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 
 import "./PrivacyPolicyPage.css";
 

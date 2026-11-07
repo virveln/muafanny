@@ -1,7 +1,7 @@
 
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Eyebrow } from "../Eyebrow";
+import { Eyebrow } from "../features/Eyebrow";
 import "./PortfolioPreview.css";
 
 import image1 from "../../assets/portfolio/production/allsangen.webp";

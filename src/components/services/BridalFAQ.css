@@ -1,7 +1,7 @@
 
 .bridal-faq {
   width: 100%;
-  padding-block: clamp(64px, 9vw, 100px);
+  padding-top: clamp(64px, 9vw, 100px);
   scroll-margin-top: 100px;
 }
 
@@ -75,7 +75,6 @@
 
 .bridal-faq__question {
   font-size: 0.96rem;
-  font-weight: 500;
   line-height: 1.6;
 }
 
@@ -125,6 +124,11 @@
 /* Responsive */
 
 @media (max-width: 600px) {
+  /* .section-top {
+  padding-top: 80px;
+  border-top: 1px solid var(--border);
+  } */
+
   .bridal-faq {
     padding-block: 58px;
   }

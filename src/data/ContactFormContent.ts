@@ -46,7 +46,7 @@ export const contactFormContent = {
     message: {
       label: "Meddelande",
       placeholder:
-        "Berätta gärna om plats, hur många perser som ska sminkas och /eller stylas, önskemål och vad du tänker dig.",
+        "Berätta gärna om plats, hur många personer som ska sminkas och /eller stylas, önskemål och vad du tänker dig.",
       maxLength: 2000,
     },
   },

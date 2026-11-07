@@ -1,6 +1,10 @@
-export const aboutPageContent = {
-    eyebrow: "Makeup artist · Hårstylist · Stockholm & överallt",
-    
+export const aboutContent = {
+    eyebrow: {
+        profession1: "Makeup artist",
+        profession2: "Hårstylist",
+        location: "Stockholm & överallt",
+    },  
+      
     title: "Hej, jag är Fanny",
 
     introduction:

@@ -2,7 +2,7 @@
 import { useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import { LockKeyhole, ArrowRight, Check } from "lucide-react";
-import { Eyebrow } from "../components/Eyebrow";
+import { Eyebrow } from "../components/features/Eyebrow";
 import CTASection from "../components/CTASection/CTASection";
 import { servicesPageContent } from "../data/servicesDetails";
 import "./ServicesDetailsPage.css";
