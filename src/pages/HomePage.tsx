@@ -9,7 +9,7 @@ import { title } from "../data/title";
 
 import "./HomePage.css";
 
-import HeroFanny from "../assets/fanny1.jpg";
+import HeroFanny from "../assets/fanny.jpg";
 
 export function HomePage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);

@@ -7,7 +7,7 @@ import { aboutContent } from "../data/about";
 import { title } from "../data/title";
 import "./AboutPage.css";
 
-import ImgFanny from "../assets/fanny2.jpg";
+import ImgFanny from "../assets/fanny.jpg";
 
 export function AboutPage() {
   return (
@@ -23,7 +23,6 @@ export function AboutPage() {
                 <span>{aboutContent.work.professionMakeup}</span>
                 <span className="eyebrow__separator">·</span>
                 <span>{aboutContent.work.professionHair}</span>
-                <span className="eyebrow__separator eyebrow__separator--location">·</span>
                 <span className="eyebrow__location">{aboutContent.work.locationWork}</span>
               </Eyebrow>
 
@@ -39,15 +38,17 @@ export function AboutPage() {
               </Link>
             </div>
 
-            <img
-              src={ImgFanny}
-              alt="Porträtt av Fanny"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              grid-area="image"
-              className="animation-fade-up animation-fade-up-delay"
-            />
+            <div className="about-img-container">
+              <img
+                src={ImgFanny}
+                alt="Porträtt av Fanny"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                grid-area="image"
+                className="animation-fade-up animation-fade-up-delay"
+              />
+            </div>
           </section>
 
           {/* Background & approach */}

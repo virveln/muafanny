@@ -84,6 +84,7 @@
     min-height: 0;
     max-height: none;
     margin-right: 0;
+    overflow: hidden;
   }
 
   #home-page .hero-image-container img {
@@ -94,6 +95,7 @@
     aspect-ratio: 1.15;
     object-fit: cover;
     object-position: center 40%;
+    transform: scale(1.25);
   }
 
   .image-caption { 

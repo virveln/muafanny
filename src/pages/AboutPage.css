@@ -12,12 +12,15 @@
 #about-page .about-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    grid-template-areas: "image content";
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "image content";
   align-items: center;
   gap: clamp(36px, 7vw, 88px);
   gap: clamp(36px, 6vw, 80px)
+}
+
+#about-page .about-img-container {
+  overflow: hidden;
 }
 
 #about-page .about-layout img {
@@ -28,12 +31,18 @@
   object-fit: cover;
   object-position: center;
   grid-area: image;
+  transform: scale(1.45) !important;
 }
 
 #about-page .about-layout .page-heading {
   grid-area: content;
   margin: 0;
   max-width: 480px;
+}
+
+#about-page .eyebrow__location {
+    display: block;
+    margin-top: 4px;
 }
 
 #about-page .about-layout h1 {
@@ -101,6 +110,7 @@
     max-height: 520px;
     aspect-ratio: 1.15;
     object-position: center 40%;
+    transform: scale(1.25) !important;
   }
 
   #about-page .about-layout .page-heading {
