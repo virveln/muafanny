@@ -4,8 +4,22 @@ export type PortfolioMedia = {
   src: string;
   filename: string;
   type: "image" | "video";
+  description?: string;
   width?: number;
   height?: number;
+};
+
+const mediaDescriptions: Partial<Record<PortfolioCategory, Record<string, string>>> = {
+    wedding: {
+    "andrea.webp": "Bröllopssminkning",
+  },
+  production: {
+    "allsangen.webp": "Allsång på Skansen",
+    "allsang-2.webp": "Allsång på Skansen",
+    "IMG_9189.MOV": "Allsång på Skansen",
+    "IMG_0843.JPG": "Morgonstudion musikpanelen",
+    "IMG_0849.JPG": "Morgonstudion musikpanelen",
+  },
 };
 
 const mediaDimensions: Record<string, readonly [number, number]> = {
@@ -79,6 +93,7 @@ const productionVideoModules = import.meta.glob(
 ) as Record<string, string>;
 
 function createMedia(
+  category: PortfolioCategory,
   images: Record<string, string>,
   videos: Record<string, string>,
 ): PortfolioMedia[] {
@@ -90,6 +105,7 @@ function createMedia(
         src,
         filename,
         type: "image" as const,
+        description: mediaDescriptions[category]?.[filename],
         width: dimensions?.[0],
         height: dimensions?.[1],
       };
@@ -101,6 +117,7 @@ function createMedia(
         src,
         filename,
         type: "video" as const,
+        description: mediaDescriptions[category]?.[filename],
         width: dimensions?.[0],
         height: dimensions?.[1],
       };
@@ -113,8 +130,8 @@ function createMedia(
   );
 }
 
-export const weddingMedia = createMedia(weddingImageModules, weddingVideoModules);
-export const productionMedia = createMedia(productionImageModules, productionVideoModules);
+export const weddingMedia = createMedia("wedding", weddingImageModules, weddingVideoModules);
+export const productionMedia = createMedia("production", productionImageModules, productionVideoModules);
 
 export const startupPortfolioImages = [
   weddingMedia.find((item) => item.filename.toLowerCase() === "andrea.webp"),

@@ -233,6 +233,10 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               <Play size={20} fill="currentColor" />
             </button>
           )}
+
+          {item.description && (
+            <span className="portfolio-caption">{item.description}</span>
+          )}
         </div>
       );
     }
@@ -351,6 +355,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               />
             )}
           </figure>
+
+          {activeMedia.description && (
+            <p className="lightbox-caption">
+              {activeMedia.description}
+            </p>
+          )}
 
           <button
             className="lightbox-side lightbox-side--next"
