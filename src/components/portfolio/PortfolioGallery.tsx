@@ -8,7 +8,7 @@ import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
 import { CategorySwitch } from "../features/CategorySwitch";
 
 import {
-  eventMedia,
+  weddingMedia,
   productionMedia,
   type PortfolioMedia,
 } from "../../data/portfolioMedia";
@@ -17,23 +17,26 @@ import "./PortfolioGallery.css";
 
 if (import.meta.env.DEV) {
   console.info(
-    `[PortfolioGallery] Event: ${eventMedia.length} items, Produktion: ${productionMedia.length} items.`,
+    `[PortfolioGallery] B: ${weddingMedia.length} items, Produktion: ${productionMedia.length} items.`,
   );
 }
 
-type PortfolioCategory = "event" | "production";
+type PortfolioCategory = "wedding" | "production";
 type PortfolioGalleryProps = {
   onLightboxChange: (isOpen: boolean) => void;
 };
 
 const portfolioCategories = [
-  { value: "event", label: "Bröllop/Event" },
-  { value: "production", label: "Produktion" },
+  { value: "wedding", label: "Bröllop" },
+  { value: "production", label: "Produktion/Event" },
 ] as const;
 
 
 export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
-  const [category, setCategory] = useState<PortfolioCategory>("event");
+  const [isMobileLayout, setIsMobileLayout] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 560px)").matches,
+  );
+  const [category, setCategory] = useState<PortfolioCategory>("wedding");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [zoomFocus, setZoomFocus] = useState<{
     src: string;
@@ -45,7 +48,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     () => new Set(),
   );
 
-  const media = category === "event" ? eventMedia : productionMedia;
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 560px)");
+    const updateLayout = () => setIsMobileLayout(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", updateLayout);
+    return () => mediaQuery.removeEventListener("change", updateLayout);
+  }, []);
+
+  const media = category === "wedding" ? weddingMedia : productionMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
   const isZoomed = activeMedia !== null && zoomFocus?.src === activeMedia.src;
   const zoomOrigin = isZoomed && zoomFocus
@@ -156,10 +167,75 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   ) {
     const priorityImages = new Set(
       galleryMedia
+        .slice(0, 2)
         .filter((item) => item.type === "image")
-        .slice(0, 3)
         .map((item) => item.src),
     );
+    const indexedMedia = galleryMedia.map((item, index) => ({ item, index }));
+    const mobileColumns = [
+      indexedMedia.filter(({ index }) => index % 2 === 0),
+      indexedMedia.filter(({ index }) => index % 2 === 1),
+    ];
+
+    function renderItem(item: PortfolioMedia, index: number) {
+      return (
+        <div
+          className={`portfolio-item${userPlayingVideos.has(item.src) ? " is-playing" : ""}`}
+          key={item.src}
+          onMouseEnter={() => {
+            if (item.type === "video" && isVisible) {
+              setUserPlayingVideos((current) => new Set(current).add(item.src));
+            }
+          }}
+          onMouseLeave={() => {
+            if (item.type === "video") {
+              setUserPlayingVideos((current) => {
+                const next = new Set(current);
+                next.delete(item.src);
+                return next;
+              });
+            }
+          }}
+        >
+          {item.type === "image" ? (
+            <LazyPortfolioImage
+              src={item.src}
+              alt={item.filename}
+              width={item.width}
+              height={item.height}
+              loadImmediately={isVisible && priorityImages.has(item.src)}
+            />
+          ) : (
+            <LazyPortfolioVideo
+              src={item.src}
+              filename={item.filename}
+              width={item.width}
+              height={item.height}
+              isVisible={isVisible}
+              userPlaying={userPlayingVideos.has(item.src)}
+            />
+          )}
+
+          <button
+            className="portfolio-open"
+            type="button"
+            onClick={() => setActiveIndex(index)}
+            aria-label={`Open ${item.type}: ${item.filename}`}
+          />
+
+          {item.type === "video" && (
+            <button
+              className="portfolio-video-play"
+              type="button"
+              onClick={(event) => toggleVideo(event, item.src)}
+              aria-label="Play or pause video"
+            >
+              <Play size={20} fill="currentColor" />
+            </button>
+          )}
+        </div>
+      );
+    }
 
     return (
       <div
@@ -168,65 +244,19 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
         aria-hidden={!isVisible}
       >
         {galleryMedia.length > 0 ? (
-          <div className="portfolio-gallery">
-            {galleryMedia.map((item, index) => (
-              <div
-                className="portfolio-item"
-                key={item.src}
-                onMouseEnter={() => {
-                  if (item.type === "video" && isVisible) {
-                    setUserPlayingVideos((current) => new Set(current).add(item.src));
-                  }
-                }}
-                onMouseLeave={() => {
-                  if (item.type === "video") {
-                    setUserPlayingVideos((current) => {
-                      const next = new Set(current);
-                      next.delete(item.src);
-                      return next;
-                    });
-                  }
-                }}
-              >
-                {item.type === "image" ? (
-                  <LazyPortfolioImage
-                    src={item.src}
-                    alt={item.filename}
-                    width={item.width}
-                    height={item.height}
-                    loadImmediately={isVisible && priorityImages.has(item.src)}
-                  />
-                ) : (
-                  <LazyPortfolioVideo
-                    src={item.src}
-                    filename={item.filename}
-                    width={item.width}
-                    height={item.height}
-                    isVisible={isVisible}
-                    userPlaying={userPlayingVideos.has(item.src)}
-                  />
-                )}
-
-                <button
-                  className="portfolio-open"
-                  type="button"
-                  onClick={() => setActiveIndex(index)}
-                  aria-label={`Open ${item.type}: ${item.filename}`}
-                />
-
-                {item.type === "video" && (
-                  <button
-                    className="portfolio-video-play"
-                    type="button"
-                    onClick={(event) => toggleVideo(event, item.src)}
-                    aria-label="Play or pause video"
-                  >
-                    <Play size={20} fill="currentColor" />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+          isMobileLayout ? (
+            <div className="portfolio-gallery--mobile">
+              {mobileColumns.map((column, columnIndex) => (
+                <div className="portfolio-gallery-mobile-column" key={columnIndex}>
+                  {column.map(({ item, index }) => renderItem(item, index))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="portfolio-gallery">
+              {galleryMedia.map((item, index) => renderItem(item, index))}
+            </div>
+          )
         ) : (
           <p className="portfolio-empty">
             Inga bilder eller videor har lagts till i den här kategorin ännu.
@@ -245,7 +275,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
         ariaLabel="Välj portfoliokategori"
       />
 
-      {renderGallery(eventMedia, category === "event")}
+      {renderGallery(weddingMedia, category === "wedding")}
       {renderGallery(productionMedia, category === "production")}
 
       {activeMedia && activeIndex !== null && createPortal((

@@ -49,7 +49,7 @@ export function LazyPortfolioVideo({
       {
         rootMargin: window.matchMedia("(max-width: 760px)").matches
           ? "100px 0px"
-          : "700px 0px",
+          : "300px 0px",
       },
     );
 

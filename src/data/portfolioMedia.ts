@@ -1,4 +1,4 @@
-export type PortfolioCategory = "event" | "production";
+export type PortfolioCategory = "wedding" | "production";
 
 export type PortfolioMedia = {
   src: string;
@@ -42,8 +42,8 @@ const mediaDimensions: Record<string, readonly [number, number]> = {
   "vasteras.webp": [3559, 4745],
 };
 
-const eventImageModules = import.meta.glob(
-  "/src/assets/portfolio/event/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
+const weddingImageModules = import.meta.glob(
+  "/src/assets/portfolio/wedding/*.{jpg,jpeg,png,heic,webp,avif,gif,JPG,JPEG,PNG,HEIC,WEBP,AVIF,GIF}",
   {
     eager: true,
     query: "?url",
@@ -60,8 +60,8 @@ const productionImageModules = import.meta.glob(
   },
 ) as Record<string, string>;
 
-const eventVideoModules = import.meta.glob(
-  "/src/assets/portfolio/event/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
+const weddingVideoModules = import.meta.glob(
+  "/src/assets/portfolio/wedding/*.{mp4,webm,mov,m4v,MP4,WEBM,MOV,M4V}",
   {
     eager: true,
     query: "?url",
@@ -113,11 +113,11 @@ function createMedia(
   );
 }
 
-export const eventMedia = createMedia(eventImageModules, eventVideoModules);
+export const weddingMedia = createMedia(weddingImageModules, weddingVideoModules);
 export const productionMedia = createMedia(productionImageModules, productionVideoModules);
 
 export const startupPortfolioImages = [
-  eventMedia.find((item) => item.filename.toLowerCase() === "andrea.webp"),
+  weddingMedia.find((item) => item.filename.toLowerCase() === "andrea.webp"),
   productionMedia.find((item) => item.filename.toLowerCase() === "allsangen.webp"),
-  eventMedia.find((item) => item.filename.toLowerCase() === "img_4602.webp"),
+  weddingMedia.find((item) => item.filename.toLowerCase() === "img_4602.webp"),
 ].filter((item): item is PortfolioMedia => item?.type === "image");

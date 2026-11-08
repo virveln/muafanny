@@ -5,8 +5,8 @@ import { Eyebrow } from "../features/Eyebrow";
 import "./PortfolioPreview.css";
 
 import image1 from "../../assets/portfolio/production/allsangen.webp";
-import image2 from "../../assets/portfolio/event/tone.jpg";
-import image3 from "../../assets/portfolio/event/andrea.webp";
+import image2 from "../../assets/portfolio/wedding/tone.jpg";
+import image3 from "../../assets/portfolio/wedding/andrea.webp";
 
 const previewImages = [
   { src: image1, alt: "Selected make-up look" },

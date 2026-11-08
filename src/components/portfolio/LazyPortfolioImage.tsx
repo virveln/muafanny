@@ -22,7 +22,6 @@ export function LazyPortfolioImage({
   );
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
-  const shouldLoad = loadImmediately || hasEnteredViewport;
 
   useEffect(() => {
     if (loadImmediately) return;
@@ -56,25 +55,23 @@ export function LazyPortfolioImage({
       } ${loadImmediately}`}
       style={width && height ? { aspectRatio: `${width} / ${height}` } : undefined}
     >
-      {shouldLoad && !loaded && !error && (
+      {(loadImmediately || hasEnteredViewport) && !loaded && !error && (
         <div className="portfolio-image-loader">
           <span className="portfolio-spinner" />
         </div>
       )}
 
-      {shouldLoad && (
-        <img
-          src={src}
-          alt={alt}
-          width={width}
-          height={height}
-          loading={loadImmediately ? "eager" : "lazy"}
-          fetchPriority={loadImmediately ? "high" : "auto"}
-          decoding="async"
-          onLoad={() => setLoaded(true)}
-          onError={() => setError(true)}
-        />
-      )}
+      <img
+        src={src}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loadImmediately ? "eager" : "lazy"}
+        fetchPriority={loadImmediately ? "high" : "auto"}
+        decoding="async"
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+      />
 
       {error && (
         <div className="portfolio-image-error">
