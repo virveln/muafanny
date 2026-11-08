@@ -26,16 +26,17 @@
   display: block;
   width: 100%;
   height: auto;
-  transition: transform 400ms ease;
+  transition: transform 280ms ease;
 }
 
-.portfolio-item:hover > img,
-.portfolio-item:hover > video {
-  transform: scale(1.025);
-}
-
+.portfolio-item:hover .portfolio-image-container img,
 .portfolio-item:hover .portfolio-video-container video {
   transform: scale(1.025);
+}
+
+.portfolio-image-container img,
+.portfolio-video-container video {
+  transition: transform 280ms ease;
 }
 
 .portfolio-open {
@@ -66,10 +67,22 @@
   background: rgb(42 30 26 / 65%);
   color: #fffefa;
   cursor: pointer;
+  opacity: 1;
+  transition: opacity 180ms ease, background-color 180ms ease;
 }
 
 .portfolio-video-play:hover {
   background: var(--site-accent);
+}
+
+.portfolio-item:hover .portfolio-video-play {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.portfolio-item:hover .portfolio-video-play:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Full-screen lightbox */
@@ -117,9 +130,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
+  max-width: 92vw;
+  max-height: 88vh;
   overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: zoom-in;
 }
 
 .lightbox-image {
@@ -130,15 +150,17 @@
   height: auto;
   object-fit: contain;
   transform: scale(1);
-  transform-origin: center center;
-  cursor: zoom-in;
+  transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%);
   transition: transform 220ms ease;
   user-select: none;
   pointer-events: auto;
 }
 
 .lightbox-image-wrap.is-zoomed .lightbox-image {
-  transform: scale(1.7);
+  transform: scale(1.55);
+}
+
+.lightbox-image-wrap.is-zoomed {
   cursor: zoom-out;
 }
 
@@ -156,6 +178,7 @@
   background: transparent;
   color: #fffefa;
   cursor: pointer;
+  pointer-events: none;
 }
 
 .lightbox-side--previous {
@@ -177,6 +200,7 @@
   border-radius: 50%;
   background: rgb(25 20 18 / 45%);
   transition: background 180ms ease, color 180ms ease;
+  pointer-events: auto;
 }
 
 .lightbox-side:hover .lightbox-arrow-icon {
@@ -220,6 +244,7 @@
 
 .portfolio-open:focus-visible,
 .portfolio-video-play:focus-visible,
+.lightbox-image-wrap:focus-visible,
 .lightbox-close:focus-visible,
 .lightbox-side:focus-visible {
   outline: 2px solid var(--site-accent);
@@ -275,19 +300,28 @@
     max-height: 80vh;
   }
 
+  .lightbox-image-wrap {
+    max-width: 96vw;
+    max-height: 80vh;
+  }
+
   .lightbox-close {
     top: 10px;
     right: 10px;
   }
 
   .lightbox-side {
-    width: 18%;
-    padding: 0 8px;
+    top: 50%;
+    bottom: auto;
+    width: 52px;
+    height: 56px;
+    padding: 0 4px;
+    transform: translateY(-50%);
   }
 
   .lightbox-arrow-icon {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
   }
 }
 
@@ -306,6 +340,9 @@
 @media (prefers-reduced-motion: reduce) {
   .portfolio-item > img,
   .portfolio-item > video,
+  .portfolio-image-container img,
+  .portfolio-video-container video,
+  .portfolio-video-play,
   .lightbox-image,
   .lightbox-close,
   .lightbox-arrow-icon,

@@ -60,9 +60,10 @@ otherServices: [
       "En personlig brudmake-up som framhäver din naturliga skönhet och skapas utifrån din stil och dina önskemål.",
     price: "5000:-",
     details: [
-      "Personligt anpassad brudmake-up",
-      "Val av stil och finish enligt önskemål",
+      "Personligt utformad brudmake-up",
       "Anpassning efter klädsel och bröllopets helhet",
+      "Val av önskad stil och finish",
+      "Personlig konsultation inför bröllopet",
     ],
   },
   {
@@ -74,9 +75,9 @@ otherServices: [
       "En exklusiv hårstyling för bröllopsdagen, skapad utifrån din personliga stil, önskade frisyr och bröllopets helhet.",
     price: "3500:-",
     details: [
-      "Håruppsättning enligt överenskommelse",
-      "Val av form och stil utifrån dina önskemål",
-      "Anpassning efter hårtyp, klädsel och bröllopets tema",
+      "Personlig konsultation inför bröllopet",
+      "Håruppsättning anpassad efter din önskade stil",
+      "Utformning med hänsyn till hårtyp, klädsel och bröllopets tema",
     ],
   },
   {

@@ -23,29 +23,30 @@ export function LazyPortfolioVideo({
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const [shouldLoad, setShouldLoad] = useState(loadImmediately);
+  const [hasEnteredViewport, setHasEnteredViewport] = useState(
+    () => !("IntersectionObserver" in window),
+  );
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const shouldLoad = loadImmediately || hasEnteredViewport;
 
   // Load video metadata immediately when requested,
   // otherwise wait until the video approaches the viewport.
   useEffect(() => {
-    if (loadImmediately) {
-      setShouldLoad(true);
-      return;
-    }
+    if (loadImmediately) return;
 
     const element = containerRef.current;
     if (!element) return;
+    if (!("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setShouldLoad(true);
+          setHasEnteredViewport(true);
           observer.disconnect();
         }
       },
-      { rootMargin: "300px 0px" },
+      { rootMargin: "700px 0px" },
     );
 
     observer.observe(element);
@@ -89,7 +90,7 @@ export function LazyPortfolioVideo({
           muted
           playsInline
           loop
-          preload="metadata"
+          preload={userPlaying ? "auto" : "metadata"}
           aria-label={`Portfolio video: ${filename}`}
           onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}

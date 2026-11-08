@@ -41,6 +41,14 @@ select {
   border-radius: var(--border-radius) !important;
 }
 
+.services-details-card:hover,
+.border-line:hover,
+input:hover,
+textarea:hover,
+select:hover {
+  border-color: #cbbcaf;
+}
+
 * {
   box-sizing: border-box;
   border-color: var(--border);

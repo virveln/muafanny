@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
+import { createPortal } from "react-dom";
 import { X, ArrowLeft, ArrowRight, Play } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
 import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
@@ -21,6 +22,9 @@ if (import.meta.env.DEV) {
 }
 
 type PortfolioCategory = "event" | "production";
+type PortfolioGalleryProps = {
+  onLightboxChange: (isOpen: boolean) => void;
+};
 
 const portfolioCategories = [
   { value: "event", label: "Bröllop/Event" },
@@ -28,10 +32,14 @@ const portfolioCategories = [
 ] as const;
 
 
-export function PortfolioGallery() {
+export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const [category, setCategory] = useState<PortfolioCategory>("event");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [isZoomed, setIsZoomed] = useState(false);
+  const [zoomFocus, setZoomFocus] = useState<{
+    src: string;
+    x: number;
+    y: number;
+  } | null>(null);
 
   const [userPlayingVideos, setUserPlayingVideos] = useState<Set<string>>(
     () => new Set(),
@@ -39,6 +47,10 @@ export function PortfolioGallery() {
 
   const media = category === "event" ? eventMedia : productionMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
+  const isZoomed = activeMedia !== null && zoomFocus?.src === activeMedia.src;
+  const zoomOrigin = isZoomed && zoomFocus
+    ? { x: zoomFocus.x, y: zoomFocus.y }
+    : { x: 50, y: 50 };
 
   function showPrevious() {
     setActiveIndex((current) =>
@@ -85,14 +97,20 @@ export function PortfolioGallery() {
   }
 
   useEffect(() => {
-    setIsZoomed(false);
-
     if (activeIndex === null) return;
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") setActiveIndex(null);
-      if (event.key === "ArrowLeft") showPrevious();
-      if (event.key === "ArrowRight") showNext();
+      if (event.key === "ArrowLeft") {
+        setActiveIndex((current) =>
+          current === null ? null : (current - 1 + media.length) % media.length,
+        );
+      }
+      if (event.key === "ArrowRight") {
+        setActiveIndex((current) =>
+          current === null ? null : (current + 1) % media.length,
+        );
+      }
     }
 
     const previousOverflow = document.body.style.overflow;
@@ -105,6 +123,32 @@ export function PortfolioGallery() {
       document.body.style.overflow = previousOverflow;
     };
   }, [activeIndex, media.length]);
+
+  useEffect(() => {
+    onLightboxChange(activeIndex !== null);
+  }, [activeIndex, onLightboxChange]);
+
+  function toggleImageZoom(event: MouseEvent<HTMLButtonElement>) {
+    const image = event.currentTarget.querySelector("img");
+    if (!activeMedia) return;
+    if (isZoomed) {
+      setZoomFocus(null);
+      return;
+    }
+
+    if (image && event.nativeEvent.detail !== 0) {
+      const bounds = image.getBoundingClientRect();
+      const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+      const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+      setZoomFocus({
+        src: activeMedia.src,
+        x: Math.max(0, Math.min(100, x)),
+        y: Math.max(0, Math.min(100, y)),
+      });
+    } else {
+      setZoomFocus({ src: activeMedia.src, x: 50, y: 50 });
+    }
+  }
 
   function renderGallery(
     galleryMedia: PortfolioMedia[],
@@ -204,7 +248,7 @@ export function PortfolioGallery() {
       {renderGallery(eventMedia, category === "event")}
       {renderGallery(productionMedia, category === "production")}
 
-      {activeMedia && activeIndex !== null && (
+      {activeMedia && activeIndex !== null && createPortal((
         <div
           className="portfolio-lightbox"
           role="dialog"
@@ -233,20 +277,22 @@ export function PortfolioGallery() {
 
           <figure className="lightbox-figure">
             {activeMedia.type === "image" ? (
-              <div
-                className={`lightbox-image-wrap ${
-                  isZoomed ? "is-zoomed" : ""
-                }`}
+              <button
+                className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
+                type="button"
+                aria-label={isZoomed ? "Zoom out" : "Zoom in on image"}
+                onClick={toggleImageZoom}
+                style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
               >
                 <img
                   key={activeMedia.src}
                   src={activeMedia.src}
                   alt={activeMedia.filename}
                   className="lightbox-image"
-                  onClick={() => setIsZoomed((current) => !current)}
+                  decoding="async"
                   draggable={false}
                 />
-              </div>
+              </button>
             ) : (
               <video
                 key={activeMedia.src}
@@ -262,7 +308,8 @@ export function PortfolioGallery() {
                 playsInline
                 controls
                 loop
-                preload="none"
+                autoPlay
+                preload="auto"
                 onVolumeChange={(event) => {
                   const video = event.currentTarget;
 
@@ -290,7 +337,7 @@ export function PortfolioGallery() {
             {activeIndex + 1} / {media.length}
           </span>
         </div>
-      )}
+      ), document.body)}
     </div>
   );
 }

@@ -1,0 +1,48 @@
+.portfolio-back-to-top {
+  position: fixed;
+  z-index: 20;
+  right: clamp(20px, 4vw, 48px);
+  bottom: clamp(20px, 4vw, 48px);
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--site-primary);
+  border-radius: 50px;
+  background: var(--site-primary);
+  color: var(--site-primary-foreground);
+  box-shadow: 0 8px 24px rgb(42 30 26 / 18%);
+  cursor: pointer;
+  animation: portfolio-back-to-top-enter 180ms ease-out both;
+  transition: background-color 180ms ease, border-color 180ms ease;
+}
+
+.portfolio-back-to-top:hover {
+  border-color: var(--site-accent);
+  background: var(--site-accent);
+}
+
+.portfolio-back-to-top:focus-visible {
+  outline: 2px solid var(--site-accent);
+  outline-offset: 4px;
+}
+
+@keyframes portfolio-back-to-top-enter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-back-to-top {
+    animation: none;
+    transition: none;
+  }
+}

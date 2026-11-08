@@ -17,27 +17,23 @@ export function LazyPortfolioImage({
   loadImmediately = false,
 }: LazyPortfolioImageProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [shouldLoad, setShouldLoad] = useState(loadImmediately);
+  const [hasEnteredViewport, setHasEnteredViewport] = useState(
+    () => !("IntersectionObserver" in window),
+  );
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
+  const shouldLoad = loadImmediately || hasEnteredViewport;
 
   useEffect(() => {
-    if (loadImmediately) {
-        setShouldLoad(true);
-        return;
-    }
+    if (loadImmediately) return;
     const element = containerRef.current;
     if (!element) return;
-
-    if (!("IntersectionObserver" in window)) {
-      setShouldLoad(true);
-      return;
-    }
+    if (!("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setShouldLoad(true);
+          setHasEnteredViewport(true);
           observer.disconnect();
         }
       },
@@ -72,8 +68,8 @@ export function LazyPortfolioImage({
           alt={alt}
           width={width}
           height={height}
-          loading="eager"
-            fetchPriority={loadImmediately ? "high" : "auto"}
+          loading={loadImmediately ? "eager" : "lazy"}
+          fetchPriority={loadImmediately ? "high" : "auto"}
           decoding="async"
           onLoad={() => setLoaded(true)}
           onError={() => setError(true)}
