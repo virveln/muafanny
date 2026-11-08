@@ -11,10 +11,6 @@
   padding-block: 58px 22px;
 }
 
-.footer-brand {
-  max-width: 420px;
-}
-
 .footer-wordmark {
   display: inline-block;
   color: var(--site-primary-foreground);
@@ -25,7 +21,7 @@
 }
 
 .footer-brand > p:not(.footer-address) {
-  margin: 18px 0 22px;
+  margin: 5px 0 22px;
   color: rgb(248 245 241 / 72%);
   font-size: 0.95rem;
   line-height: 1.75;

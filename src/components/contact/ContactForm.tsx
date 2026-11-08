@@ -184,7 +184,7 @@ export function ContactForm() {
       <div className="contact-form__privacy">
         <p>
           {content.privacy.text}{" "}
-          <Link to={content.privacy.linkTo}>
+          <Link to={content.privacy.linkTo} target="_blank" rel="noopener noreferrer">
             {content.privacy.linkText}
           </Link>.
         </p>

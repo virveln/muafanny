@@ -25,7 +25,7 @@ export function SiteFooter() {
           </Link>
 
           <p>
-            Make-up artist & hårstylist för bröllop och speciella tillfällen.
+            Make-up artist & hårstylist för bröllop, event och speciella tillfällen.
           </p>
 
           <div className="footer-social-links">

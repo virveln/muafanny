@@ -80,17 +80,19 @@
   }
 
   .hero-image-container {
-    height: 112vw; 
     height: auto;
-    min-height: 330px; 
-    max-height: 580px; 
-    margin-right: 10px; 
+    min-height: 0;
+    max-height: none;
+    margin-right: 0;
   }
 
   #home-page .hero-image-container img {
+    display: block;
     width: 100%;
+    height: auto;
     max-height: 520px;
-    aspect-ratio: 1;
+    aspect-ratio: 1.15;
+    object-fit: cover;
     object-position: center 40%;
   }
 
@@ -106,6 +108,12 @@
   .intro-band h2 { 
     max-width: 540px; 
     padding-inline: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+  #home-page .hero-image-container img {
+    aspect-ratio: 1;
   }
 }
 
