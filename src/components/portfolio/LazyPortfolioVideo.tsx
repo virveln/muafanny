@@ -46,7 +46,11 @@ export function LazyPortfolioVideo({
           observer.disconnect();
         }
       },
-      { rootMargin: "700px 0px" },
+      {
+        rootMargin: window.matchMedia("(max-width: 760px)").matches
+          ? "100px 0px"
+          : "700px 0px",
+      },
     );
 
     observer.observe(element);
