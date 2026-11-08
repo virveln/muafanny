@@ -13,7 +13,7 @@ export function BridalFAQ() {
     >
       <div className="page-heading">
         <Eyebrow>{bridalFaqContent.eyebrow}</Eyebrow>
-        <h2 id="bridal-faq-title">{bridalFaqContent.heading}</h2>
+        <h2 id="bridal-faq-title">{bridalFaqContent.heading} <em>{bridalFaqContent.headingItalic}</em></h2>
         <p>{bridalFaqContent.description}</p>
       </div>
 

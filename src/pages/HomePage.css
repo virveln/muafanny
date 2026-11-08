@@ -41,20 +41,7 @@
   color: var(--site-muted); 
   font-size: 0.72rem; 
 }
-.hero-scroll { 
-  position: absolute; 
-  bottom: 28px; 
-  left: 0; 
-  display: inline-flex; 
-  align-items: center; 
-  gap: 12px; 
-  color: var(--site-muted); 
-  font-size: 0.7rem; 
-  text-decoration: none; 
-}
-.hero-scroll svg { 
-  color: var(--site-accent); 
-}
+
 
 .intro-band { 
   background: var(--site-secondary); 
@@ -110,9 +97,6 @@
   .image-caption { 
     right: -10px; 
     bottom: 16px; 
-  }
-  .hero-scroll { 
-    bottom: 23px; 
   }
   .intro-band-inner { 
     min-height: 0; 

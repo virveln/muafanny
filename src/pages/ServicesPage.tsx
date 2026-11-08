@@ -24,7 +24,7 @@ export function ServicesPage() {
                         <span className="service-number">{number}</span>
                         <h2>{title}</h2>
                         <p>{text}</p>
-                        <Link className="round-link" to="/kontakt" aria-label={`Fråga om ${title}`}>
+                        <Link className="round-link" to={`/kontakt?occasion=${encodeURIComponent(title)}`} aria-label={`Fråga om ${title}`}>
                         <ArrowRight size={18} aria-hidden="true" />
                         </Link>
                     </article>

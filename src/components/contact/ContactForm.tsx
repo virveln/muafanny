@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Alert } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { Send, Check  } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import { formatSelectedDates } from "../../utils/formatSelectedDates";
 
@@ -40,6 +40,12 @@ const defaultValues: ContactFormData = {
 export function ContactForm() {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [searchParams] = useSearchParams();
+  const requestedOccasion = searchParams.get("occasion");
+  const initialOccasion = content.fields.occasion.options.find(
+    (option) => option === requestedOccasion,
+  ) ?? "";
+  const initialValues = { ...defaultValues, occasion: initialOccasion };
 
   const {
     register,
@@ -55,7 +61,7 @@ export function ContactForm() {
     resolver: zodResolver(contactSchema),
     mode: "onSubmit",
     reValidateMode: "onChange",
-    defaultValues,
+    defaultValues: initialValues,
   });
 
   const selectedDates = watch("eventDates") ?? [];
@@ -103,7 +109,7 @@ export function ContactForm() {
       throw new Error("Formuläret kunde inte skickas.");
     }
 
-    reset(defaultValues);
+    reset(initialValues);
     setCalendarOpen(false);
     setStatus("success");
 

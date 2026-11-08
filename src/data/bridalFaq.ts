@@ -9,7 +9,8 @@ type BridalFaqQuestion = {
 
 export const bridalFaqContent = {
   eyebrow: "Bra att veta",
-  heading: "Vanliga frågor inför bröllopet",
+  heading: "Vanliga frågor inför",
+  headingItalic: "bröllopet",
   description:
     "Här har jag samlat svar på några av de vanligaste frågorna inför en bröllopsbokning. Hittar du inte det du söker är du varmt välkommen att höra av dig.",
 

@@ -157,6 +157,8 @@
 
 .contact-form .mantine-Select-option[data-selected] {
   background: #f5e9e4;
+    background-color: color-mix(in srgb, var(--site-accent) 5%, var(--site-background) 95%);
+
   color: var(--site-primary);
 }
 
@@ -258,11 +260,6 @@
   --day-size: 36px;
   width: auto;
   max-width: 100%;
-}
-
-.contact-form .mantine-calendar__day[data-selected] {
-  background-color: #f5e9e4;
-  color: var(--site-primary);
 }
 
 .contact-form .mantine-calendar__day[data-disabled] {

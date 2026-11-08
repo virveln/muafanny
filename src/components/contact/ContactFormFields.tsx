@@ -207,7 +207,7 @@ export function ContactFormFields({
 
               <Popover.Dropdown>
                 <DatePicker
-                  className="border-line mantine-calendar"
+                  className="mantine-calendar"
                   classNames={calendarClassNames}
                   type="multiple"
                   value={(field.value ?? []) as DateStringValue[]}

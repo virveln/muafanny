@@ -157,10 +157,12 @@
 
 .mantine-calendar__day:hover:not([data-disabled]):not([data-static]) {
   background-color: var(--site-line);
+  background-color: color-mix(in srgb, var(--site-accent) 35%, var(--site-background) 65%);
 }
 
 .mantine-calendar__day[data-selected] {
   background-color: #f5e9e4;
+  background-color: color-mix(in srgb, var(--site-accent) 15%, var(--site-background) 85%);
   color: var(--site-primary);
 }
 
@@ -170,6 +172,14 @@
   opacity: 0.3;
 }
 
+.mantine-Select-option > svg {
+  color: var(--site-accent);
+}
+
+.mantine-Select-option:hover {
+  background-color: #f5e9e4;
+  background-color: color-mix(in srgb, var(--site-accent) 5%, var(--site-background) 95%);
+}
 
 
 
