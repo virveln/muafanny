@@ -257,7 +257,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               width={item.width}
               height={item.height}
               isVisible={isVisible}
-              userPlaying={userPlayingVideos.has(item.src)}
+              userPlaying={!isMobileLayout && userPlayingVideos.has(item.src)}
             />
           )}
 
@@ -268,7 +268,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             aria-label={`Open ${item.type}: ${item.filename}`}
           />
 
-          {item.type === "video" && (
+          {item.type === "video" && !isMobileLayout && (
             <button
               className="portfolio-video-play"
               type="button"

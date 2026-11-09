@@ -78,7 +78,7 @@ export function LazyPortfolioVideo({
           muted
           playsInline
           loop
-          preload={userPlaying ? "auto" : "metadata"}
+          preload="auto"
           aria-label={`Portfolio video: ${filename}`}
           onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}

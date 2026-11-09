@@ -162,6 +162,10 @@
 }
 
 @media (max-width: 420px) {
+  .footer-inner {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+
   .footer-wordmark {
     font-size: 1.8rem;
   }
