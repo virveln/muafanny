@@ -50,9 +50,7 @@
   align-items: center;
   gap: 20px;
   padding-block: 30px;
-  /* margin-top: 1rem; */
   margin-block: 50px;
-  /* border-bottom: 1px solid var(--site-line); */
 }
 
 .services-tell-more::before {

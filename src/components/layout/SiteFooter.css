@@ -141,7 +141,6 @@
     gap: 34px;
     padding-block: 44px 20px;
     padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
-
   }
 
   .footer-brand {
@@ -161,7 +160,6 @@
   .footer-bottom {
     margin-top: 4px;
   }
-
 }
 
 @media (max-width: 420px) {
