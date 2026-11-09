@@ -268,7 +268,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             aria-label={`Open ${item.type}: ${item.filename}`}
           />
 
-          {item.type === "video" && !isMobileLayout && (
+          {item.type === "video" && (
             <button
               className="portfolio-video-play"
               type="button"
