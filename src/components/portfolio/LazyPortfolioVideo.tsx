@@ -8,7 +8,6 @@ type LazyPortfolioVideoProps = {
   height?: number;
   isVisible: boolean;
   userPlaying: boolean;
-  loadImmediately?: boolean;
 };
 
 export function LazyPortfolioVideo({
@@ -18,26 +17,19 @@ export function LazyPortfolioVideo({
   height,
   isVisible,
   userPlaying,
-  loadImmediately = false,
 }: LazyPortfolioVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-
   const [hasEnteredViewport, setHasEnteredViewport] = useState(
     () => !("IntersectionObserver" in window),
   );
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
-  const shouldLoad = loadImmediately || hasEnteredViewport;
+  const shouldLoad = isVisible && hasEnteredViewport;
 
-  // Load video metadata immediately when requested,
-  // otherwise wait until the video approaches the viewport.
   useEffect(() => {
-    if (loadImmediately) return;
-
     const element = containerRef.current;
-    if (!element) return;
-    if (!("IntersectionObserver" in window)) return;
+    if (!isVisible || !element || !("IntersectionObserver" in window)) return;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -46,30 +38,22 @@ export function LazyPortfolioVideo({
           observer.disconnect();
         }
       },
-      {
-        rootMargin: window.matchMedia("(max-width: 760px)").matches
-          ? "100px 0px"
-          : "300px 0px",
-      },
+      { rootMargin: "100px 0px" },
     );
 
     observer.observe(element);
-
     return () => observer.disconnect();
-  }, [loadImmediately]);
+  }, [isVisible]);
 
-  // Only play while the pointer is over a visible video.
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-
-    if (isVisible && userPlaying) {
-      void video.play().catch(() => {});
-    } else {
+    if (isVisible && userPlaying) void video.play().catch(() => {});
+    else {
       video.pause();
       video.currentTime = 0;
     }
-  }, [isVisible, userPlaying, loaded]);
+  }, [isVisible, userPlaying, shouldLoad]);
 
   return (
     <div
@@ -85,7 +69,7 @@ export function LazyPortfolioVideo({
         </div>
       )}
 
-      {shouldLoad && (
+      {shouldLoad && !error && (
         <video
           ref={videoRef}
           src={src}
@@ -101,7 +85,7 @@ export function LazyPortfolioVideo({
         />
       )}
 
-      {error && (
+      {shouldLoad && error && (
         <div className="portfolio-image-error">
           Video could not be loaded
         </div>

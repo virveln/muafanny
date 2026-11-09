@@ -1,8 +1,8 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { createPortal } from "react-dom";
-import { X, ArrowLeft, ArrowRight, Play } from "lucide-react";
+import { X, ArrowLeft, ArrowRight, Play, Pause } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
 import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
 import { CategorySwitch } from "../features/CategorySwitch";
@@ -47,6 +47,10 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const [userPlayingVideos, setUserPlayingVideos] = useState<Set<string>>(
     () => new Set(),
   );
+  const lightboxVideoRef = useRef<HTMLVideoElement>(null);
+  const lightboxControlsTimeout = useRef<number | null>(null);
+  const [isLightboxVideoPlaying, setIsLightboxVideoPlaying] = useState(false);
+  const [showLightboxVideoControls, setShowLightboxVideoControls] = useState(true);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 560px)");
@@ -63,7 +67,39 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     ? { x: zoomFocus.x, y: zoomFocus.y }
     : { x: 50, y: 50 };
 
+  function clearLightboxControlsTimeout() {
+    if (lightboxControlsTimeout.current !== null) {
+      window.clearTimeout(lightboxControlsTimeout.current);
+    }
+  }
+
+  function hideLightboxControlsSoon() {
+    clearLightboxControlsTimeout();
+    lightboxControlsTimeout.current = window.setTimeout(() => {
+      setShowLightboxVideoControls(false);
+    }, 300);
+  }
+
+  function revealLightboxControls() {
+    setShowLightboxVideoControls(true);
+    if (isLightboxVideoPlaying) hideLightboxControlsSoon();
+  }
+
+  function resetLightboxVideoControls() {
+    clearLightboxControlsTimeout();
+    setIsLightboxVideoPlaying(false);
+    setShowLightboxVideoControls(true);
+  }
+
+  function toggleLightboxVideo() {
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+    if (video.paused) void video.play().catch(() => {});
+    else video.pause();
+  }
+
   function showPrevious() {
+    resetLightboxVideoControls();
     setActiveIndex((current) =>
       current === null
         ? null
@@ -72,14 +108,10 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   }
 
   function showNext() {
+    resetLightboxVideoControls();
     setActiveIndex((current) =>
       current === null ? null : (current + 1) % media.length,
     );
-  }
-
-  function playVideo(video: HTMLVideoElement) {
-    video.muted = true;
-    void video.play().catch(() => {});
   }
 
   function toggleVideo(
@@ -88,50 +120,50 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   ) {
     event.stopPropagation();
 
-    const video = event.currentTarget
-      .closest(".portfolio-item")
-      ?.querySelector("video");
+    setUserPlayingVideos((current) => {
+      const next = new Set(current);
+      if (next.has(src)) next.delete(src);
+      else next.add(src);
+      return next;
+    });
+  }
 
-    if (!video) return;
+  function openMedia(index: number) {
+    resetLightboxVideoControls();
+    setActiveIndex(index);
+  }
 
-    if (video.paused) {
-      playVideo(video);
-      setUserPlayingVideos((current) => new Set(current).add(src));
-    } else {
-      video.pause();
-      setUserPlayingVideos((current) => {
-        const next = new Set(current);
-        next.delete(src);
-        return next;
-      });
-    }
+  function closeLightbox() {
+    resetLightboxVideoControls();
+    setActiveIndex(null);
   }
 
   useEffect(() => {
     if (activeIndex === null) return;
 
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setActiveIndex(null);
+      if (event.key === "Escape") {
+        resetLightboxVideoControls();
+        setActiveIndex(null);
+      }
       if (event.key === "ArrowLeft") {
+        resetLightboxVideoControls();
         setActiveIndex((current) =>
           current === null ? null : (current - 1 + media.length) % media.length,
         );
       }
       if (event.key === "ArrowRight") {
+        resetLightboxVideoControls();
         setActiveIndex((current) =>
           current === null ? null : (current + 1) % media.length,
         );
       }
     }
 
-    const previousOverflow = document.body.style.overflow;
-
     document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
     };
   }, [activeIndex, media.length]);
 
@@ -183,12 +215,19 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           className={`portfolio-item${userPlayingVideos.has(item.src) ? " is-playing" : ""}`}
           key={item.src}
           onMouseEnter={() => {
-            if (item.type === "video" && isVisible) {
+            if (
+              item.type === "video" &&
+              isVisible &&
+              window.matchMedia("(hover: hover) and (pointer: fine)").matches
+            ) {
               setUserPlayingVideos((current) => new Set(current).add(item.src));
             }
           }}
           onMouseLeave={() => {
-            if (item.type === "video") {
+            if (
+              item.type === "video" &&
+              window.matchMedia("(hover: hover) and (pointer: fine)").matches
+            ) {
               setUserPlayingVideos((current) => {
                 const next = new Set(current);
                 next.delete(item.src);
@@ -219,7 +258,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           <button
             className="portfolio-open"
             type="button"
-            onClick={() => setActiveIndex(index)}
+            onClick={() => openMedia(index)}
             aria-label={`Open ${item.type}: ${item.filename}`}
           />
 
@@ -292,7 +331,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           <button
             className="lightbox-close"
             type="button"
-            onClick={() => setActiveIndex(null)}
+            onClick={closeLightbox}
             aria-label="Close viewer"
           >
             <X size={26} />
@@ -309,7 +348,11 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             </span>
           </button>
 
-          <figure className="lightbox-figure">
+          <figure
+            className="lightbox-figure"
+            onPointerMove={revealLightboxControls}
+            onPointerDown={revealLightboxControls}
+          >
             {activeMedia.type === "image" ? (
               <button
                 className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
@@ -328,9 +371,11 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 />
               </button>
             ) : (
+              <>
               <video
                 key={activeMedia.src}
                 ref={(video) => {
+                  lightboxVideoRef.current = video;
                   if (video) {
                     video.muted = true;
                     video.defaultMuted = true;
@@ -340,10 +385,20 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 src={activeMedia.src}
                 muted
                 playsInline
-                controls
                 loop
                 autoPlay
                 preload="auto"
+                onClick={toggleLightboxVideo}
+                onPlay={() => {
+                  setIsLightboxVideoPlaying(true);
+                  setShowLightboxVideoControls(true);
+                  hideLightboxControlsSoon();
+                }}
+                onPause={() => {
+                  clearLightboxControlsTimeout();
+                  setIsLightboxVideoPlaying(false);
+                  setShowLightboxVideoControls(true);
+                }}
                 onVolumeChange={(event) => {
                   const video = event.currentTarget;
 
@@ -353,6 +408,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                   }
                 }}
               />
+              <button
+                className={`lightbox-video-toggle${showLightboxVideoControls ? "" : " is-hidden"}`}
+                type="button"
+                aria-label={isLightboxVideoPlaying ? "Pause video" : "Play video"}
+                onClick={toggleLightboxVideo}
+              >
+                {isLightboxVideoPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
+              </button>
+              </>
             )}
           </figure>
 

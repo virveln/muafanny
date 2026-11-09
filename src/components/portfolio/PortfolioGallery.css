@@ -42,12 +42,6 @@
   opacity: 1;
 }
 
-@media (hover: none) {
-  .portfolio-caption {
-    opacity: 1;
-  }
-}
-
 .portfolio-item > img,
 .portfolio-item > video {
   display: block;
@@ -112,13 +106,15 @@
   pointer-events: auto;
 }
 
-@media (hover: none) and (pointer: coarse) {
-  .portfolio-item.is-playing .portfolio-video-play {
-    opacity: 0;
-  }
+.portfolio-item.is-playing .portfolio-video-play {
+  opacity: 0;
 }
 
 /* Full-screen lightbox */
+body:has(.portfolio-lightbox) {
+  overflow: hidden;
+}
+
 .portfolio-lightbox {
   position: fixed;
   z-index: 1000;
@@ -149,7 +145,8 @@
 }
 
 .lightbox-figure > video,
-.lightbox-image-wrap {
+.lightbox-image-wrap,
+.lightbox-video-toggle {
   pointer-events: auto;
 }
 
@@ -160,6 +157,40 @@
   width: auto;
   height: auto;
   object-fit: contain;
+}
+
+.lightbox-video-toggle {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  width: 56px;
+  height: 56px;
+  place-items: center;
+  padding: 0;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgb(255 255 255 / 75%);
+  border-radius: 50%;
+  background: rgb(25 20 18 / 60%);
+  color: #fffefa;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 220ms ease, background-color 180ms ease;
+}
+
+.lightbox-video-toggle:hover {
+  background: var(--site-accent);
+}
+
+.lightbox-video-toggle.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.lightbox-figure:has(> video:hover, > .lightbox-video-toggle:hover) .lightbox-video-toggle {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Zoomable image: same starting fit and fixed zoom for every image */
@@ -290,6 +321,7 @@
 .portfolio-open:focus-visible,
 .portfolio-video-play:focus-visible,
 .lightbox-image-wrap:focus-visible,
+.lightbox-video-toggle:focus-visible,
 .lightbox-close:focus-visible,
 .lightbox-side:focus-visible {
   outline: 2px solid var(--site-accent);
@@ -397,6 +429,7 @@
   .portfolio-video-container video,
   .portfolio-video-play,
   .lightbox-image,
+  .lightbox-video-toggle,
   .lightbox-close,
   .lightbox-arrow-icon,
   .category-switch__button {
