@@ -120,6 +120,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   ) {
     event.stopPropagation();
 
+    const video = event.currentTarget.parentElement?.querySelector("video");
+    if (video) {
+      if (video.paused) void video.play().catch(() => {});
+      else video.pause();
+    }
+
     setUserPlayingVideos((current) => {
       const next = new Set(current);
       if (next.has(src)) next.delete(src);

@@ -72,7 +72,10 @@ export function SiteFooter() {
             © {currentYear} Fanny Ehrnholm.
           </small>
           <small>
-            Design & utveckling av Jessica Hvirfvel
+            Design & utveckling av{" "} 
+            <Link className="designed-by-link" to="https://virveln.github.io/" target="_blank" rel="noopener noreferrer" >
+              Jessica Hvirfvel
+            </Link>
           </small>
         </div>
 
