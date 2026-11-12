@@ -217,6 +217,17 @@ export function ContactFormFields({
                   headerControlsOrder={["level", "previous", "next"]}
                   locale="sv"
                 />
+                {selectedDates.length > 0 && (
+                  <div className="contact-form__date-picker-actions">
+                    <button
+                      className="contact-form__date-clear"
+                      type="button"
+                      onClick={() => field.onChange([])}
+                    >
+                      {content.fields.eventDates.clearLabel}
+                    </button>
+                  </div>
+                )}
               </Popover.Dropdown>
             </Popover>
           )}

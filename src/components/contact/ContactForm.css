@@ -225,6 +225,12 @@
   color: var(--site-placeholder);
 }
 
+.contact-form__date-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
 .contact-form__date-field.has-error .contact-form__date-input:focus,
 .contact-form__date-field.has-error .contact-form__date-input:focus-visible,
 .contact-form__date-field.has-error .contact-form__date-input[data-expanded] {
@@ -396,8 +402,9 @@
   line-height: 1.8;
 }
 
-.text-button {
-  padding: 8px 0;
+.contact-form__date-clear {
+  padding: 2px 0;
+  margin-right: 13px; 
   border: 0;
   border-bottom: 1px solid var(--site-accent);
   background: transparent;
@@ -408,11 +415,11 @@
   transition: color 180ms ease;
 }
 
-.text-button:hover {
+.contact-form__date-clear:hover {
   color: var(--site-accent);
 }
 
-.text-button:focus-visible {
+.contact-form__date-clear:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 4px;
 }
@@ -580,7 +587,7 @@
 @media (prefers-reduced-motion: reduce) {
   .contact-form *,
   .success-message *,
-  .text-button {
+  .contact-form__date-clear {
     transition: none !important;
     animation: none !important;
   }

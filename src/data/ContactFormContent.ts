@@ -41,6 +41,7 @@ export const contactFormContent = {
       placeholder: "Välj datum",
       flexibleLabel: "Datum inte bestämt",
       emptyLabel: "Inget datum valt",
+      clearLabel: "Rensa valda datum",
     },
 
     message: {

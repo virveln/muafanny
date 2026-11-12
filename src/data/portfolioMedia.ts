@@ -14,14 +14,14 @@ const mediaDescriptions: Partial<Record<PortfolioCategory, Record<string, string
     "andrea.webp": "Andrea Norrman inför kollektionssläpp",
   },
   production: {
-    "allsangen.webp": "Allsång på Skansen",
+    "allsangen.webp": "Inför allsång på Skansen",
     "allsang-hedlund.webp": "Lina Hedlund inför Allsång på Skansen",
-    "IMG_9189.MOV": "Allsång på Skansen",
+    "IMG_9189.mp4": "Inför allsång på Skansen",
     "morgonstudio-musikpanel1.JPG": "Morgonstudion musikpanelen",
     "morgonstudio-musikpanel2.JPG": "Morgonstudion musikpanelen",
     "svt-skansen-nationaldagen.webp": "Fouad Youcefi & Anne Lundberg inför nationaldagen på Skansen",
     "helia-spelning-eden.JPG": "Helia inför spelning på Eden",
-    "helia-spelning-eden.MOV": "Helia inför spelning på Eden",
+    "helia-spelning-eden.mp4": "Helia inför spelning på Eden",
   },
 };
 
