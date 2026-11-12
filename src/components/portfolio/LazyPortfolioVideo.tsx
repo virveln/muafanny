@@ -53,7 +53,7 @@ export function LazyPortfolioVideo({
       video.pause();
       video.currentTime = 0;
     }
-  }, [isVisible, userPlaying, shouldLoad]);
+  }, [isVisible, userPlaying]);
 
   return (
     <div
@@ -78,7 +78,7 @@ export function LazyPortfolioVideo({
           muted
           playsInline
           loop
-          preload="auto"
+          preload={userPlaying ? "auto" : "metadata"}
           aria-label={`Portfolio video: ${filename}`}
           onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}

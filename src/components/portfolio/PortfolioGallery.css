@@ -106,8 +106,10 @@
   pointer-events: auto;
 }
 
-.portfolio-item.is-playing .portfolio-video-play {
-  opacity: 0;
+@media (hover: none) and (pointer: coarse) {
+  .portfolio-item.is-playing .portfolio-video-play {
+    opacity: 0;
+  }
 }
 
 /* Full-screen lightbox */
@@ -142,6 +144,7 @@ body:has(.portfolio-lightbox) {
   margin: 0;
   overflow: hidden;
   pointer-events: none;
+  touch-action: pan-y pinch-zoom;
 }
 
 .lightbox-figure > video,
@@ -157,40 +160,36 @@ body:has(.portfolio-lightbox) {
   width: auto;
   height: auto;
   object-fit: contain;
+  touch-action: pan-y pinch-zoom;
 }
 
 .lightbox-video-toggle {
   position: absolute;
-  z-index: 3;
+  z-index: 2;
   top: 50%;
   left: 50%;
   display: grid;
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   place-items: center;
   padding: 0;
   transform: translate(-50%, -50%);
-  border: 1px solid rgb(255 255 255 / 75%);
+  border: 1px solid rgb(255 254 250 / 25%);
   border-radius: 50%;
-  background: rgb(25 20 18 / 60%);
-  color: #fffefa;
+  background: rgb(255 254 250 / 25%);
+  color: var(--site-paper);
   cursor: pointer;
   opacity: 1;
   transition: opacity 220ms ease, background-color 180ms ease;
 }
 
 .lightbox-video-toggle:hover {
-  background: var(--site-accent);
+  background: rgb(255 254 250 / 45%);
 }
 
 .lightbox-video-toggle.is-hidden {
   opacity: 0;
   pointer-events: none;
-}
-
-.lightbox-figure:has(> video:hover, > .lightbox-video-toggle:hover) .lightbox-video-toggle {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 /* Zoomable image: same starting fit and fixed zoom for every image */
@@ -208,6 +207,13 @@ body:has(.portfolio-lightbox) {
   background: transparent;
   color: inherit;
   cursor: zoom-in;
+  touch-action: pan-y pinch-zoom;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .lightbox-image-wrap {
+    cursor: default;
+  }
 }
 
 .lightbox-image {
@@ -244,31 +250,29 @@ body:has(.portfolio-lightbox) {
   text-align: center;
 }
 
-/* Side navigation click zones */
+/* Side navigation buttons have a large touch target around the visible arrow. */
 .lightbox-side {
   position: absolute;
   z-index: 2;
-  top: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  width: 20%;
-  padding: 0 24px;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  padding: 0;
+  transform: translateY(-50%);
   border: 0;
   background: transparent;
   color: #fffefa;
   cursor: pointer;
-  pointer-events: none;
 }
 
 .lightbox-side--previous {
   left: 0;
-  justify-content: flex-start;
 }
 
 .lightbox-side--next {
   right: 0;
-  justify-content: flex-end;
 }
 
 .lightbox-arrow-icon {
@@ -276,16 +280,13 @@ body:has(.portfolio-lightbox) {
   place-items: center;
   width: 48px;
   height: 48px;
-  border: 1px solid rgb(255 255 255 / 35%);
+  border: 1px solid transparent;
   border-radius: 50%;
-  background: rgb(25 20 18 / 45%);
   transition: background 180ms ease, color 180ms ease;
-  pointer-events: auto;
 }
 
 .lightbox-side:hover .lightbox-arrow-icon {
-  background: #fffefa;
-  color: var(--site-primary);
+  color: var(--site-accent);
 }
 
 /* Close button and counter */
@@ -299,16 +300,15 @@ body:has(.portfolio-lightbox) {
   width: 48px;
   height: 48px;
   padding: 0;
-  border: 1px solid rgb(255 255 255 / 35%);
+  border: 1px solid transparent;
   border-radius: 50%;
-  background: rgb(25 20 18 / 45%);
+  background: transparent;
   color: #fffefa;
   cursor: pointer;
 }
 
 .lightbox-close:hover {
-  background: #fffefa;
-  color: var(--site-primary);
+  color: var(--site-accent);
 }
 
 .lightbox-counter {
@@ -396,12 +396,8 @@ body:has(.portfolio-lightbox) {
   }
 
   .lightbox-side {
-    top: 50%;
-    bottom: auto;
-    width: 52px;
-    height: 56px;
-    padding: 0 4px;
-    transform: translateY(-50%);
+    width: 84px;
+    height: 84px;
   }
 
   .lightbox-arrow-icon {

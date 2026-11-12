@@ -1,8 +1,8 @@
 
 import { useEffect, useRef, useState } from "react";
-import type { MouseEvent } from "react";
+import type { MouseEvent, PointerEvent as ReactPointerEvent } from "react";
 import { createPortal } from "react-dom";
-import { X, ArrowLeft, ArrowRight, Play, Pause } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
 import { LazyPortfolioVideo } from "./LazyPortfolioVideo";
 import { CategorySwitch } from "../features/CategorySwitch";
@@ -36,6 +36,9 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const [isMobileLayout, setIsMobileLayout] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(max-width: 560px)").matches,
   );
+  const [isTouchInput, setIsTouchInput] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(hover: none), (pointer: coarse)").matches,
+  );
   const [category, setCategory] = useState<PortfolioCategory>("wedding");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [zoomFocus, setZoomFocus] = useState<{
@@ -49,6 +52,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   );
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
   const lightboxControlsTimeout = useRef<number | null>(null);
+  const lightboxSwipeStart = useRef<{ pointerId: number; x: number; y: number } | null>(null);
   const [isLightboxVideoPlaying, setIsLightboxVideoPlaying] = useState(false);
   const [showLightboxVideoControls, setShowLightboxVideoControls] = useState(true);
 
@@ -58,6 +62,14 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
 
     mediaQuery.addEventListener("change", updateLayout);
     return () => mediaQuery.removeEventListener("change", updateLayout);
+  }, []);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+    const updateTouchInput = () => setIsTouchInput(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", updateTouchInput);
+    return () => mediaQuery.removeEventListener("change", updateTouchInput);
   }, []);
 
   const media = category === "wedding" ? weddingMedia : productionMedia;
@@ -80,7 +92,14 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     }, 300);
   }
 
-  function revealLightboxControls() {
+  function revealLightboxControls(event: ReactPointerEvent<HTMLElement>) {
+    if (
+      !(event.target instanceof Element) ||
+      !event.target.closest("video, .lightbox-video-toggle")
+    ) {
+      return;
+    }
+
     setShowLightboxVideoControls(true);
     if (isLightboxVideoPlaying) hideLightboxControlsSoon();
   }
@@ -114,17 +133,41 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     );
   }
 
+  function startLightboxSwipe(event: ReactPointerEvent<HTMLElement>) {
+    if (event.pointerType !== "touch" || !event.isPrimary) return;
+    if (
+      event.target instanceof Element &&
+      event.target.closest(".lightbox-video-toggle")
+    ) {
+      return;
+    }
+
+    lightboxSwipeStart.current = {
+      pointerId: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+    };
+  }
+
+  function finishLightboxSwipe(event: ReactPointerEvent<HTMLElement>) {
+    const start = lightboxSwipeStart.current;
+    lightboxSwipeStart.current = null;
+    if (!start || event.pointerType !== "touch" || event.pointerId !== start.pointerId) return;
+
+    const deltaX = event.clientX - start.x;
+    const deltaY = event.clientY - start.y;
+    if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
+
+    event.preventDefault();
+    if (deltaX < 0) showNext();
+    else showPrevious();
+  }
+
   function toggleVideo(
     event: MouseEvent<HTMLButtonElement>,
     src: string,
   ) {
     event.stopPropagation();
-
-    const video = event.currentTarget.parentElement?.querySelector("video");
-    if (video) {
-      if (video.paused) void video.play().catch(() => {});
-      else video.pause();
-    }
 
     setUserPlayingVideos((current) => {
       const next = new Set(current);
@@ -257,7 +300,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               width={item.width}
               height={item.height}
               isVisible={isVisible}
-              userPlaying={!isMobileLayout && userPlayingVideos.has(item.src)}
+              userPlaying={userPlayingVideos.has(item.src)}
             />
           )}
 
@@ -350,7 +393,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             aria-label="Previous item"
           >
             <span className="lightbox-arrow-icon">
-              <ArrowLeft size={26} />
+              <ChevronLeft size={26} />
             </span>
           </button>
 
@@ -358,24 +401,47 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             className="lightbox-figure"
             onPointerMove={revealLightboxControls}
             onPointerDown={revealLightboxControls}
+            onPointerDownCapture={startLightboxSwipe}
+            onPointerUpCapture={finishLightboxSwipe}
+            onPointerCancelCapture={() => {
+              lightboxSwipeStart.current = null;
+            }}
           >
             {activeMedia.type === "image" ? (
-              <button
-                className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
-                type="button"
-                aria-label={isZoomed ? "Zoom out" : "Zoom in on image"}
-                onClick={toggleImageZoom}
-                style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
-              >
-                <img
-                  key={activeMedia.src}
-                  src={activeMedia.src}
-                  alt={activeMedia.filename}
-                  className="lightbox-image"
-                  decoding="async"
-                  draggable={false}
-                />
-              </button>
+              isTouchInput ? (
+                <div
+                  className="lightbox-image-wrap"
+                  role="img"
+                  aria-label={activeMedia.filename}
+                  style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
+                >
+                  <img
+                    key={activeMedia.src}
+                    src={activeMedia.src}
+                    alt={activeMedia.filename}
+                    className="lightbox-image"
+                    decoding="async"
+                    draggable={false}
+                  />
+                </div>
+              ) : (
+                <button
+                  className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
+                  type="button"
+                  aria-label={isZoomed ? "Zoom out" : "Zoom in on image"}
+                  onClick={toggleImageZoom}
+                  style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
+                >
+                  <img
+                    key={activeMedia.src}
+                    src={activeMedia.src}
+                    alt={activeMedia.filename}
+                    className="lightbox-image"
+                    decoding="async"
+                    draggable={false}
+                  />
+                </button>
+              )
             ) : (
               <>
               <video
@@ -439,7 +505,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             aria-label="Next item"
           >
             <span className="lightbox-arrow-icon">
-              <ArrowRight size={26} />
+              <ChevronRight size={26} />
             </span>
           </button>
 

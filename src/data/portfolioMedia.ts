@@ -15,7 +15,7 @@ const mediaDescriptions: Partial<Record<PortfolioCategory, Record<string, string
   },
   production: {
     "allsangen.webp": "Allsång på Skansen",
-    "allsang-hedlund.webp": "Linda Hedlund inför Allsång på Skansen",
+    "allsang-hedlund.webp": "Lina Hedlund inför Allsång på Skansen",
     "IMG_9189.MOV": "Allsång på Skansen",
     "morgonstudio-musikpanel1.JPG": "Morgonstudion musikpanelen",
     "morgonstudio-musikpanel2.JPG": "Morgonstudion musikpanelen",
