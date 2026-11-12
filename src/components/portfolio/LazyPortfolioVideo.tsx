@@ -8,6 +8,7 @@ type LazyPortfolioVideoProps = {
   height?: number;
   isVisible: boolean;
   userPlaying: boolean;
+  isTouchInput: boolean;
 };
 
 export function LazyPortfolioVideo({
@@ -17,6 +18,7 @@ export function LazyPortfolioVideo({
   height,
   isVisible,
   userPlaying,
+  isTouchInput,
 }: LazyPortfolioVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -78,7 +80,7 @@ export function LazyPortfolioVideo({
           muted
           playsInline
           loop
-          preload={userPlaying ? "auto" : "metadata"}
+          preload={userPlaying || isTouchInput ? "auto" : "metadata"}
           aria-label={`Portfolio video: ${filename}`}
           onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}

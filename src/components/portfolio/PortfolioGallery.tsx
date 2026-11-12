@@ -301,6 +301,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               height={item.height}
               isVisible={isVisible}
               userPlaying={userPlayingVideos.has(item.src)}
+              isTouchInput={isTouchInput}
             />
           )}
 
