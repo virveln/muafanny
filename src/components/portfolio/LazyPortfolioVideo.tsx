@@ -51,11 +51,14 @@ export function LazyPortfolioVideo({
     const video = videoRef.current;
     if (!video) return;
     if (isVisible && userPlaying) void video.play().catch(() => {});
+    else if (isVisible && isTouchInput && !loaded) {
+      void video.play().catch(() => {});
+    }
     else {
       video.pause();
       video.currentTime = 0;
     }
-  }, [isVisible, userPlaying]);
+  }, [isVisible, isTouchInput, loaded, userPlaying]);
 
   return (
     <div
@@ -82,7 +85,10 @@ export function LazyPortfolioVideo({
           loop
           preload={userPlaying || isTouchInput ? "auto" : "metadata"}
           aria-label={`Portfolio video: ${filename}`}
-          onLoadedData={() => setLoaded(true)}
+          onLoadedData={(event) => {
+            setLoaded(true);
+            if (isTouchInput && !userPlaying) event.currentTarget.pause();
+          }}
           onError={() => setError(true)}
         />
       )}
