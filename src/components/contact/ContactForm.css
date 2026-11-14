@@ -365,6 +365,13 @@
   line-height: 1.6;
 }
 
+.contact-form__submit-error a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ==============================
    SUCCESS STATE
 ============================== */

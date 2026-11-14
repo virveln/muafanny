@@ -9,6 +9,7 @@ import { Send, Check  } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 
 import { formatSelectedDates } from "../../utils/formatSelectedDates";
+import { contactDetails } from "../../data/contactDetails";
 
 import {
   contactSchema,
@@ -23,7 +24,7 @@ import "./ContactForm.css";
 const FORMWARD_ENDPOINT =
   "https://forms.formward.eu/f/3ec53f97-7e50-4852-87c3-3478cabfd2a9";
 
-type FormStatus = "idle" | "sending" | "success" | "error";
+type FormStatus = "idle" | "sending" | "success" | "error" | "limit";
 
 const defaultValues: ContactFormData = {
   givenName: "",
@@ -104,6 +105,17 @@ export function ContactForm() {
     });
 
     const result = await response.json();
+    const isLimitReached =
+      response.status === 402 &&
+      typeof result === "object" &&
+      result !== null &&
+      "error" in result &&
+      result.error === "submission limit reached";
+
+    if (isLimitReached) {
+      setStatus("limit");
+      return;
+    }
 
     if (!response.ok || !result?.ok) {
       throw new Error("Formuläret kunde inte skickas.");
@@ -192,9 +204,19 @@ export function ContactForm() {
 
       {/* ERROR */}
 
-      {status === "error" && (
-        <Alert color="red" role="alert">
-          {content.errors.submit}
+      {(status === "error" || status === "limit") && (
+        <Alert className="contact-form__submit-error" color="red" role="alert">
+          {status === "limit" ? (
+            <>
+              {content.errors.limit}{" "}
+              <a href={contactDetails.email.href}>
+                {contactDetails.email.value}
+              </a>
+              .
+            </>
+          ) : (
+            content.errors.submit
+          )}
         </Alert>
       )}
 
