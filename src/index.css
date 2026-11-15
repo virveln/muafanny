@@ -25,6 +25,8 @@
   --site-paper: #fffefa;
   --site-error: var(--site-accent);
   --site-placeholder: #99918b;
+  --site-placeholder: #ada9a5;
+  --site-input-field: #fefbf8;
 
   --ring: var(--site-accent);
   --border: #dfd5ce;
@@ -224,6 +226,19 @@ button:focus-visible,
 .mantine-focus-auto:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 4px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px var(--site-background) inset !important;
+  box-shadow: 0 0 0 1000px var(--site-background) inset !important;
+
+  -webkit-text-fill-color: var(--site-primary) !important;
+  caret-color: var(--site-primary);
+
+  transition: background-color 9999s ease-in-out 0s;
 }
 
 /* Respect reduced-motion preferences */

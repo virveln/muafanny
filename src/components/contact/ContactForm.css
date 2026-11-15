@@ -9,6 +9,10 @@
   width: 100%;
 }
 
+.contact-form > :last-child {
+  margin-top: -12px;
+}
+
 .form-row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -16,9 +20,9 @@
 }
 
 .contact-form__field {
-  display: grid;
+  position: relative;
+  display: block;
   min-width: 0;
-  gap: 10px;
 }
 
 
@@ -27,13 +31,29 @@
 ============================== */
 
 .contact-form .contact-form__label {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 7px;
+  padding: 0 6px;
   margin: 0;
-  color: var(--site-primary);
-  font-family: inherit;
-  font-size: 0.72rem;
+  transform: translateY(-50%);
+  background: transparent;
+  color: var(--site-accent);
+  font-size: 0.6rem;
   font-weight: 500;
   letter-spacing: 0.13em;
   text-transform: uppercase;
+  line-height: 1.2;
+  pointer-events: none;
+}
+
+.contact-form .contact-form__label::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--site-input-field);
 }
 
 /* ==============================
@@ -56,7 +76,7 @@
   padding: 0 13px;
   
   outline: none;
-  background: #fefbf8;
+  background: var(--site-input-field);
   color: var(--site-primary);
 
   font-family: inherit;
@@ -91,6 +111,8 @@
 
 .contact-form .contact-form__input::placeholder {
   color: var(--site-placeholder);
+  /* font-weight: 300;
+  font-size: 0.7rem; */
   opacity: 1;
 }
 
@@ -178,7 +200,7 @@
   padding: 0 13px;
   margin-top: 10px;
   margin-bottom: 5px;
-  background: #fefbf8;
+  background: var(--site-input-field);
   color: var(--site-primary);
 
   font-family: inherit;
@@ -194,9 +216,17 @@
     background 180ms ease;
 }
 
+.contact-form__date-field {
+  position: relative;
+}
+
+.contact-form__date-field > .contact-form__label {
+  top: 10px;
+}
+
 .contact-form .contact-form__date-input:hover {
   border-color: var(--site-muted);
-  background: #fefbf8;
+  background: var(--site-input-field);
 }
 
 .contact-form .contact-form__date-input:active {
@@ -245,9 +275,12 @@
 .contact-form .contact-form__date-input .mantine-Button-label {
   flex: 1;
   text-align: left;
-  color: var(--site-placeholder);
+  /* color: var(--site-placeholder); */
 }
 
+.contact-form__date-input.is-placeholder {
+  color: var(--site-placeholder);
+}
 /* ==============================
    DATE PICKER / POPOVER
 ============================== */
@@ -278,16 +311,6 @@
   color: var(--site-muted);
   font-size: 0.75rem;
   line-height: 1.5;
-}
-
-/* ==============================
-   MESSAGE / CHARACTER COUNT
-============================== */
-
-.contact-form__message-field {
-  display: grid;
-  gap: 6px;
-  min-width: 0;
 }
 
 /* ==============================
@@ -523,6 +546,11 @@
 @media (max-width: 600px) {
   .contact-form {
     gap: 22px;
+  }
+
+  .contact-form .contact-form__input,
+  .contact-form .contact-form__date-input {
+    font-size: 16px;
   }
 
   .form-row {

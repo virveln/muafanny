@@ -182,16 +182,6 @@ export function ContactForm() {
         dateFlexible={dateFlexible}
       />
 
-      {/* PRIVACY */}
-
-      <div className="contact-form__privacy">
-        <p>
-          {content.privacy.text}{" "}
-          <Link className="text-link-sm" to={content.privacy.linkTo} target="_blank" rel="noopener noreferrer">
-            {content.privacy.linkText}
-          </Link>.
-        </p>
-      </div>
 
       {/* ERROR */}
 
@@ -224,6 +214,18 @@ export function ContactForm() {
       >
         {content.submit.label}
       </Button>
+
+      
+      {/* PRIVACY */}
+
+      <div className="contact-form__privacy">
+        <p>
+          {content.privacy.text}{" "}
+          <Link className="text-link-sm" to={content.privacy.linkTo} target="_blank" rel="noopener noreferrer">
+            {content.privacy.linkText}
+          </Link>.
+        </p>
+      </div>
     </form>
   );
 }

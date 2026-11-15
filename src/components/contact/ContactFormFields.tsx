@@ -42,11 +42,6 @@ const calendarClassNames = {
   weekday: "mantine-calendar__weekday",
 };
 
-const errorProps = {
-  className: "contact-form__error-slot",
-  "aria-live": "polite" as const,
-};
-
 export function ContactFormFields({
   register,
   control,
@@ -72,10 +67,14 @@ export function ContactFormFields({
             label={content.fields.givenName.label}
             placeholder={content.fields.givenName.placeholder}
             autoComplete="given-name"
-            error={errors.givenName?.message}
-            errorProps={errorProps}
             {...register("givenName")}
+            aria-invalid={!!errors.givenName}
+            aria-describedby={errors.givenName ? "givenName-error" : undefined}
           />
+
+          <div id="givenName-error" className="contact-form__error-slot" aria-live="polite">
+            {errors.givenName?.message}
+          </div>
         </div>
 
         <div className={`contact-form__field-group ${errors.familyName ? "has-error" : ""}`}>
@@ -85,10 +84,14 @@ export function ContactFormFields({
             label={content.fields.familyName.label}
             placeholder={content.fields.familyName.placeholder}
             autoComplete="family-name"
-            error={errors.familyName?.message}
-            errorProps={errorProps}
             {...register("familyName")}
+            aria-invalid={!!errors.familyName}
+            aria-describedby={errors.familyName ? "familyName-error" : undefined}
           />
+
+          <div id="familyName-error" className="contact-form__error-slot" aria-live="polite">
+            {errors.familyName?.message}
+          </div>
         </div>
       </div>
 
@@ -103,10 +106,14 @@ export function ContactFormFields({
             type="email"
             autoComplete="email"
             placeholder={content.fields.email.placeholder}
-            error={errors.email?.message}
-            errorProps={errorProps}
             {...register("email")}
+            aria-invalid={!!errors.email}
+            aria-describedby={errors.email ? "email-error" : undefined}
           />
+
+          <div id="email-error" className="contact-form__error-slot" aria-live="polite">
+            {errors.email?.message}
+          </div>
         </div>
         
         <div className={`contact-form__field-group ${errors.phone ? "has-error" : ""}`}>
@@ -117,10 +124,14 @@ export function ContactFormFields({
             type="tel"
             autoComplete="tel"
             placeholder={content.fields.phone.placeholder}
-            error={errors.phone?.message}
-            errorProps={errorProps}
             {...register("phone")}
+            aria-invalid={!!errors.phone}
+            aria-describedby={errors.phone ? "phone-error" : undefined}
           />
+
+          <div id="phone-error" className="contact-form__error-slot" aria-live="polite">
+            {errors.phone?.message}
+          </div>
         </div>
       </div>
 
@@ -137,21 +148,24 @@ export function ContactFormFields({
               label={content.fields.occasion.label}
               placeholder={content.fields.occasion.placeholder}
               data={[...content.fields.occasion.options]}
-              error={errors.occasion?.message}
-              errorProps={errorProps}
               value={field.value}
               onChange={(value) => field.onChange(value ?? "")}
               onBlur={field.onBlur}
+              aria-invalid={!!errors.occasion}
+              aria-describedby={errors.occasion ? "occasion-error" : undefined}
             />
           )}
         />
 
+        <div id="occasion-error" className="contact-form__error-slot" aria-live="polite">
+          {errors.occasion?.message}
+        </div>
       </div>
 
       {/* DATE PICKER */}
 
       <div className={`contact-form__date-field ${errors.eventDates ? "has-error" : ""}`}>
-        <label className="contact-form__label" id="eventDates-label">
+        <label className="contact-form__label" id="eventDates-label" htmlFor="eventDates">
           {content.fields.eventDates.label}
         </label>
 
@@ -171,7 +185,7 @@ export function ContactFormFields({
               <Popover.Target>
                 <Button
                   id="eventDates"
-                  className="border-line contact-form__date-input"
+                  className={`border-line contact-form__date-input ${selectedDateLabel ? "has-value" : "is-placeholder"}`}
                   variant="default"
                   type="button"
                   fullWidth
@@ -234,10 +248,14 @@ export function ContactFormFields({
           minRows={5}
           maxLength={content.fields.message.maxLength}
           placeholder={content.fields.message.placeholder}
-          error={errors.message?.message}
-          errorProps={errorProps}
           {...register("message")}
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? "message-error" : undefined}
         />
+
+        <div id="message-error" className="contact-form__error-slot" aria-live="polite">
+          {errors.message?.message}
+        </div>
       </div>
     </>
   );
