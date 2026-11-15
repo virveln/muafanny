@@ -72,9 +72,9 @@ export const contactFormContent = {
 
   errors: {
     submit:
-      "Något gick fel när förfrågan skulle skickas. Dina uppgifter finns kvar. Försök igen.",
+      "Något gick fel när förfrågan skulle skickas. Dina uppgifter finns kvar. Försök igen eller skicka in din förfrågan via mejl.",
     limit:
-      "Formuläret kan tyvärr inte ta emot fler förfrågningar just nu. Skicka gärna din förfrågan via e-post till muafanny.se som finns länkat i detaljer.",
+      "Formuläret kan tyvärr inte behandla fler förfrågningar just nu. Skicka gärna din förfrågan direkt via e-post till muafanny.se",
   },
 
   spamProtection: {

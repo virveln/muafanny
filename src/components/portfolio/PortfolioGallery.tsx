@@ -1,6 +1,10 @@
 
 import { useEffect, useRef, useState } from "react";
-import type { MouseEvent, PointerEvent as ReactPointerEvent } from "react";
+import type {
+  MouseEvent,
+  PointerEvent as ReactPointerEvent,
+  TouchEvent as ReactTouchEvent,
+} from "react";
 import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight, Play, Pause } from "lucide-react";
 import { LazyPortfolioImage } from "./LazyPortfolioImage";
@@ -52,7 +56,20 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   );
   const lightboxVideoRef = useRef<HTMLVideoElement>(null);
   const lightboxControlsTimeout = useRef<number | null>(null);
-  const lightboxSwipeStart = useRef<{ pointerId: number; x: number; y: number } | null>(null);
+  const lightboxSwipeStart = useRef<{
+    pointerId: number;
+    x: number;
+    y: number;
+    startedOnVideo: boolean;
+  } | null>(null);
+  const lightboxTouchStart = useRef<{
+    identifier: number;
+    x: number;
+    y: number;
+    startedOnVideo: boolean;
+  } | null>(null);
+  const suppressLightboxVideoClick = useRef(false);
+  const lightboxControlsRequested = useRef(false);
   const [isLightboxVideoPlaying, setIsLightboxVideoPlaying] = useState(false);
   const [showLightboxVideoControls, setShowLightboxVideoControls] = useState(true);
 
@@ -89,10 +106,11 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     clearLightboxControlsTimeout();
     lightboxControlsTimeout.current = window.setTimeout(() => {
       setShowLightboxVideoControls(false);
-    }, 300);
+    }, 1000);
   }
 
   function revealLightboxControls(event: ReactPointerEvent<HTMLElement>) {
+    if (isTouchInput) return;
     if (
       !(event.target instanceof Element) ||
       !event.target.closest("video, .lightbox-video-toggle")
@@ -100,14 +118,46 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
       return;
     }
 
+    lightboxControlsRequested.current = true;
     setShowLightboxVideoControls(true);
     if (isLightboxVideoPlaying) hideLightboxControlsSoon();
   }
 
+  function handleLightboxVideoClick() {
+    if (isTouchInput && suppressLightboxVideoClick.current) {
+      suppressLightboxVideoClick.current = false;
+      return;
+    }
+
+    toggleLightboxVideoFromControl();
+  }
+
+  function toggleLightboxVideoFromControl() {
+    if (!isTouchInput) {
+      toggleLightboxVideo();
+      return;
+    }
+
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+
+    clearLightboxControlsTimeout();
+    if (video.paused) {
+      lightboxControlsRequested.current = false;
+      setShowLightboxVideoControls(false);
+      void video.play().catch(() => {});
+    } else {
+      lightboxControlsRequested.current = true;
+      setShowLightboxVideoControls(true);
+      video.pause();
+    }
+  }
+
   function resetLightboxVideoControls() {
     clearLightboxControlsTimeout();
+    lightboxControlsRequested.current = false;
     setIsLightboxVideoPlaying(false);
-    setShowLightboxVideoControls(true);
+    setShowLightboxVideoControls(!isTouchInput);
   }
 
   function toggleLightboxVideo() {
@@ -146,6 +196,8 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
+      startedOnVideo:
+        event.target instanceof Element && Boolean(event.target.closest("video")),
     };
   }
 
@@ -159,8 +211,48 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     if (Math.abs(deltaX) < 48 || Math.abs(deltaX) < Math.abs(deltaY) * 1.25) return;
 
     event.preventDefault();
+    if (start.startedOnVideo) suppressLightboxVideoClick.current = true;
     if (deltaX < 0) showNext();
     else showPrevious();
+  }
+
+  function startLightboxTouch(event: ReactTouchEvent<HTMLDivElement>) {
+    suppressLightboxVideoClick.current = false;
+    if (event.touches.length !== 1) {
+      lightboxTouchStart.current = null;
+      return;
+    }
+
+    const touch = event.touches[0];
+    lightboxTouchStart.current = {
+      identifier: touch.identifier,
+      x: touch.clientX,
+      y: touch.clientY,
+      startedOnVideo:
+        event.target instanceof Element && Boolean(event.target.closest("video")),
+    };
+  }
+
+  function finishLightboxTouch(event: ReactTouchEvent<HTMLDivElement>) {
+    const start = lightboxTouchStart.current;
+    lightboxTouchStart.current = null;
+    if (!start) return;
+
+    const touch = Array.from(event.changedTouches).find(
+      (changedTouch) => changedTouch.identifier === start.identifier,
+    );
+    if (!touch) return;
+
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const isSwipe = Math.abs(deltaX) >= 48 || Math.abs(deltaY) >= 60;
+    if (isSwipe && start.startedOnVideo) {
+      suppressLightboxVideoClick.current = true;
+    }
+    if (deltaY > -60 || Math.abs(deltaY) < Math.abs(deltaX) * 1.25) return;
+
+    event.preventDefault();
+    closeLightbox();
   }
 
   function toggleVideo(
@@ -377,6 +469,11 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           role="dialog"
           aria-modal="true"
           aria-label="Portfolio media viewer"
+          onTouchStartCapture={startLightboxTouch}
+          onTouchEndCapture={finishLightboxTouch}
+          onTouchCancelCapture={() => {
+            lightboxTouchStart.current = null;
+          }}
         >
           <button
             className="lightbox-close"
@@ -461,11 +558,17 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 loop
                 autoPlay
                 preload="auto"
-                onClick={toggleLightboxVideo}
+                onClick={handleLightboxVideoClick}
                 onPlay={() => {
                   setIsLightboxVideoPlaying(true);
-                  setShowLightboxVideoControls(true);
-                  hideLightboxControlsSoon();
+                  if (isTouchInput) {
+                    lightboxControlsRequested.current = false;
+                    clearLightboxControlsTimeout();
+                    setShowLightboxVideoControls(false);
+                  } else {
+                    setShowLightboxVideoControls(true);
+                    hideLightboxControlsSoon();
+                  }
                 }}
                 onPause={() => {
                   clearLightboxControlsTimeout();
@@ -482,10 +585,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 }}
               />
               <button
-                className={`lightbox-video-toggle${showLightboxVideoControls ? "" : " is-hidden"}`}
+                className={`lightbox-video-toggle${
+                  showLightboxVideoControls &&
+                  (!isTouchInput || !isLightboxVideoPlaying)
+                    ? ""
+                    : " is-hidden"
+                }`}
                 type="button"
                 aria-label={isLightboxVideoPlaying ? "Pause video" : "Play video"}
-                onClick={toggleLightboxVideo}
+                onClick={toggleLightboxVideoFromControl}
               >
                 {isLightboxVideoPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
               </button>

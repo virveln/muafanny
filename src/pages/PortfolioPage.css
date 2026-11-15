@@ -18,6 +18,12 @@
   transition: background-color 180ms ease, border-color 180ms ease;
 }
 
+@media (min-width: 1500px) {
+  .portfolio-back-to-top {
+    right: calc(50% - 740px);
+  }
+}
+
 .portfolio-back-to-top:hover {
   border-color: var(--site-accent);
   background: var(--site-accent);
