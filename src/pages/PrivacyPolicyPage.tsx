@@ -17,7 +17,7 @@ const policySections = [
 
 const contactInfo = {
   name: "Fanny Ehrnholm",
-  company: "MUA Fanny",
+  company: "Fanny Ehrnholm",
   website: "muafanny.se",
   websiteURL: "https://muafanny.se",
   email: "info@muafanny.se",
@@ -53,11 +53,10 @@ export function PrivacyPolicyPage() {
             <section id="ansvar" className="privacy-policy__section">
               <h2>1. Vem ansvarar för dina personuppgifter?</h2>
               <p>
-                {contactInfo.name}, som driver {contactInfo.company} (enskild firma),
-                är personuppgiftsansvarig för behandlingen av dina
-                personuppgifter.
+                {contactInfo.name} (enskild firma)
+                är personuppgiftsansvarig för behandlingen av dina personuppgifter.
               </p>
-              <p>Du kan kontakta mig vid frågor om hur dina personuppgifter hanteras:</p>
+              <p>Om du har frågor om hur dina personuppgifter hanteras är du välkommen att kontakta mig via följande kontaktuppgifter:</p>
               <dl className="privacy-policy__details">
                 <div>
                   <dt>Företag</dt>
