@@ -156,16 +156,7 @@ export function ContactForm() {
       
       {/* SPAM PROTECTION */}
 
-      <div
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          overflow: "hidden",
-        }}
-      >
+      <div aria-hidden="true" hidden>
         <label htmlFor="contact-website">
           {content.spamProtection.label}
         </label>
@@ -196,7 +187,7 @@ export function ContactForm() {
       <div className="contact-form__privacy">
         <p>
           {content.privacy.text}{" "}
-          <Link to={content.privacy.linkTo} target="_blank" rel="noopener noreferrer">
+          <Link className="text-link-sm" to={content.privacy.linkTo} target="_blank" rel="noopener noreferrer">
             {content.privacy.linkText}
           </Link>.
         </p>

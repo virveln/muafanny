@@ -75,7 +75,7 @@ export function LazyPortfolioImage({
 
       {error && (
         <div className="portfolio-image-error">
-          Image could not be loaded
+          Bilden kunde inte laddas
         </div>
       )}
     </div>

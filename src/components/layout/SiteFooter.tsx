@@ -40,7 +40,7 @@ export function SiteFooter() {
 
             <a
               href={contactDetails.email.href}
-              aria-label="{contactDetails.email.ariaLabel}"
+              aria-label={contactDetails.email.ariaLabel}
             >
               <Mail size={18} aria-hidden="true" />
             </a>

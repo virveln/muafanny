@@ -17,6 +17,7 @@
 .login-card {
   width: 100%;
   max-width: 460px;
+  margin-inline: auto;
   /* scroll-margin-top: -50px; */
   padding: clamp(28px, 6vw, 48px);
   background: #fffefa;
@@ -75,18 +76,6 @@
   text-align: center;
 }
 
-.login-card-footnote a {
-  color: var(--site-accent);
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: opacity 180ms ease;
-}
-
-.login-card-footnote a:hover {
-  opacity: 0.75;
-}
-
-
 .password-input-wrapper {
   position: relative;
   display: flex;
@@ -113,12 +102,6 @@
 
 .password-toggle:hover {
   color: var(--site-primary);
-}
-
-.password-toggle:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 3px;
-  border-radius: 4px;
 }
 
 /* ========================================

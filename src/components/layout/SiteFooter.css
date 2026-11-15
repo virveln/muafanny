@@ -53,11 +53,8 @@
   color: var(--site-primary);
 }
 
-.footer-social-links a:focus-visible,
-.footer-column > a:focus-visible,
-.footer-wordmark:focus-visible {
-  outline-color: var(--site-primary-foreground);
-  outline-offset: 4px;
+.site-footer *:focus-visible {
+  outline-color: var(--site-primary-foreground) !important;
 }
 
 .footer-address {

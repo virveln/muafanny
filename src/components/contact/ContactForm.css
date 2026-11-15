@@ -54,7 +54,7 @@
   min-width: 0;
   min-height: 48px;
   padding: 0 13px;
-
+  
   outline: none;
   background: #fefbf8;
   color: var(--site-primary);
@@ -179,7 +179,6 @@
   padding: 0 13px;
   margin-top: 10px;
   margin-bottom: 5px;
-
   background: #fefbf8;
   color: var(--site-primary);
 
@@ -217,7 +216,6 @@
 
 .contact-form .contact-form__date-input:disabled {
   opacity: 0.55;
-  cursor: not-allowed;
 }
 
 .contact-form .contact-form__date-input svg {
@@ -269,7 +267,11 @@
 }
 
 .contact-form .mantine-calendar__day[data-disabled] {
-  opacity: 0.35;
+  color: var(--site-muted);
+}
+
+.mantine-calendar__day:where(:disabled, [data-disabled]) {
+  cursor:auto;
 }
 
 .contact-form__date-hint {
@@ -304,19 +306,6 @@
   margin: 0;
 }
 
-.contact-form__privacy a {
-  color: var(--site-primary);
-  text-decoration: underline;
-  text-decoration-color: var(--site-accent);
-  text-underline-offset: 3px;
-  transition: color 180ms ease;
-}
-
-.contact-form__privacy a:hover {
-  color: var(--site-accent);
-}
-
-
 /* ==============================
    SUBMIT BUTTON
 ============================== */
@@ -346,14 +335,8 @@
   margin: 0;
 }
 
-.button--submit:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 4px;
-}
-
 .button--submit:disabled {
   opacity: 0.6;
-  cursor: not-allowed;
 }
 
 
@@ -426,11 +409,6 @@
   color: var(--site-accent);
 }
 
-.contact-form__date-clear:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 4px;
-}
-
 /* ==============================
    ERROR SUMMARY
 ============================== */
@@ -483,14 +461,6 @@
 .contact-form__error-summary a:hover {
   color: var(--site-accent);
 }
-
-.contact-form__error-summary a:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 3px;
-}
-
-
-
 
 /* ==============================
    FIELD ERROR MESSAGES
@@ -546,12 +516,6 @@
   border-color: var(--site-error);
   box-shadow: 0 0 0 3px rgb(180 83 83 / 10%);
 }
-
-.contact-form__date-field.has-error .contact-form__date-input:focus-visible {
-  outline: 2px solid var(--site-error);
-  outline-offset: 2px;
-}
-
 
 /* ==============================
    MOBILE

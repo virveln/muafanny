@@ -194,6 +194,10 @@
 }
 
 @media (max-width: 420px) {
+  .privacy-page__heading.page-heading h1 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
   .privacy-page__contents ol {
     grid-template-columns: minmax(0, 1fr);
   }

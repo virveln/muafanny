@@ -27,7 +27,7 @@ export function PrivacyPolicyPage() {
   return (
     <>
       <title>{title.privacyPolicy}</title>
-      <main className="privacy-page page-main site-container site-container--wide">
+      <main id="main-content" className="privacy-page page-main site-container site-container--wide" tabIndex={-1}>
         <header className="privacy-page__heading page-heading">
           <Eyebrow>Personuppgifter</Eyebrow>
           <h1>Integritetspolicy</h1>

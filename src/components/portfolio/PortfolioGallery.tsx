@@ -1,5 +1,5 @@
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type {
   MouseEvent,
   PointerEvent as ReactPointerEvent,
@@ -43,6 +43,9 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const [isTouchInput, setIsTouchInput] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(hover: none), (pointer: coarse)").matches,
   );
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
   const [category, setCategory] = useState<PortfolioCategory>("wedding");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [zoomFocus, setZoomFocus] = useState<{
@@ -72,6 +75,9 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const lightboxControlsRequested = useRef(false);
   const [isLightboxVideoPlaying, setIsLightboxVideoPlaying] = useState(false);
   const [showLightboxVideoControls, setShowLightboxVideoControls] = useState(true);
+  const lightboxDialogRef = useRef<HTMLDivElement>(null);
+  const lightboxCloseRef = useRef<HTMLButtonElement>(null);
+  const lightboxOpenerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 560px)");
@@ -89,8 +95,21 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     return () => mediaQuery.removeEventListener("change", updateTouchInput);
   }, []);
 
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setPrefersReducedMotion(mediaQuery.matches);
+
+    mediaQuery.addEventListener("change", updatePreference);
+    return () => mediaQuery.removeEventListener("change", updatePreference);
+  }, []);
+
   const media = category === "wedding" ? weddingMedia : productionMedia;
   const activeMedia = activeIndex === null ? null : media[activeIndex];
+  const isLightboxOpen = activeIndex !== null;
+  const shouldShowLightboxVideoControl =
+    prefersReducedMotion ||
+    (showLightboxVideoControls &&
+      (!isTouchInput || !isLightboxVideoPlaying));
   const isZoomed = activeMedia !== null && zoomFocus?.src === activeMedia.src;
   const zoomOrigin = isZoomed && zoomFocus
     ? { x: zoomFocus.x, y: zoomFocus.y }
@@ -153,12 +172,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     }
   }
 
-  function resetLightboxVideoControls() {
+  const resetLightboxVideoControls = useCallback(() => {
     clearLightboxControlsTimeout();
     lightboxControlsRequested.current = false;
     setIsLightboxVideoPlaying(false);
     setShowLightboxVideoControls(!isTouchInput);
-  }
+  }, [isTouchInput]);
 
   function toggleLightboxVideo() {
     const video = lightboxVideoRef.current;
@@ -269,35 +288,57 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     });
   }
 
-  function openMedia(index: number) {
+  function openMedia(event: MouseEvent<HTMLButtonElement>, index: number) {
+    lightboxOpenerRef.current = event.currentTarget;
     resetLightboxVideoControls();
     setActiveIndex(index);
   }
 
-  function closeLightbox() {
+  const closeLightbox = useCallback(() => {
     resetLightboxVideoControls();
     setActiveIndex(null);
-  }
+  }, [resetLightboxVideoControls]);
 
   useEffect(() => {
     if (activeIndex === null) return;
 
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
-        resetLightboxVideoControls();
-        setActiveIndex(null);
+        event.preventDefault();
+        closeLightbox();
       }
       if (event.key === "ArrowLeft") {
+        event.preventDefault();
         resetLightboxVideoControls();
         setActiveIndex((current) =>
           current === null ? null : (current - 1 + media.length) % media.length,
         );
       }
       if (event.key === "ArrowRight") {
+        event.preventDefault();
         resetLightboxVideoControls();
         setActiveIndex((current) =>
           current === null ? null : (current + 1) % media.length,
         );
+      }
+      if (event.key === "Tab") {
+        const dialog = lightboxDialogRef.current;
+        if (!dialog) return;
+
+        const focusableElements = dialog.querySelectorAll<HTMLElement>(
+          'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        if (!firstElement || !lastElement) return;
+
+        if (event.shiftKey && document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
       }
     }
 
@@ -306,11 +347,46 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [activeIndex, media.length]);
+  }, [activeIndex, closeLightbox, media.length, resetLightboxVideoControls]);
+
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const root = document.getElementById("root");
+    const wasInert = root?.inert ?? false;
+    root?.setAttribute("inert", "");
+    const focusFrame = window.requestAnimationFrame(() => {
+      lightboxCloseRef.current?.focus();
+    });
+
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      if (root) {
+        if (wasInert) root.setAttribute("inert", "");
+        else root.removeAttribute("inert");
+      }
+      window.requestAnimationFrame(() => {
+        lightboxOpenerRef.current?.focus();
+      });
+    };
+  }, [isLightboxOpen]);
 
   useEffect(() => {
     onLightboxChange(activeIndex !== null);
   }, [activeIndex, onLightboxChange]);
+
+  useEffect(() => {
+    if (activeMedia?.type !== "video") return;
+    const video = lightboxVideoRef.current;
+    if (!video) return;
+
+    if (prefersReducedMotion) {
+      video.pause();
+      return;
+    }
+
+    void video.play().catch(() => {});
+  }, [activeMedia?.src, activeMedia?.type, prefersReducedMotion]);
 
   function toggleImageZoom(event: MouseEvent<HTMLButtonElement>) {
     const image = event.currentTarget.querySelector("img");
@@ -359,6 +435,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             if (
               item.type === "video" &&
               isVisible &&
+              !window.matchMedia("(prefers-reduced-motion: reduce)").matches &&
               window.matchMedia("(hover: hover) and (pointer: fine)").matches
             ) {
               setUserPlayingVideos((current) => new Set(current).add(item.src));
@@ -380,7 +457,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           {item.type === "image" ? (
             <LazyPortfolioImage
               src={item.src}
-              alt={item.filename}
+              alt={
+                item.description ??
+                (category === "wedding"
+                  ? "Bröllopsmakeup och hårstyling"
+                  : "Makeup och hårstyling för produktion och event")
+              }
               width={item.width}
               height={item.height}
               loadImmediately={isVisible && priorityImages.has(item.src)}
@@ -388,7 +470,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           ) : (
             <LazyPortfolioVideo
               src={item.src}
-              filename={item.filename}
+              accessibleLabel={
+                item.description ??
+                (category === "wedding"
+                  ? "Bröllopsmakeup och hårstyling"
+                  : "Makeup och hårstyling för produktion och event")
+              }
               width={item.width}
               height={item.height}
               isVisible={isVisible}
@@ -400,8 +487,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           <button
             className="portfolio-open"
             type="button"
-            onClick={() => openMedia(index)}
-            aria-label={`Open ${item.type}: ${item.filename}`}
+            onClick={(event) => openMedia(event, index)}
+            aria-label={`Öppna ${
+              item.type === "image" ? "bild" : "video"
+            }: ${
+              item.description ??
+              (category === "wedding"
+                ? "Bröllopsmakeup och hårstyling"
+                : "Makeup och hårstyling för produktion och event")
+            }`}
           />
 
           {item.type === "video" && (
@@ -409,7 +503,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               className="portfolio-video-play"
               type="button"
               onClick={(event) => toggleVideo(event, item.src)}
-              aria-label="Play or pause video"
+              aria-label={
+                userPlayingVideos.has(item.src)
+                  ? "Pausa videoförhandsvisning"
+                  : "Spela videoförhandsvisning"
+              }
+              aria-pressed={userPlayingVideos.has(item.src)}
             >
               <Play size={20} fill="currentColor" />
             </button>
@@ -466,9 +565,21 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
       {activeMedia && activeIndex !== null && createPortal((
         <div
           className="portfolio-lightbox"
+          ref={lightboxDialogRef}
           role="dialog"
           aria-modal="true"
-          aria-label="Portfolio media viewer"
+          aria-label="Portfolio, bildvisare"
+          aria-describedby={
+            activeMedia.description ? "lightbox-caption" : undefined
+          }
+          onKeyDownCapture={(event) => {
+            if (event.key !== " " && event.code !== "Space") return;
+            event.preventDefault();
+            event.stopPropagation();
+            if (activeMedia.type === "video") {
+              toggleLightboxVideoFromControl();
+            }
+          }}
           onTouchStartCapture={startLightboxTouch}
           onTouchEndCapture={finishLightboxTouch}
           onTouchCancelCapture={() => {
@@ -477,9 +588,10 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
         >
           <button
             className="lightbox-close"
+            ref={lightboxCloseRef}
             type="button"
             onClick={closeLightbox}
-            aria-label="Close viewer"
+            aria-label="Stäng bildvisaren"
           >
             <X size={26} />
           </button>
@@ -488,7 +600,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             className="lightbox-side lightbox-side--previous"
             type="button"
             onClick={showPrevious}
-            aria-label="Previous item"
+            aria-label="Föregående bild eller video"
           >
             <span className="lightbox-arrow-icon">
               <ChevronLeft size={26} />
@@ -509,14 +621,17 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               isTouchInput ? (
                 <div
                   className="lightbox-image-wrap"
-                  role="img"
-                  aria-label={activeMedia.filename}
                   style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
                 >
                   <img
                     key={activeMedia.src}
                     src={activeMedia.src}
-                    alt={activeMedia.filename}
+                    alt={
+                      activeMedia.description ??
+                      (category === "wedding"
+                        ? "Bröllopsmakeup och hårstyling"
+                        : "Makeup och hårstyling för produktion och event")
+                    }
                     className="lightbox-image"
                     decoding="async"
                     draggable={false}
@@ -526,14 +641,23 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 <button
                   className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
                   type="button"
-                  aria-label={isZoomed ? "Zoom out" : "Zoom in on image"}
+                  aria-label={
+                    isZoomed
+                      ? "Återställ zoom för bilden"
+                      : "Zooma in på bilden"
+                  }
                   onClick={toggleImageZoom}
                   style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
                 >
                   <img
                     key={activeMedia.src}
                     src={activeMedia.src}
-                    alt={activeMedia.filename}
+                    alt={
+                      activeMedia.description ??
+                      (category === "wedding"
+                        ? "Bröllopsmakeup och hårstyling"
+                        : "Makeup och hårstyling för produktion och event")
+                    }
                     className="lightbox-image"
                     decoding="async"
                     draggable={false}
@@ -553,11 +677,21 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                   }
                 }}
                 src={activeMedia.src}
+                aria-describedby={
+                  activeMedia.description ? "lightbox-caption" : undefined
+                }
                 muted
                 playsInline
                 loop
-                autoPlay
                 preload="auto"
+                tabIndex={0}
+                aria-keyshortcuts="Space"
+                aria-label={`Video: ${
+                  activeMedia.description ??
+                  (category === "wedding"
+                    ? "Bröllopsmakeup och hårstyling"
+                    : "Makeup och hårstyling för produktion och event")
+                }. Tryck på mellanslag för att spela eller pausa.`}
                 onClick={handleLightboxVideoClick}
                 onPlay={() => {
                   setIsLightboxVideoPlaying(true);
@@ -586,13 +720,12 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               />
               <button
                 className={`lightbox-video-toggle${
-                  showLightboxVideoControls &&
-                  (!isTouchInput || !isLightboxVideoPlaying)
-                    ? ""
-                    : " is-hidden"
+                  shouldShowLightboxVideoControl ? "" : " is-hidden"
                 }`}
                 type="button"
-                aria-label={isLightboxVideoPlaying ? "Pause video" : "Play video"}
+                aria-label={
+                  isLightboxVideoPlaying ? "Pausa video" : "Spela video"
+                }
                 onClick={toggleLightboxVideoFromControl}
               >
                 {isLightboxVideoPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
@@ -602,7 +735,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           </figure>
 
           {activeMedia.description && (
-            <p className="lightbox-caption">
+            <p className="lightbox-caption" id="lightbox-caption">
               {activeMedia.description}
             </p>
           )}
@@ -611,15 +744,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             className="lightbox-side lightbox-side--next"
             type="button"
             onClick={showNext}
-            aria-label="Next item"
+            aria-label="Nästa bild eller video"
           >
             <span className="lightbox-arrow-icon">
               <ChevronRight size={26} />
             </span>
           </button>
 
-          <span className="lightbox-counter">
-            {activeIndex + 1} / {media.length}
+          <span className="lightbox-counter" aria-live="polite" aria-atomic="true">
+            {activeIndex + 1} av {media.length}
           </span>
         </div>
       ), document.body)}

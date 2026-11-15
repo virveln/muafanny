@@ -15,9 +15,9 @@ export function HomePage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
 
   return (
-    <>
+    <div id="home-page">
       <title>{title.home}</title>
-      <main id="home-page">
+      <main id="main-content" tabIndex={-1}>
         <section className="home-hero site-container site-container--wide">
           <div className="hero-copy page-heading animation-fade-up">
             <Eyebrow>
@@ -61,6 +61,6 @@ export function HomePage() {
           buttonHref="/kontakt"
           />
       </main>
-    </>
+    </div>
   );
 }

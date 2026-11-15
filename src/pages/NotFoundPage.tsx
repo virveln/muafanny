@@ -7,7 +7,7 @@ export function NotFoundPage() {
   return (
     <>
       <title>{title.notFound}</title>
-      <main className="page-main site-container site-container--narrow">
+      <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
         <section className="page-heading">
           <Eyebrow>404 · Sidan hittades inte</Eyebrow>
           <h1>Här var det tomt.</h1>

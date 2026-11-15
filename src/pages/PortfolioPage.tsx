@@ -23,21 +23,37 @@ export function PortfolioPage() {
   return (
     <>
       <title>{title.portfolio}</title>
-      <main >
+      <main id="main-content" tabIndex={-1}>
           <div className="page-main site-container site-container--wide">
               <section className="page-heading">
                   <Eyebrow>Utvalda arbeten</Eyebrow>
                   <h1>Portfolio</h1>
                   <p>En samling uttryck, människor och fina samarbeten.</p>
               </section>
+              <a
+                className="skip-link"
+                href="#portfolio-contact-cta"
+                onClick={(event) => {
+                  event.preventDefault();
+                  const target = document.querySelector<HTMLElement>(
+                    "#portfolio-contact-cta .button--cta",
+                  );
+                  target?.focus();
+                  target?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+              >
+                Hoppa till kontaktknappen
+              </a>
               <PortfolioGallery onLightboxChange={setIsLightboxOpen} />
           </div>
-          <CTASection
+          <div id="portfolio-contact-cta">
+            <CTASection
                   title="Gillar du vad du ser?"
                   description="Låt oss prata om dina önskemål och hur vi kan skapa din look."
                   buttonText="Hör av dig"
                   buttonHref="/kontakt"
                   />
+          </div>
       </main>
       {showBackToTop && !isLightboxOpen && (
         <button

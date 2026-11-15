@@ -13,7 +13,7 @@ export function ContactPage() {
   return (
     <>
     <title>{title.contact}</title>
-      <main className="page-main site-container site-container--narrow">
+      <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
         <section className="page-heading page-heading--wide">
           <Eyebrow>Kontakt</Eyebrow>
           <h1>Låt oss höras.</h1>

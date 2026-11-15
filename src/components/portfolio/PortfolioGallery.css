@@ -72,12 +72,29 @@
   cursor: pointer;
 }
 
+.portfolio-item:has(
+  .portfolio-open:focus-visible,
+  .portfolio-video-play:focus-visible
+)::after {
+  position: absolute;
+  z-index: 4;
+  inset: 0;
+  border: 2px solid var(--site-accent);
+  content: "";
+  pointer-events: none;
+}
+
 .portfolio-item:hover .portfolio-video-play {
   opacity: 0;
   pointer-events: none;
 }
 
 .portfolio-item:hover .portfolio-video-play:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.portfolio-video-play:focus-visible {
   opacity: 1;
   pointer-events: auto;
 }
@@ -168,6 +185,11 @@ body:has(.portfolio-lightbox) {
 .lightbox-video-toggle.is-hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.lightbox-video-toggle.is-hidden:focus-visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Zoomable image: same starting fit and fixed zoom for every image */
@@ -296,14 +318,8 @@ body:has(.portfolio-lightbox) {
   pointer-events: none;
 }
 
-.portfolio-open:focus-visible,
-.portfolio-video-play:focus-visible,
-.lightbox-image-wrap:focus-visible,
-.lightbox-video-toggle:focus-visible,
-.lightbox-close:focus-visible,
-.lightbox-side:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 3px;
+.portfolio-lightbox :focus-visible {
+  outline-color: #fffefa;
 }
 
 /* Responsive layout */

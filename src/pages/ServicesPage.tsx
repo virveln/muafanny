@@ -11,7 +11,7 @@ export function ServicesPage() {
   return (
     <>
       <title>{title.services}</title>
-        <main >
+        <main id="main-content" tabIndex={-1}>
             <div className="page-main site-container site-container--narrow">
                 <section className="page-heading page-heading--wide">
                     <Eyebrow>Det här kan vi göra</Eyebrow>

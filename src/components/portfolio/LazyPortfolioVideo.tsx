@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 
 type LazyPortfolioVideoProps = {
   src: string;
-  filename: string;
+  accessibleLabel: string;
   width?: number;
   height?: number;
   isVisible: boolean;
@@ -13,7 +13,7 @@ type LazyPortfolioVideoProps = {
 
 export function LazyPortfolioVideo({
   src,
-  filename,
+  accessibleLabel,
   width,
   height,
   isVisible,
@@ -81,7 +81,7 @@ export function LazyPortfolioVideo({
           playsInline
           loop
           preload={userPlaying || isTouchInput ? "auto" : "metadata"}
-          aria-label={`Portfolio video: ${filename}`}
+          aria-label={`Video: ${accessibleLabel}`}
           onLoadedData={() => setLoaded(true)}
           onError={() => setError(true)}
         />
@@ -89,7 +89,7 @@ export function LazyPortfolioVideo({
 
       {shouldLoad && error && (
         <div className="portfolio-image-error">
-          Video could not be loaded
+          Videon kunde inte laddas
         </div>
       )}
     </div>

@@ -14,7 +14,7 @@ export function AboutPage() {
     <>
       <title>{title.about}</title>
       <div id="about-page">
-        <main className="page-main site-container site-container--narrow">
+        <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
 
           {/* Personal introduction */}
           <section className="about-layout animation-fade-up">

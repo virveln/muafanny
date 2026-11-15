@@ -85,9 +85,9 @@ export function ServicesDetailsPage() {
 
   if (!unlocked) {
     return (
-      <>
+      <div id="services-details-login-page">
       <title>{title.servicesDetails}</title>
-        <main id="services-details-login-page" className="page-main site-container">
+        <main id="main-content" className="page-main site-container" tabIndex={-1}>
           <div id="login-card" className="login-card border-line">
             <div className="login-card-icon">
               <LockKeyhole size={24} aria-hidden="true" />
@@ -147,11 +147,11 @@ export function ServicesDetailsPage() {
 
             <p className="login-card-footnote">
               Har du inte fått lösenordet?{" "}
-              <Link to="/kontakt">Kontakta mig</Link> gärna.
+              <Link className="text-link-sm" to="/kontakt">Kontakta mig</Link> gärna.
             </p>
           </div>
         </main>
-      </>
+      </div>
     );
   }
 
@@ -159,7 +159,7 @@ export function ServicesDetailsPage() {
     <>
       <title>{title.servicesDetails}</title>
       <div id="services-details-page">
-        <main className="page-main site-container site-container--wide">
+        <main id="main-content" className="page-main site-container site-container--wide" tabIndex={-1}>
           {/* Page introduction */}
           <section className="page-heading">
             <Eyebrow>{servicesPageContent.heading.eyebrow}</Eyebrow>

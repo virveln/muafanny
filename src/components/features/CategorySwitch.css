@@ -43,11 +43,6 @@
   box-shadow: 0 2px 8px rgb(41 39 34 / 8%);
 }
 
-.category-switch__button:focus-visible {
-  outline: 2px solid var(--site-accent);
-  outline-offset: 3px;
-}
-
 .portfolio-empty {
   padding: 50px 20px;
   color: var(--site-muted);
