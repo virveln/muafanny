@@ -157,8 +157,7 @@
 
 .contact-form .mantine-Select-option[data-selected] {
   background: #f5e9e4;
-    background-color: color-mix(in srgb, var(--site-accent) 5%, var(--site-background) 95%);
-
+  background-color: color-mix(in srgb, var(--site-accent) 5%, var(--site-background) 95%);
   color: var(--site-primary);
 }
 

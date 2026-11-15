@@ -31,6 +31,9 @@
   --muted-foreground: #6e605a;
   
   /*error om accent byts ut ##b45353*/
+
+  --mantine-color-anchor: var(--site-accent);
+  --mantine-primary-color-filled: var(--site-accent);
 }
 
 .border-line,
