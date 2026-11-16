@@ -4,7 +4,8 @@ import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/features/Eyebrow";
 import ValuesSection from "../components/about/ValuesSection";
 import { aboutContent } from "../data/about";
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
 import "./AboutPage.css";
 
 import ImgFanny from "../assets/fanny.jpg";
@@ -12,7 +13,7 @@ import ImgFanny from "../assets/fanny.jpg";
 export function AboutPage() {
   return (
     <>
-      <title>{title.about}</title>
+      <SEO data={seo.about} />
       <div id="about-page">
         <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
 

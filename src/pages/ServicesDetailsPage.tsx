@@ -11,7 +11,8 @@ import {
   type ServiceCategory,
 } from "../data/servicesDetails";
 import "./ServicesDetailsPage.css";
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
 
 const SESSION_KEY = "services-prices-unlocked";
 const serviceCategories = [
@@ -86,7 +87,8 @@ export function ServicesDetailsPage() {
   if (!unlocked) {
     return (
       <div id="services-details-login-page">
-      <title>{title.servicesDetails}</title>
+        <SEO data={seo.serviceDetails} />
+
         <main id="main-content" className="page-main site-container" tabIndex={-1}>
           <div id="login-card" className="login-card border-line">
             <div className="login-card-icon">
@@ -157,7 +159,8 @@ export function ServicesDetailsPage() {
 
   return (
     <>
-      <title>{title.servicesDetails}</title>
+      <SEO data={seo.serviceDetails} />
+
       <div id="services-details-page">
         <main id="main-content" className="page-main site-container site-container--wide" tabIndex={-1}>
           {/* Page introduction */}

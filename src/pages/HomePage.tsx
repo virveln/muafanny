@@ -5,7 +5,10 @@ import { Eyebrow } from "../components/features/Eyebrow";
 import { PortfolioPreview } from "../components/portfolio/PortfolioPreview";
 import CTASection from "../components/CTASection/CTASection";
 import { aboutContent } from "../data/about";
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
+import { StructuredData } from "../components/features/StructuredData";
+
 
 import "./HomePage.css";
 
@@ -16,7 +19,9 @@ export function HomePage() {
 
   return (
     <div id="home-page">
-      <title>{title.home}</title>
+      <SEO data={seo.home} />
+      <StructuredData />
+      
       <main id="main-content" tabIndex={-1}>
         <section className="home-hero site-container site-container--wide">
           <div className="hero-copy page-heading animation-fade-up">

@@ -3,7 +3,9 @@ import { ArrowUp } from "lucide-react";
 import { Eyebrow } from "../components/features/Eyebrow";
 import { PortfolioGallery } from "../components/portfolio/PortfolioGallery";
 import CTASection from "../components/CTASection/CTASection";
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
+
 import "./PortfolioPage.css";
 
 export function PortfolioPage() {
@@ -22,7 +24,7 @@ export function PortfolioPage() {
 
   return (
     <>
-      <title>{title.portfolio}</title>
+      <SEO data={seo.portfolio} />
       <main id="main-content" tabIndex={-1}>
           <div className="page-main site-container site-container--wide">
               <section className="page-heading">

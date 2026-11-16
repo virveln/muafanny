@@ -4,13 +4,14 @@ import { Eyebrow } from "../components/features/Eyebrow";
 import { services } from "../data/services";
 import { BridalFAQ } from "../components/services/BridalFAQ";
 import CTASection from "../components/CTASection/CTASection";
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
 import "./ServicesPage.css";
 
 export function ServicesPage() {
   return (
     <>
-      <title>{title.services}</title>
+      <SEO data={seo.services} />
         <main id="main-content" tabIndex={-1}>
             <div className="page-main site-container site-container--narrow">
                 <section className="page-heading page-heading--wide">

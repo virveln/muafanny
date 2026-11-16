@@ -4,7 +4,8 @@ import { ContactForm } from "../components/contact/ContactForm";
 import { Eyebrow } from "../components/features/Eyebrow";
 // import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
 import { contactDetails } from "../data/contactDetails"
-import { title } from "../data/title";
+import { SEO } from "../components/features/SEO";
+import { seo } from "../data/seo";
 import "./ContactPage.css";
 
 
@@ -12,7 +13,7 @@ import "./ContactPage.css";
 export function ContactPage() {
   return (
     <>
-    <title>{title.contact}</title>
+    <SEO data={seo.contact} />
       <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
         <section className="page-heading page-heading--wide">
           <Eyebrow>Kontakt</Eyebrow>
