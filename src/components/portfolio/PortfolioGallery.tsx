@@ -689,8 +689,8 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
                 aria-label={`Video: ${
                   activeMedia.description ??
                   (category === "wedding"
-                    ? "Bröllopsmakeup och hårstyling"
-                    : "Makeup och hårstyling för produktion och event")
+                    ? "Bröllopsmakeup och/eller hårstyling"
+                    : "Makeup och/eller hårstyling för produktion och event")
                 }. Tryck på mellanslag för att spela eller pausa.`}
                 onClick={handleLightboxVideoClick}
                 onPlay={() => {

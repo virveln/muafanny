@@ -185,7 +185,7 @@ button {
   font-weight: 500;
 }
 
-.skip-link:focus {
+.skip-link:focus-visible {
   transform: translateY(0);
 }
 
@@ -226,6 +226,10 @@ button:focus-visible,
 .mantine-focus-auto:focus-visible {
   outline: 2px solid var(--site-accent);
   outline-offset: 4px;
+}
+
+#main-content:focus-visible {
+  outline: none;
 }
 
 input:-webkit-autofill,

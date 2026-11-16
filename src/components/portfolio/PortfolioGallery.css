@@ -137,6 +137,7 @@ body:has(.portfolio-lightbox) {
   margin: 0;
   overflow: hidden;
   pointer-events: none;
+  cursor: pointer;
   touch-action: pan-y pinch-zoom;
 }
 
