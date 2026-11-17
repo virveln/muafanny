@@ -2,18 +2,35 @@
 <html lang="sv">
   <head>
     <meta charset="UTF-8" />
+    <!-- Responsive design -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       const redirectPath = new URLSearchParams(window.location.search).get("redirect");
       if (redirectPath?.startsWith("/") && !redirectPath.startsWith("//")) {
         window.history.replaceState(null, "", redirectPath);
       }
     </script>
-    <!-- Responsive design -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- portrait-image-preload -->
 
     <!-- Browser theme -->
     <meta name="theme-color" content="#f8f5f1" />
     <meta name="color-scheme" content="light" />
+
+    <!-- Locally hosted fonts used in the header and page content -->
+    <link
+      rel="preload"
+      href="/fonts/cormorant-garamond-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/jost-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <!-- SEO -->
     <meta name="description" content="MUA Fanny – Fanny Ehrnholm, professionell make-up artist och hårstylist. Upptäck tjänster inom make-up, hårstyling och bröllopsstyling." />

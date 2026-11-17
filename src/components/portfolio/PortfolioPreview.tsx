@@ -2,16 +2,31 @@
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../features/Eyebrow";
+import { getResponsiveImage } from "../../data/optimizedImages";
 import "./PortfolioPreview.css";
 
-import image1 from "../../assets/portfolio/production/allsangen.webp";
-import image2 from "../../assets/portfolio/wedding/tone.jpg";
-import image3 from "../../assets/portfolio/wedding/andrea.webp";
+type PreviewImage = {
+  image: ReturnType<typeof getResponsiveImage>;
+  sizes?: string;
+  alt: string;
+};
 
-const previewImages = [
-  { src: image1, alt: "Selected make-up look" },
-  { src: image2, alt: "Selected hairstyling look" },
-  { src: image3, alt: "Selected beauty look" },
+const previewImages: PreviewImage[] = [
+  {
+    image: getResponsiveImage("portfolio/production/allsangen.webp"),
+    sizes: "(max-width: 760px) calc(50vw - 22px), 33vw",
+    alt: "Selected make-up look",
+  },
+  {
+    image: getResponsiveImage("portfolio/wedding/tone.jpg"),
+    sizes: "(max-width: 760px) calc(50vw - 22px), 33vw",
+    alt: "Selected hairstyling look",
+  },
+  {
+    image: getResponsiveImage("portfolio/wedding/andrea.webp"),
+    sizes: "(max-width: 760px) calc(100vw - 32px), 33vw",
+    alt: "Selected beauty look",
+  },
 ];
 
 export function PortfolioPreview() {
@@ -33,15 +48,26 @@ export function PortfolioPreview() {
           <Link
             className="portfolio-preview__item"
             to="/portfolio"
-            key={image.src}
+            key={image.image.src}
             aria-label={`Se hela portfolion: ${image.alt}`}
           >
-            <img
-              src={image.src}
-              alt={image.alt}
-              loading="lazy"
-              decoding="async"
-            />
+            <picture>
+              <source
+                type="image/webp"
+                srcSet={image.image.webpSrcSet}
+                sizes={image.sizes}
+              />
+              <img
+                src={image.image.src}
+                srcSet={image.image.srcSet}
+                sizes={image.sizes}
+                alt={image.alt}
+                width={image.image.width}
+                height={image.image.height}
+                loading="lazy"
+                decoding="async"
+              />
+            </picture>
           </Link>
         ))}
       </div>

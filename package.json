@@ -4,9 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "predev": "npm run optimize:images",
     "dev": "vite",
+    "prebuild": "npm run optimize:images",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
+    "optimize:images": "node scripts/optimize-images.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -30,6 +33,7 @@
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
     "oxlint": "^1.81.0",
+    "sharp": "^0.35.5",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
   }

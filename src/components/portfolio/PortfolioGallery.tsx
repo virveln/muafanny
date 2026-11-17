@@ -456,7 +456,10 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
         >
           {item.type === "image" ? (
             <LazyPortfolioImage
-              src={item.src}
+              src={item.thumbnailSrc ?? item.src}
+              srcSet={item.thumbnailSrcSet}
+              webpSrcSet={item.thumbnailWebpSrcSet}
+              sizes={item.thumbnailSizes}
               alt={
                 item.description ??
                 (category === "wedding"

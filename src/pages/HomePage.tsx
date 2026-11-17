@@ -8,11 +8,14 @@ import { aboutContent } from "../data/about";
 import { SEO } from "../components/features/SEO";
 import { seo } from "../data/seo";
 import { StructuredData } from "../components/features/StructuredData";
+import { getResponsiveImage } from "../data/optimizedImages";
 
 
 import "./HomePage.css";
 
-import HeroFanny from "../assets/fanny.jpg";
+const heroImage = getResponsiveImage("featured/fanny.jpg");
+const heroImageSizes =
+  "(max-width: 760px) calc(100vw - 40px), (max-width: 1440px) 50vw, 600px";
 
 export function HomePage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
@@ -37,16 +40,27 @@ export function HomePage() {
             <Link className="text-link" to="/portfolio">Upptäck mitt arbete <ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
           <div className="hero-image-container animation-fade-up-delay animation-fade-up">
-            <img
-              className={`hero-image${heroImageLoaded ? " is-loaded" : ""}`}
-              src={HeroFanny}
-              alt="Porträtt med mjuk, naturlig make-up"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              onLoad={() => setHeroImageLoaded(true)}
-              onError={() => setHeroImageLoaded(true)}
-            />
+            <picture>
+              <source
+                type="image/webp"
+                srcSet={heroImage.webpSrcSet}
+                sizes={heroImageSizes}
+              />
+              <img
+                className={`hero-image${heroImageLoaded ? " is-loaded" : ""}`}
+                src={heroImage.src}
+                srcSet={heroImage.srcSet}
+                sizes={heroImageSizes}
+                width={heroImage.width}
+                height={heroImage.height}
+                alt="Porträtt med mjuk, naturlig make-up"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onLoad={() => setHeroImageLoaded(true)}
+                onError={() => setHeroImageLoaded(true)}
+              />
+            </picture>
             {/* <span className="image-caption">Naturligt uttryck, med omtanke.</span> */}
           </div>
         </section>

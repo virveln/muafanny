@@ -3,6 +3,9 @@ import "./LazyPortfolioImage.css";
 
 type LazyPortfolioImageProps = {
   src: string;
+  srcSet?: string;
+  webpSrcSet?: string;
+  sizes?: string;
   alt: string;
   width?: number;
   height?: number;
@@ -11,6 +14,9 @@ type LazyPortfolioImageProps = {
 
 export function LazyPortfolioImage({
   src,
+  srcSet,
+  webpSrcSet,
+  sizes,
   alt,
   width,
   height,
@@ -61,17 +67,24 @@ export function LazyPortfolioImage({
         </div>
       )}
 
-      <img
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        loading={loadImmediately ? "eager" : "lazy"}
-        fetchPriority={loadImmediately ? "high" : "auto"}
-        decoding="async"
-        onLoad={() => setLoaded(true)}
-        onError={() => setError(true)}
-      />
+      <picture>
+        {webpSrcSet && (
+          <source type="image/webp" srcSet={webpSrcSet} sizes={sizes} />
+        )}
+        <img
+          src={src}
+          srcSet={srcSet}
+          sizes={sizes}
+          alt={alt}
+          width={width}
+          height={height}
+          loading={loadImmediately ? "eager" : "lazy"}
+          fetchPriority={loadImmediately ? "high" : "auto"}
+          decoding="async"
+          onLoad={() => setLoaded(true)}
+          onError={() => setError(true)}
+        />
+      </picture>
 
       {error && (
         <div className="portfolio-image-error">

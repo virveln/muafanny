@@ -6,6 +6,10 @@
   /* background: var(--site-line); */
 }
 
+.portfolio-image-container picture {
+  display: block;
+}
+
 .portfolio-image-container img {
   display: block;
   width: 100%;

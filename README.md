@@ -1,5 +1,22 @@
 # React + TypeScript + Vite
 
+## Media workflow
+
+Add portfolio images to `src/assets/portfolio/wedding` or
+`src/assets/portfolio/production`. The image optimizer discovers them
+automatically and generates content-hashed WebP and JPEG thumbnails at
+responsive widths, plus intrinsic dimensions. It runs before `npm run dev` and
+`npm run build`; generated files are not source files and should not be
+committed.
+
+The original images remain in `src/assets/portfolio` for full-resolution
+viewing. Videos also remain original, are emitted with Vite's hashed filenames,
+and are loaded only as they approach the viewport. Add videos to either
+portfolio folder; when adding one, record its dimensions in
+`videoDimensions` in `src/data/portfolioMedia.ts` to reserve its aspect ratio.
+Add portrait changes to `src/assets/fanny.jpg`; its optimized responsive
+variants and preload are generated from that source.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

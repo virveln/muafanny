@@ -6,9 +6,10 @@ import ValuesSection from "../components/about/ValuesSection";
 import { aboutContent } from "../data/about";
 import { SEO } from "../components/features/SEO";
 import { seo } from "../data/seo";
+import { getResponsiveImage } from "../data/optimizedImages";
 import "./AboutPage.css";
 
-import ImgFanny from "../assets/fanny.jpg";
+const portrait = getResponsiveImage("featured/fanny.jpg");
 
 export function AboutPage() {
   return (
@@ -40,15 +41,26 @@ export function AboutPage() {
             </div>
 
             <div className="about-img-container">
-              <img
-                src={ImgFanny}
-                alt="Porträtt av Fanny"
-                loading="eager"
-                fetchPriority="high"
-                decoding="async"
-                grid-area="image"
-                className="animation-fade-up animation-fade-up-delay"
-              />
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet={portrait.webpSrcSet}
+                  sizes="(max-width: 760px) calc(100vw - 40px), 390px"
+                />
+                <img
+                  src={portrait.src}
+                  srcSet={portrait.srcSet}
+                  sizes="(max-width: 760px) calc(100vw - 40px), 390px"
+                  width={portrait.width}
+                  height={portrait.height}
+                  alt="Porträtt av Fanny"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  grid-area="image"
+                  className="animation-fade-up animation-fade-up-delay"
+                />
+              </picture>
             </div>
           </section>
 
