@@ -16,8 +16,6 @@ import { SEO } from "../components/features/SEO";
 import { seo } from "../data/seo";
 import {
   bookingTermVariants,
-  serviceCardTextGroupVariants,
-  serviceCardTextVariants,
 } from "../components/animation/animationVariants";
 
 const SESSION_KEY = "services-prices-unlocked";

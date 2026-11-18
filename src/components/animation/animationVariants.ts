@@ -34,27 +34,6 @@ export const softRevealVariants: Variants = {
   },
 };
 
-export const serviceCardTextGroupVariants: Variants = {
-  hidden: {},
-  visible: {
-    transition: {
-      delayChildren: 0.04,
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-export const serviceCardTextVariants: Variants = {
-  hidden: { y: 10 },
-  visible: {
-    y: 0,
-    transition: {
-      duration: 0.62,
-      ease: [0.4, 0, 0.2, 1],
-    },
-  },
-};
-
 export const bookingTermVariants: Variants = {
   hidden: { opacity: 0.7, y: 12 },
   visible: {
