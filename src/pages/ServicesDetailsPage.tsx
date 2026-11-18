@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { Link, useLocation } from "react-router-dom";
 import { LockKeyhole, ArrowRight, Check, Eye, EyeOff } from "lucide-react";
 import { Eyebrow } from "../components/features/Eyebrow";
@@ -13,6 +14,11 @@ import {
 import "./ServicesDetailsPage.css";
 import { SEO } from "../components/features/SEO";
 import { seo } from "../data/seo";
+import {
+  bookingTermVariants,
+  serviceCardTextGroupVariants,
+  serviceCardTextVariants,
+} from "../components/animation/animationVariants";
 
 const SESSION_KEY = "services-prices-unlocked";
 const serviceCategories = [
@@ -22,6 +28,7 @@ const serviceCategories = [
 
 export function ServicesDetailsPage() {
   const { hash } = useLocation();
+  const shouldAnimate = !useReducedMotion();
   const [category, setCategory] = useState<ServiceCategory>("wedding");
   const [password, setPassword] = useState("");
   const [unlocked, setUnlocked] = useState(
@@ -172,7 +179,7 @@ export function ServicesDetailsPage() {
             <p>{servicesPageContent.heading.description}</p>
           </section>
 
-          <div className="animation-fade-up animation-fade-up-delay">
+          <div>
             <CategorySwitch
               categories={serviceCategories}
               value={category}
@@ -186,22 +193,16 @@ export function ServicesDetailsPage() {
               aria-labelledby="bridal-service-title"
             >
               <div className="services-details-card-header">
-                <span className="services-details-number">
-                  {bridal.number}
-                </span>
-                <Eyebrow>{bridal.eyebrow}</Eyebrow>
+                <span className="services-details-number">{bridal.number}</span>
+                <div> <Eyebrow>{bridal.eyebrow}</Eyebrow></div>
               </div>
 
               <div className="bridal-service__content">
                 <h2 id="bridal-service-title">{bridal.title}</h2>
+                <p className="bridal-service__intro" >{bridal.description}</p>
 
-                <p className="bridal-service__intro">
-                  {bridal.description}
-                </p>
-
-                <div className="bridal-service__included">
+                <div className="bridal-service__included" >
                   <h3>{bridal.includedHeading}</h3>
-
                   <ul>
                     {bridal.included.map((item) => (
                       <li key={item}>
@@ -212,7 +213,7 @@ export function ServicesDetailsPage() {
                   </ul>
                 </div>
 
-                <div className="bridal-service__trial">
+                <div className="bridal-service__trial" >
                   <h3>{bridal.trialHeading}</h3>
                   <p>{bridal.trialDescription}</p>
                 </div>
@@ -233,6 +234,7 @@ export function ServicesDetailsPage() {
             {/* Other services */}
             <section className="other-services">
               <ServiceCardList
+                key={category}
                 services={servicesPageContent.otherServices.filter(
                   (service) => service.category === category,
                 )}
@@ -245,7 +247,13 @@ export function ServicesDetailsPage() {
               className="booking-terms"
               aria-labelledby="booking-terms-title"
             >
-              <div className="page-heading">
+              <motion.div
+                className="page-heading"
+                variants={bookingTermVariants}
+                initial={shouldAnimate ? "hidden" : false}
+                whileInView={shouldAnimate ? "visible" : undefined}
+                viewport={{ once: true, amount: 0.2 }}
+              >
                 <Eyebrow>
                   {servicesPageContent.bookingTermsHeading.eyebrow}
                 </Eyebrow>
@@ -257,11 +265,18 @@ export function ServicesDetailsPage() {
                 <p>
                   {servicesPageContent.bookingTermsHeading.description}
                 </p>
-              </div>
+              </motion.div>
 
               <div className="booking-terms__list">
                 {servicesPageContent.bookingTerms.map((term) => (
-                  <article className="booking-term" key={term.number}>
+                  <motion.article
+                    className="booking-term"
+                    key={term.number}
+                    variants={bookingTermVariants}
+                    initial={shouldAnimate ? "hidden" : false}
+                    whileInView={shouldAnimate ? "visible" : undefined}
+                    viewport={{ once: true, amount: 0.2 }}
+                  >
                     <span className="booking-term__number">
                       {term.number}
                     </span>
@@ -270,7 +285,7 @@ export function ServicesDetailsPage() {
                       <h3>{term.title}</h3>
                       <p>{term.description}</p>
                     </div>
-                  </article>
+                  </motion.article>
                 ))}
               </div>
             </section>}

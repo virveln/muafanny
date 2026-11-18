@@ -1,7 +1,13 @@
 
 // import { CalendarDays } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import { ContactForm } from "../components/contact/ContactForm";
 import { Eyebrow } from "../components/features/Eyebrow";
+import {
+  softRevealVariants,
+  staggeredGroupVariants,
+  staggeredItemVariants,
+} from "../components/animation/animationVariants";
 // import AvailabilityCalendar from "../components/contact/AvailabilityCalendar";
 import { contactDetails } from "../data/contactDetails"
 import { SEO } from "../components/features/SEO";
@@ -11,28 +17,49 @@ import "./ContactPage.css";
 
 
 export function ContactPage() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <>
     <SEO data={seo.contact} />
       <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
-        <section className="page-heading page-heading--wide">
+        <motion.section
+          className="page-heading page-heading--wide"
+          variants={softRevealVariants}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView={shouldAnimate ? "visible" : undefined}
+          viewport={{ once: true, amount: 0.3 }}
+        >
           <Eyebrow>Kontakt</Eyebrow>
           <h1>Låt oss höras.</h1>
           <p>
             Berätta om ditt datum, tillfälle och vilken stil du har
             i åtanke. Jag svarar vanligtvis inom 48 timmar.
           </p>
-        </section>
+        </motion.section>
 
-        <section className="contact-layout ">
-          <aside className="contact-details animation-fade-up animation-fade-up-delay">
-            <div className="contact-details-list">            
+        <motion.section
+          className="contact-layout"
+          variants={staggeredGroupVariants}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView={shouldAnimate ? "visible" : undefined}
+          viewport={{ once: true, amount: 0.12 }}
+        >
+          <motion.aside className="contact-details" variants={staggeredItemVariants}>
+            <motion.div
+              className="contact-details-list"
+              variants={staggeredGroupVariants}
+            >
               {Object.entries(contactDetails).map(([key, detail]) => {
                 const Icon = detail.icon;
                 const isExternal = detail.href?.startsWith("https://");
 
                 return (
-                  <div className="contact-detail" key={key}>
+                  <motion.div
+                    className="contact-detail"
+                    key={key}
+                    variants={staggeredItemVariants}
+                  >
                     <div className="contact-detail-icon">
                       <Icon size={19} strokeWidth={1.5} aria-hidden="true" />
                     </div>
@@ -57,10 +84,10 @@ export function ContactPage() {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
-            </div>
+            </motion.div>
             {/* Do not remove this commented section or its classes!!!!
             <section className="availability-calendar-container">
               <div className="contact-detail">
@@ -82,12 +109,15 @@ export function ContactPage() {
                 så hittar vi rätt tillsammans.
               </p>
             </div>
-          </aside>
+          </motion.aside>
 
-          <div className="border-line contact-form-panel animation-fade-up animation-fade-up-delay">
+          <motion.div
+            className="border-line contact-form-panel"
+            variants={staggeredItemVariants}
+          >
             <ContactForm />
-          </div>
-        </section>
+          </motion.div>
+        </motion.section>
       </main>
     </>
   );

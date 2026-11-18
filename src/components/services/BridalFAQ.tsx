@@ -1,15 +1,23 @@
 
+import { motion, useReducedMotion } from "motion/react";
 import { Accordion } from "@mantine/core";
 import { bridalFaqContent } from "../../data/bridalFaq";
 import { Eyebrow } from "../features/Eyebrow";
+import { softRevealVariants } from "../animation/animationVariants";
 import "./BridalFAQ.css";
 
 export function BridalFAQ() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
-    <section
+    <motion.section
       id="faq-brollop"
       className=" bridal-faq section-top "
       aria-labelledby="bridal-faq-title"
+      variants={softRevealVariants}
+      initial={shouldAnimate ? "hidden" : false}
+      whileInView={shouldAnimate ? "visible" : undefined}
+      viewport={{ once: true, amount: 0.15 }}
     >
       <div className="page-heading">
         <Eyebrow>{bridalFaqContent.eyebrow}</Eyebrow>
@@ -64,6 +72,6 @@ export function BridalFAQ() {
           </Accordion.Item>
         ))}
       </Accordion>
-    </section>
+    </motion.section>
   );
 }

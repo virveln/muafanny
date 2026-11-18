@@ -14,7 +14,7 @@
   color: var(--site-primary-foreground);
   box-shadow: 0 8px 24px rgb(42 30 26 / 18%);
   cursor: pointer;
-  animation: portfolio-back-to-top-enter 180ms ease-out both;
+  animation: portfolio-back-to-top-enter 420ms ease-out both;
   transition: background-color 180ms ease, border-color 180ms ease;
 }
 

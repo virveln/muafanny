@@ -1,7 +1,13 @@
 
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/features/Eyebrow";
+import {
+  staggeredGroupVariants,
+  staggeredItemVariants,
+  softRevealVariants,
+} from "../components/animation/animationVariants";
 import ValuesSection from "../components/about/ValuesSection";
 import { aboutContent } from "../data/about";
 import { SEO } from "../components/features/SEO";
@@ -12,6 +18,8 @@ import "./AboutPage.css";
 const portrait = getResponsiveImage("featured/fanny.jpg");
 
 export function AboutPage() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <>
       <SEO data={seo.about} />
@@ -19,8 +27,13 @@ export function AboutPage() {
         <main id="main-content" className="page-main site-container site-container--narrow" tabIndex={-1}>
 
           {/* Personal introduction */}
-          <section className="about-layout animation-fade-up">
-            <div className="page-heading">
+          <motion.section
+            className="about-layout"
+            variants={softRevealVariants}
+            initial={shouldAnimate ? "hidden" : false}
+            animate={shouldAnimate ? "visible" : undefined}
+          >
+            <motion.div className="page-heading" variants={staggeredItemVariants}>
               <Eyebrow>
                 <span>{aboutContent.work.professionMakeup}</span>
                 <span className="eyebrow__separator">·</span>
@@ -38,9 +51,12 @@ export function AboutPage() {
                 {aboutContent.linkText}
                 <ArrowRight size={17} aria-hidden="true" />
               </Link>
-            </div>
+            </motion.div>
 
-            <div className="about-img-container">
+            <motion.div
+              className="about-img-container"
+              variants={staggeredItemVariants}
+            >
               <picture>
                 <source
                   type="image/webp"
@@ -58,15 +74,23 @@ export function AboutPage() {
                   fetchPriority="high"
                   decoding="async"
                   grid-area="image"
-                  className="animation-fade-up animation-fade-up-delay"
                 />
               </picture>
-            </div>
-          </section>
+            </motion.div>
+          </motion.section>
 
           {/* Background & approach */}
-          <div className="about-details animation-fade-up">
-            <section className="about-story">
+          <motion.div
+            className="about-details"
+            variants={softRevealVariants}
+            initial={shouldAnimate ? "hidden" : false}
+            whileInView={shouldAnimate ? "visible" : undefined}
+            viewport={{ once: true, amount: 0.2 }}
+          >
+            <section
+              className="about-story"
+              
+            >
               <Eyebrow>Min bakgrund</Eyebrow>
               <h2>{aboutContent.experienceHeading}</h2>
 
@@ -75,7 +99,10 @@ export function AboutPage() {
               ))}
             </section>
 
-            <section className="about-approach">
+            <section
+              className="about-approach"
+              
+            >
               <Eyebrow>Mitt arbetssätt</Eyebrow>
               <h2>{aboutContent.approachHeading}</h2>
 
@@ -83,7 +110,7 @@ export function AboutPage() {
                 <p key={index}>{paragraph}</p>
               ))}
             </section>
-          </div>
+          </motion.div>
 
         </main>
 

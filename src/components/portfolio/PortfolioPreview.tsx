@@ -1,7 +1,12 @@
 
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../features/Eyebrow";
+import {
+  staggeredGroupVariants,
+  staggeredItemVariants,
+} from "../animation/animationVariants";
 import { getResponsiveImage } from "../../data/optimizedImages";
 import "./PortfolioPreview.css";
 
@@ -15,21 +20,23 @@ const previewImages: PreviewImage[] = [
   {
     image: getResponsiveImage("portfolio/production/allsangen.webp"),
     sizes: "(max-width: 760px) calc(50vw - 22px), 33vw",
-    alt: "Selected make-up look",
+    alt: "Make-up och hårstyling till produktion",
   },
   {
     image: getResponsiveImage("portfolio/wedding/tone.jpg"),
     sizes: "(max-width: 760px) calc(50vw - 22px), 33vw",
-    alt: "Selected hairstyling look",
+    alt: "Hårstyling inför bröllop",
   },
   {
     image: getResponsiveImage("portfolio/wedding/andrea.webp"),
     sizes: "(max-width: 760px) calc(100vw - 32px), 33vw",
-    alt: "Selected beauty look",
+    alt: "Make-up och hårstyling inför kollektionssläpp",
   },
 ];
 
 export function PortfolioPreview() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <section className="portfolio-preview site-container site-container--wide">
       <div className="section-heading">
@@ -43,34 +50,44 @@ export function PortfolioPreview() {
         </Link>
       </div>
 
-      <div className="portfolio-preview__grid">
+      <motion.div
+        className="portfolio-preview__grid"
+        variants={staggeredGroupVariants}
+        initial={shouldAnimate ? "hidden" : false}
+        whileInView={shouldAnimate ? "visible" : undefined}
+        viewport={{ once: true, amount: 0.2 }}
+      >
         {previewImages.map((image) => (
-          <Link
+          <motion.div
+            variants={staggeredItemVariants}
             className="portfolio-preview__item"
-            to="/portfolio"
             key={image.image.src}
-            aria-label={`Se hela portfolion: ${image.alt}`}
           >
-            <picture>
-              <source
-                type="image/webp"
-                srcSet={image.image.webpSrcSet}
-                sizes={image.sizes}
-              />
-              <img
-                src={image.image.src}
-                srcSet={image.image.srcSet}
-                sizes={image.sizes}
-                alt={image.alt}
-                width={image.image.width}
-                height={image.image.height}
-                loading="lazy"
-                decoding="async"
-              />
-            </picture>
-          </Link>
+            <Link
+              to="/portfolio"
+              aria-label={`Se hela portfolion: ${image.alt}`}
+            >
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet={image.image.webpSrcSet}
+                  sizes={image.sizes}
+                />
+                <img
+                  src={image.image.src}
+                  srcSet={image.image.srcSet}
+                  sizes={image.sizes}
+                  alt={image.alt}
+                  width={image.image.width}
+                  height={image.image.height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
+            </Link>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

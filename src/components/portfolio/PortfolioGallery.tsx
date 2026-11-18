@@ -554,7 +554,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   }
 
   return (
-    <div className="animation-fade-up animation-fade-up-delay">
+    <div>
       <CategorySwitch
         categories={portfolioCategories}
         value={category}

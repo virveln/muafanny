@@ -1,6 +1,8 @@
 
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { softRevealVariants } from "../animation/animationVariants";
 
 import "./CTASection.css";
 
@@ -17,15 +19,23 @@ export default function CTASection({
   buttonText = "Kontakta mig",
   buttonHref = "/kontakt"
 }: CTASectionProps) {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <section
       className="cta-section"
+
     >
-      <div className="cta-content">
+      <motion.div className="cta-content"
+            variants={softRevealVariants}
+      initial={shouldAnimate ? "hidden" : false}
+      whileInView={shouldAnimate ? "visible" : undefined}
+      viewport={{ once: true, amount: 0.2 }}
+      >
         <h2>{title}</h2>
         <p>{description}</p>
         <Link className="button button--cta" to={buttonHref}>{buttonText} <ArrowRight size={17} aria-hidden="true" /></Link>
-      </div>
+      </motion.div>
     </section>
   );
 }

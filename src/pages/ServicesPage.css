@@ -42,6 +42,7 @@
   background: var(--site-accent); 
   color: var(--site-primary-foreground); 
 }
+
 .services-tell-more {
   position: relative;
   isolation: isolate;
@@ -49,7 +50,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 20px;
-  padding-block: 30px;
+  padding-block: 50px;
   margin-block: 50px;
 }
 

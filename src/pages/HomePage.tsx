@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/features/Eyebrow";
@@ -9,6 +10,7 @@ import { SEO } from "../components/features/SEO";
 import { seo } from "../data/seo";
 import { StructuredData } from "../components/features/StructuredData";
 import { getResponsiveImage } from "../data/optimizedImages";
+import { softRevealVariants } from "../components/animation/animationVariants";
 
 
 import "./HomePage.css";
@@ -19,6 +21,7 @@ const heroImageSizes =
 
 export function HomePage() {
   const [heroImageLoaded, setHeroImageLoaded] = useState(false);
+  const shouldAnimate = !useReducedMotion();
 
   return (
     <div id="home-page">
@@ -27,7 +30,7 @@ export function HomePage() {
       
       <main id="main-content" tabIndex={-1}>
         <section className="home-hero site-container site-container--wide">
-          <div className="hero-copy page-heading animation-fade-up">
+          <div className="hero-copy page-heading">
             <Eyebrow>
               <span>{aboutContent.work.professionMakeup}</span>
               <span className="eyebrow__separator">·</span>
@@ -39,7 +42,7 @@ export function HomePage() {
             <p>Make-up och hår för stunder du vill minnas. Personligt, genomtänkt och alltid med plats för din egen känsla.</p>
             <Link className="text-link" to="/portfolio">Upptäck mitt arbete <ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
-          <div className="hero-image-container animation-fade-up-delay animation-fade-up">
+          <div className="hero-image-container">
             <picture>
               <source
                 type="image/webp"
@@ -64,13 +67,20 @@ export function HomePage() {
             {/* <span className="image-caption">Naturligt uttryck, med omtanke.</span> */}
           </div>
         </section>
-        <section className="intro-band" id="intro">
+        <motion.section
+          className="intro-band"
+          id="intro"
+          variants={softRevealVariants}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView={shouldAnimate ? "visible" : undefined}
+          viewport={{ once: true, amount: 0.35 }}
+        >
           <div className="site-container site-container--narrow intro-band-inner">
             {/* <Eyebrow>En stund för dig</Eyebrow> */}
             <h2>För tillfällen som förtjänar det lilla extra.</h2>
             <Link className="text-link" to="/tjanster">Se tjänster <ArrowRight size={17} aria-hidden="true" /></Link>
           </div>
-        </section>
+        </motion.section>
         <PortfolioPreview />
         
           <CTASection

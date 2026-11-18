@@ -4,6 +4,7 @@ import { SiteLayout } from "./layouts/SiteLayout";
 import { HomePage } from "./pages/HomePage";
 import { PrivacyPolicyPage } from "./pages/PrivacyPolicyPage";
 import { ScrollToHash } from "./components/features/ScrollToHash";
+import { PageEntrance } from "./components/animation/PageEntrance";
 
 import { MantineProvider } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
@@ -52,14 +53,14 @@ function App() {
         <ScrollToHash />
         <Routes>
           <Route element={<SiteLayout />}>
-            <Route index element={<HomePage />} />
-            <Route path="om" element={<Suspense fallback={routeLoadingFallback}><AboutPage /></Suspense>} />
-            <Route path="tjanster" element={<Suspense fallback={routeLoadingFallback}><ServicesPage /></Suspense>} />
-            <Route path="/tjanster-detaljer" element={<Suspense fallback={routeLoadingFallback}><ServicesDetailsPage /></Suspense>} />
-            <Route path="portfolio" element={<Suspense fallback={routeLoadingFallback}><PortfolioPage /></Suspense>} />
-            <Route path="kontakt" element={<Suspense fallback={routeLoadingFallback}><ContactPage /></Suspense>} />
-            <Route path="integritetspolicy" element={<PrivacyPolicyPage />} />
-            <Route path="*" element={<Suspense fallback={routeLoadingFallback}><NotFoundPage /></Suspense>} />
+            <Route index element={<PageEntrance><HomePage /></PageEntrance>} />
+            <Route path="om" element={<Suspense fallback={routeLoadingFallback}><PageEntrance animate={false}><AboutPage /></PageEntrance></Suspense>} />
+            <Route path="tjanster" element={<Suspense fallback={routeLoadingFallback}><PageEntrance><ServicesPage /></PageEntrance></Suspense>} />
+            <Route path="/tjanster-detaljer" element={<Suspense fallback={routeLoadingFallback}><PageEntrance><ServicesDetailsPage /></PageEntrance></Suspense>} />
+            <Route path="portfolio" element={<Suspense fallback={routeLoadingFallback}><PageEntrance><PortfolioPage /></PageEntrance></Suspense>} />
+            <Route path="kontakt" element={<Suspense fallback={routeLoadingFallback}><PageEntrance><ContactPage /></PageEntrance></Suspense>} />
+            <Route path="integritetspolicy" element={<PageEntrance><PrivacyPolicyPage /></PageEntrance>} />
+            <Route path="*" element={<Suspense fallback={routeLoadingFallback}><PageEntrance><NotFoundPage /></PageEntrance></Suspense>} />
           </Route>
         </Routes>
       </BrowserRouter>

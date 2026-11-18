@@ -1,10 +1,15 @@
 
+import { motion, useReducedMotion } from "motion/react";
 import {
   Heart,
   Sparkles,
   MapPin,
   type LucideIcon,
 } from "lucide-react";
+import {
+  staggeredGroupVariants,
+  staggeredItemVariants,
+} from "../animation/animationVariants";
 import "./ValuesSection.css";
 
 type Value = {
@@ -32,15 +37,27 @@ const values: Value[] = [
 ];
 
 export default function ValuesSection() {
+  const shouldAnimate = !useReducedMotion();
+
   return (
     <section className="values-section">
       <div className="values-container">
-        <div className="values-grid">
+        <motion.div
+          className="values-grid"
+          variants={staggeredGroupVariants}
+          initial={shouldAnimate ? "hidden" : false}
+          whileInView={shouldAnimate ? "visible" : undefined}
+          viewport={{ once: true, amount: 0.2 }}
+        >
           {values.map((value) => {
             const Icon = value.icon;
 
             return (
-              <article className="value-card" key={value.title}>
+              <motion.article
+                className="value-card"
+                key={value.title}
+                variants={staggeredItemVariants}
+              >
                 <Icon
                   className="value-icon"
                   size={26}
@@ -51,10 +68,10 @@ export default function ValuesSection() {
                 <h3 className="value-title">{value.title}</h3>
 
                 <p className="value-text">{value.text}</p>
-              </article>
+              </motion.article>
             );
           })}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
