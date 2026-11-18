@@ -28,6 +28,7 @@ const mediaDescriptions: Partial<Record<PortfolioCategory, Record<string, string
     "svt-skansen-nationaldagen.webp": "Fouad Youcefi & Anne Lundberg inför nationaldagen på Skansen",
     "helia-spelning-eden.JPG": "Helia inför spelning på Eden",
     "helia-spelning-eden.mp4": "Helia inför spelning på Eden",
+    "pressplatning_andrea_morgonstudion.png": "Pressplåtning av Andrea för Morgonstudion",
   },
 };
 
