@@ -4,7 +4,6 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Eyebrow } from "../components/features/Eyebrow";
 import {
-  staggeredGroupVariants,
   staggeredItemVariants,
   softRevealVariants,
 } from "../components/animation/animationVariants";
