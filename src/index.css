@@ -37,6 +37,7 @@
   --site-line: #ddd6d0;
   --site-paper: #f8f6f2;
   --site-paper: #fffefa;
+  --site-error: var(--site-accent);
   --site-error: color-mix(in srgb, var(--site-accent)  45%, var(--site-primary) 55%);
   --site-placeholder: #99918b;
   --site-placeholder: #ada9a5;
