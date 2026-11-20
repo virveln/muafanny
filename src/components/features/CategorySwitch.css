@@ -17,6 +17,7 @@
 }
 
 .category-switch__button {
+  position: relative;
   min-height: 42px;
   padding: 0 24px;
   border: 0;
@@ -29,9 +30,8 @@
   letter-spacing: 0.03em;
   cursor: pointer;
   transition:
-    background 200ms ease,
     color 200ms ease,
-    box-shadow 200ms ease;
+    background 200ms ease;
 }
 
 .category-switch__button:hover {
@@ -39,8 +39,20 @@
 }
 
 .category-switch__button.is-active {
-  background: #fffefa;
   color: var(--site-primary);
+}
+
+.category-switch__label {
+  position: relative;
+  z-index: 1;
+}
+
+.category-switch__indicator {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: 50px;
+  background: #fffefa;
   box-shadow: 0 2px 8px rgb(41 39 34 / 8%);
 }
 
