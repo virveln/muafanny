@@ -1,8 +1,10 @@
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import type {
   MouseEvent,
   PointerEvent as ReactPointerEvent,
+  RefObject,
   TouchEvent as ReactTouchEvent,
 } from "react";
 import { createPortal } from "react-dom";
@@ -35,6 +37,158 @@ const portfolioCategories = [
   { value: "production", label: "Produktion/Event" },
 ] as const;
 
+const lightboxMediaVariants = {
+  enter: (direction: number) => ({
+    opacity: 0,
+    x: direction * 24,
+  }),
+  visible: {
+    opacity: 1,
+    x: 0,
+  },
+  exit: (direction: number) => ({
+    opacity: 0,
+    x: direction * -24,
+  }),
+};
+
+type LightboxThumbnailProps = {
+  item: PortfolioMedia;
+  index: number;
+  total: number;
+  category: PortfolioCategory;
+  isActive: boolean;
+  prefersReducedMotion: boolean;
+  observerRoot: RefObject<HTMLDivElement | null>;
+  onSelect: (index: number) => void;
+};
+
+function LightboxThumbnail({
+  item,
+  index,
+  total,
+  category,
+  isActive,
+  prefersReducedMotion,
+  observerRoot,
+  onSelect,
+}: LightboxThumbnailProps) {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [shouldLoadVideo, setShouldLoadVideo] = useState(false);
+  const [videoFrameReady, setVideoFrameReady] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+
+  useEffect(() => {
+    if (item.type !== "video") return;
+    const element = buttonRef.current;
+    if (!element || !("IntersectionObserver" in window)) {
+      setShouldLoadVideo(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldLoadVideo(true);
+          observer.disconnect();
+        }
+      },
+      { root: observerRoot.current, rootMargin: "80px" },
+    );
+
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [item.type, observerRoot]);
+
+  const accessibleName = item.description
+    ? `Visa ${item.type === "video" ? "video" : "bild"} ${index + 1} av ${total}: ${item.description}`
+    : `Visa ${item.type === "video" ? "video" : "bild"} ${index + 1} av ${total} i ${
+        category === "wedding" ? "Bröllop" : "Produktion/Event"
+      }`;
+
+  return (
+    <motion.button
+      className={`lightbox-thumbnail${isActive ? " is-active" : ""}`}
+      ref={buttonRef}
+      data-media-index={index}
+      type="button"
+      aria-label={accessibleName}
+      aria-current={isActive ? "true" : undefined}
+      title={item.description ?? accessibleName}
+      onClick={() => onSelect(index)}
+      whileHover={!prefersReducedMotion ? { y: -2 } : undefined}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.2,
+        ease: [0.4, 0, 0.2, 1],
+      }}
+    >
+      {item.type === "image" ? (
+        <picture>
+          {item.thumbnailWebpSrcSet && (
+            <source
+              type="image/webp"
+              srcSet={item.thumbnailWebpSrcSet}
+              sizes={item.thumbnailSizes}
+            />
+          )}
+          <img
+            src={item.thumbnailSrc ?? item.src}
+            srcSet={item.thumbnailSrcSet}
+            sizes={item.thumbnailSizes}
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      ) : (
+        <>
+          {shouldLoadVideo && !videoError && (
+            <video
+              src={item.src}
+              muted
+              playsInline
+              preload="metadata"
+              tabIndex={-1}
+              aria-hidden="true"
+              onLoadedMetadata={(event) => {
+                const video = event.currentTarget;
+                if (video.duration > 0) {
+                  video.currentTime = Math.min(0.1, video.duration / 2);
+                }
+              }}
+              onSeeked={(event) => {
+                event.currentTarget.pause();
+                setVideoFrameReady(true);
+              }}
+              onError={() => setVideoError(true)}
+            />
+          )}
+          {(!videoFrameReady || videoError) && (
+            <span className="lightbox-thumbnail__video-placeholder" />
+          )}
+          <span
+            className="lightbox-thumbnail__play"
+            aria-hidden="true"
+          >
+            <Play size={14} fill="currentColor" />
+          </span>
+        </>
+      )}
+      {isActive && (
+        <motion.span
+          className="lightbox-thumbnail__active-indicator"
+          layoutId="lightbox-active-thumbnail"
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { type: "spring", stiffness: 420, damping: 34 }
+          }
+          aria-hidden="true"
+        />
+      )}
+    </motion.button>
+  );
+}
 
 export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const [isMobileLayout, setIsMobileLayout] = useState(
@@ -48,6 +202,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   );
   const [category, setCategory] = useState<PortfolioCategory>("wedding");
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [navigationDirection, setNavigationDirection] = useState<1 | -1>(1);
   const [zoomFocus, setZoomFocus] = useState<{
     src: string;
     x: number;
@@ -78,6 +233,70 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const lightboxDialogRef = useRef<HTMLDivElement>(null);
   const lightboxCloseRef = useRef<HTMLButtonElement>(null);
   const lightboxOpenerRef = useRef<HTMLButtonElement>(null);
+  const lightboxThumbnailsRef = useRef<HTMLDivElement>(null);
+  const lightboxMediaContentRef = useRef<HTMLDivElement>(null);
+  const lightboxCaptionRef = useRef<HTMLParagraphElement>(null);
+  const lightboxMediaResizeObserver = useRef<ResizeObserver | null>(null);
+  const captionMeasureFrame = useRef<number | null>(null);
+  const [captionOverlapsMedia, setCaptionOverlapsMedia] = useState(false);
+
+  const measureCaptionOverlap = useCallback(() => {
+    const mediaBounds = lightboxMediaContentRef.current?.getBoundingClientRect();
+    const captionBounds = lightboxCaptionRef.current?.getBoundingClientRect();
+    const overlaps = Boolean(
+      mediaBounds &&
+        captionBounds &&
+        mediaBounds.bottom > captionBounds.top &&
+        mediaBounds.top < captionBounds.bottom,
+    );
+
+    setCaptionOverlapsMedia((current) => current === overlaps ? current : overlaps);
+  }, []);
+
+  const setLightboxMediaContentRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      lightboxMediaResizeObserver.current?.disconnect();
+      lightboxMediaResizeObserver.current = null;
+      if (captionMeasureFrame.current !== null) {
+        window.cancelAnimationFrame(captionMeasureFrame.current);
+        captionMeasureFrame.current = null;
+      }
+
+      lightboxMediaContentRef.current = element;
+      if (!element) {
+        window.removeEventListener("resize", measureCaptionOverlap);
+        return;
+      }
+
+      const observer = new ResizeObserver(measureCaptionOverlap);
+      observer.observe(element);
+      if (lightboxCaptionRef.current) {
+        observer.observe(lightboxCaptionRef.current);
+      }
+      lightboxMediaResizeObserver.current = observer;
+      window.addEventListener("resize", measureCaptionOverlap);
+      captionMeasureFrame.current = window.requestAnimationFrame(
+        measureCaptionOverlap,
+      );
+    },
+    [measureCaptionOverlap],
+  );
+
+  const setLightboxCaptionRef = useCallback(
+    (element: HTMLParagraphElement | null) => {
+      lightboxCaptionRef.current = element;
+      if (!element) return;
+
+      lightboxMediaResizeObserver.current?.observe(element);
+      if (captionMeasureFrame.current !== null) {
+        window.cancelAnimationFrame(captionMeasureFrame.current);
+      }
+      captionMeasureFrame.current = window.requestAnimationFrame(
+        measureCaptionOverlap,
+      );
+    },
+    [measureCaptionOverlap],
+  );
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 560px)");
@@ -114,6 +333,28 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const zoomOrigin = isZoomed && zoomFocus
     ? { x: zoomFocus.x, y: zoomFocus.y }
     : { x: 50, y: 50 };
+
+  useLayoutEffect(() => {
+    const track = lightboxThumbnailsRef.current;
+    if (activeIndex === null || !track) return;
+
+    const activeThumbnail = track.querySelector<HTMLButtonElement>(
+      `[data-media-index="${activeIndex}"]`,
+    );
+    if (!track || !activeThumbnail) return;
+
+    const trackBounds = track.getBoundingClientRect();
+    const thumbnailBounds = activeThumbnail.getBoundingClientRect();
+    track.scrollTo({
+      left:
+        track.scrollLeft +
+        thumbnailBounds.left -
+        trackBounds.left +
+        thumbnailBounds.width / 2 -
+        track.clientWidth / 2,
+      behavior: prefersReducedMotion ? "auto" : "smooth",
+    });
+  }, [activeIndex, prefersReducedMotion]);
 
   function clearLightboxControlsTimeout() {
     if (lightboxControlsTimeout.current !== null) {
@@ -175,6 +416,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   const resetLightboxVideoControls = useCallback(() => {
     clearLightboxControlsTimeout();
     lightboxControlsRequested.current = false;
+    lightboxVideoRef.current?.pause();
     setIsLightboxVideoPlaying(false);
     setShowLightboxVideoControls(!isTouchInput);
   }, [isTouchInput]);
@@ -187,6 +429,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   }
 
   function showPrevious() {
+    setNavigationDirection(-1);
     resetLightboxVideoControls();
     setActiveIndex((current) =>
       current === null
@@ -196,10 +439,18 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   }
 
   function showNext() {
+    setNavigationDirection(1);
     resetLightboxVideoControls();
     setActiveIndex((current) =>
       current === null ? null : (current + 1) % media.length,
     );
+  }
+
+  function showMediaAt(index: number) {
+    if (activeIndex === index) return;
+    setNavigationDirection(index > (activeIndex ?? 0) ? 1 : -1);
+    resetLightboxVideoControls();
+    setActiveIndex(index);
   }
 
   function startLightboxSwipe(event: ReactPointerEvent<HTMLElement>) {
@@ -237,6 +488,14 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
 
   function startLightboxTouch(event: ReactTouchEvent<HTMLDivElement>) {
     suppressLightboxVideoClick.current = false;
+    if (
+      event.target instanceof Element &&
+      event.target.closest(".lightbox-thumbnails")
+    ) {
+      lightboxTouchStart.current = null;
+      return;
+    }
+
     if (event.touches.length !== 1) {
       lightboxTouchStart.current = null;
       return;
@@ -376,17 +635,15 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
   }, [activeIndex, onLightboxChange]);
 
   useEffect(() => {
-    if (activeMedia?.type !== "video") return;
     const video = lightboxVideoRef.current;
     if (!video) return;
 
     if (prefersReducedMotion) {
       video.pause();
-      return;
+    } else {
+      void video.play().catch(() => {});
     }
-
-    void video.play().catch(() => {});
-  }, [activeMedia?.src, activeMedia?.type, prefersReducedMotion]);
+  }, [prefersReducedMotion]);
 
   function toggleImageZoom(event: MouseEvent<HTMLButtonElement>) {
     const image = event.currentTarget.querySelector("img");
@@ -428,9 +685,16 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
 
     function renderItem(item: PortfolioMedia, index: number) {
       return (
-        <div
+        <motion.div
           className={`portfolio-item${userPlayingVideos.has(item.src) ? " is-playing" : ""}`}
           key={item.src}
+          whileHover={
+            !prefersReducedMotion && !isTouchInput ? { y: -3 } : undefined
+          }
+          transition={{
+            duration: prefersReducedMotion ? 0 : 0.22,
+            ease: [0.4, 0, 0.2, 1],
+          }}
           onMouseEnter={() => {
             if (
               item.type === "video" &&
@@ -520,7 +784,7 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
           {item.description && (
             <span className="portfolio-caption">{item.description}</span>
           )}
-        </div>
+        </motion.div>
       );
     }
 
@@ -620,128 +884,149 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
               lightboxSwipeStart.current = null;
             }}
           >
-            {activeMedia.type === "image" ? (
-              isTouchInput ? (
-                <div
-                  className="lightbox-image-wrap"
-                  style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
-                >
-                  <img
-                    key={activeMedia.src}
-                    src={activeMedia.src}
-                    alt={
-                      activeMedia.description ??
-                      (category === "wedding"
-                        ? "Bröllopsmakeup och hårstyling"
-                        : "Makeup och hårstyling för produktion och event")
-                    }
-                    className="lightbox-image"
-                    decoding="async"
-                    draggable={false}
-                  />
-                </div>
-              ) : (
-                <button
-                  className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
-                  type="button"
-                  aria-label={
-                    isZoomed
-                      ? "Återställ zoom för bilden"
-                      : "Zooma in på bilden"
-                  }
-                  onClick={toggleImageZoom}
-                  style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
-                >
-                  <img
-                    key={activeMedia.src}
-                    src={activeMedia.src}
-                    alt={
-                      activeMedia.description ??
-                      (category === "wedding"
-                        ? "Bröllopsmakeup och hårstyling"
-                        : "Makeup och hårstyling för produktion och event")
-                    }
-                    className="lightbox-image"
-                    decoding="async"
-                    draggable={false}
-                  />
-                </button>
-              )
-            ) : (
-              <>
-              <video
+            <AnimatePresence
+              initial={false}
+              mode="wait"
+              custom={prefersReducedMotion ? 0 : navigationDirection}
+            >
+              <motion.div
+                className="lightbox-media-transition"
                 key={activeMedia.src}
-                ref={(video) => {
-                  lightboxVideoRef.current = video;
-                  if (video) {
-                    video.muted = true;
-                    video.defaultMuted = true;
-                    video.volume = 0;
-                  }
+                custom={prefersReducedMotion ? 0 : navigationDirection}
+                variants={lightboxMediaVariants}
+                initial="enter"
+                animate="visible"
+                exit="exit"
+                transition={{
+                  duration: prefersReducedMotion ? 0 : 0.28,
+                  ease: [0.4, 0, 0.2, 1],
                 }}
-                src={activeMedia.src}
-                aria-describedby={
-                  activeMedia.description ? "lightbox-caption" : undefined
-                }
-                muted
-                playsInline
-                loop
-                preload="auto"
-                tabIndex={0}
-                aria-keyshortcuts="Space"
-                aria-label={`Video: ${
-                  activeMedia.description ??
-                  (category === "wedding"
-                    ? "Bröllopsmakeup och/eller hårstyling"
-                    : "Makeup och/eller hårstyling för produktion och event")
-                }. Tryck på mellanslag för att spela eller pausa.`}
-                onClick={handleLightboxVideoClick}
-                onPlay={() => {
-                  setIsLightboxVideoPlaying(true);
-                  if (isTouchInput) {
-                    lightboxControlsRequested.current = false;
-                    clearLightboxControlsTimeout();
-                    setShowLightboxVideoControls(false);
-                  } else {
-                    setShowLightboxVideoControls(true);
-                    hideLightboxControlsSoon();
-                  }
-                }}
-                onPause={() => {
-                  clearLightboxControlsTimeout();
-                  setIsLightboxVideoPlaying(false);
-                  setShowLightboxVideoControls(true);
-                }}
-                onVolumeChange={(event) => {
-                  const video = event.currentTarget;
-
-                  if (!video.muted || video.volume !== 0) {
-                    video.muted = true;
-                    video.volume = 0;
-                  }
-                }}
-              />
-              <button
-                className={`lightbox-video-toggle${
-                  shouldShowLightboxVideoControl ? "" : " is-hidden"
-                }`}
-                type="button"
-                aria-label={
-                  isLightboxVideoPlaying ? "Pausa video" : "Spela video"
-                }
-                onClick={toggleLightboxVideoFromControl}
               >
-                {isLightboxVideoPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
-              </button>
-              </>
-            )}
-          </figure>
+                <div
+                  className={`lightbox-media-content${captionOverlapsMedia ? " has-caption-overlap" : ""}`}
+                  ref={setLightboxMediaContentRef}
+                >
+                  {activeMedia.type === "image" ? (
+                    isTouchInput ? (
+                      <div
+                        className="lightbox-image-wrap"
+                        style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
+                      >
+                        <img
+                          src={activeMedia.src}
+                          alt={
+                            activeMedia.description ??
+                            (category === "wedding"
+                              ? "Bröllopsmakeup och hårstyling"
+                              : "Makeup och hårstyling för produktion och event")
+                          }
+                          className="lightbox-image"
+                          decoding="async"
+                          draggable={false}
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        className={`lightbox-image-wrap ${isZoomed ? "is-zoomed" : ""}`}
+                        type="button"
+                        aria-label={
+                          isZoomed
+                            ? "Återställ zoom för bilden"
+                            : "Zooma in på bilden"
+                        }
+                        onClick={toggleImageZoom}
+                        style={{ "--zoom-x": `${zoomOrigin.x}%`, "--zoom-y": `${zoomOrigin.y}%` } as React.CSSProperties}
+                      >
+                        <img
+                          src={activeMedia.src}
+                          alt={
+                            activeMedia.description ??
+                            (category === "wedding"
+                              ? "Bröllopsmakeup och hårstyling"
+                              : "Makeup och hårstyling för produktion och event")
+                          }
+                          className="lightbox-image"
+                          decoding="async"
+                          draggable={false}
+                        />
+                      </button>
+                    )
+                  ) : (
+                    <>
+                      <video
+                        ref={(video) => {
+                          lightboxVideoRef.current = video;
+                          if (video) {
+                            video.muted = true;
+                            video.defaultMuted = true;
+                            video.volume = 0;
+                          }
+                        }}
+                        src={activeMedia.src}
+                        aria-describedby={
+                          activeMedia.description ? "lightbox-caption" : undefined
+                        }
+                        muted
+                        playsInline
+                        loop
+                        preload="auto"
+                        tabIndex={0}
+                        aria-keyshortcuts="Space"
+                        aria-label={`Video: ${
+                          activeMedia.description ??
+                          (category === "wedding"
+                            ? "Bröllopsmakeup och/eller hårstyling"
+                            : "Makeup och/eller hårstyling för produktion och event")
+                        }. Tryck på mellanslag för att spela eller pausa.`}
+                        onClick={handleLightboxVideoClick}
+                        onLoadedData={(event) => {
+                          if (!prefersReducedMotion) {
+                            void event.currentTarget.play().catch(() => {});
+                          }
+                        }}
+                        onPlay={() => {
+                          setIsLightboxVideoPlaying(true);
+                          if (isTouchInput) {
+                            lightboxControlsRequested.current = false;
+                            clearLightboxControlsTimeout();
+                            setShowLightboxVideoControls(false);
+                          } else {
+                            setShowLightboxVideoControls(true);
+                            hideLightboxControlsSoon();
+                          }
+                        }}
+                        onPause={() => {
+                          clearLightboxControlsTimeout();
+                          setIsLightboxVideoPlaying(false);
+                          setShowLightboxVideoControls(true);
+                        }}
+                        onVolumeChange={(event) => {
+                          const video = event.currentTarget;
 
-          {activeMedia.description && (
-            <p className="lightbox-caption" id="lightbox-caption">
-              {activeMedia.description}
-            </p>
-          )}
+                          if (!video.muted || video.volume !== 0) {
+                            video.muted = true;
+                            video.volume = 0;
+                          }
+                        }}
+                      />
+                      <button
+                        className={`lightbox-video-toggle${
+                          shouldShowLightboxVideoControl ? "" : " is-hidden"
+                        }`}
+                        type="button"
+                        aria-label={
+                          isLightboxVideoPlaying ? "Pausa video" : "Spela video"
+                        }
+                        onClick={toggleLightboxVideoFromControl}
+                      >
+                        {isLightboxVideoPlaying ? <Pause size={28} fill="currentColor" /> : <Play size={28} fill="currentColor" />}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </figure>
 
           <button
             className="lightbox-side lightbox-side--next"
@@ -754,9 +1039,38 @@ export function PortfolioGallery({ onLightboxChange }: PortfolioGalleryProps) {
             </span>
           </button>
 
-          <span className="lightbox-counter" aria-live="polite" aria-atomic="true">
-            {activeIndex + 1} av {media.length}
-          </span>
+          {activeMedia.description && (
+            <p
+              className="lightbox-caption"
+              id="lightbox-caption"
+              ref={setLightboxCaptionRef}
+            >
+              {activeMedia.description}
+            </p>
+          )}
+
+          <div
+            className="lightbox-thumbnails"
+            ref={lightboxThumbnailsRef}
+            role="group"
+            aria-label="Välj bild eller video"
+          >
+            <div className="lightbox-thumbnails__track">
+              {media.map((item, index) => (
+                <LightboxThumbnail
+                  key={item.src}
+                  item={item}
+                  index={index}
+                  total={media.length}
+                  category={category}
+                  isActive={index === activeIndex}
+                  prefersReducedMotion={prefersReducedMotion}
+                  observerRoot={lightboxThumbnailsRef}
+                  onSelect={showMediaAt}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       ), document.body)}
     </div>

@@ -14,23 +14,39 @@
 .nav-link:hover, .nav-link.is-active { 
   color: var(--site-primary); 
 }
-.nav-link.is-active::after { 
-  position: absolute; 
-  right: 0; 
-  bottom: 2px; 
-  left: 0; 
-  height: 1px; 
-  background: var(--site-accent); 
-  content: ""; 
+.nav-link__underline {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  left: 0;
+  height: 1px;
+  background: var(--site-accent);
+  transform-origin: left center;
 }
 
+.nav-link:focus-visible {
+  outline-offset: 4px;
+}
 
 .site-header { 
-  position: relative; 
-  z-index: 2; 
+  position: sticky;
+  z-index: 20;
+  top: 0;
   border-bottom: 1px solid rgb(48 43 41 / 9%); 
   background: var(--site-background); 
+  transition:
+    box-shadow 240ms ease,
+    border-color 240ms ease,
+    background-color 240ms ease;
 }
+
+.site-header.is-scrolled {
+  border-color: rgb(48 43 41 / 12%);
+  background: color-mix(in srgb, var(--site-background) 94%, transparent);
+  box-shadow: 0 5px 18px rgb(41 39 34 / 8%);
+  backdrop-filter: saturate(140%) blur(10px);
+}
+
 .header-inner { 
   display: flex; 
   min-height: 88px; 
@@ -82,5 +98,11 @@
   .site-header .wordmark {
     align-self: center;
     text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header {
+    transition: none;
   }
 }
